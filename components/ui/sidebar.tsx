@@ -1,7 +1,6 @@
 import {cn} from "@/lib/utils"
 import {Button} from "@/components/ui/button"
 import React, {ReactNode} from "react";
-import {IconBaseProps} from "react-icons";
 
 export interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -34,8 +33,8 @@ export function SidebarSection({className, title, children}: SidebarSectionProps
 export function SidebarItem({className, children, active, icon}: SidebarItemProps) {
   return (
     <Button variant={active ? "secondary" : "ghost"} className={cn("w-full justify-start", className)}>
-        {icon}
-        {children}
+      {icon}
+      {children}
     </Button>
   )
 }
