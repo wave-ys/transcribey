@@ -10,8 +10,8 @@ export default function DashboardLayout(
   {children}: { children: React.ReactNode }
 ) {
   return (
-    <div className={"grid lg:grid-cols-5 h-screen"}>
-      <Sidebar className={"hidden lg:block"} header={
+    <div className={"h-screen flex"}>
+      <Sidebar className={"hidden lg:block lg:w-64"} header={
         <div className={"text-right"}>
           <Button variant={"ghost"} size={"icon"}><LuPanelLeftClose className={"w-4 h-4"}/></Button>
         </div>
@@ -31,7 +31,7 @@ export default function DashboardLayout(
           </SidebarLinkItem>
         </SidebarSection>
       </Sidebar>
-      <div className={"col-span-3 lg:col-span-4 lg:border-l"}>
+      <div className={"lg:border-l flex-auto"}>
         {children}
       </div>
     </div>
