@@ -13,7 +13,7 @@ export function SidebarLinkItem({href, ...other}: SidebarLinkItemProps) {
   const pathname = usePathname();
 
   return (
-    <Link href={href}>
+    <Link href={href} className={"block"}>
       <SidebarItem {...other} active={pathname.startsWith(href)}/>
     </Link>
   )

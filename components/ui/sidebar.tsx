@@ -3,6 +3,7 @@ import {Button} from "@/components/ui/button"
 import React, {ReactNode} from "react";
 
 export interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
+  header?: ReactNode
 }
 
 export interface SidebarSectionProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -14,15 +15,15 @@ export interface SidebarItemProps extends React.HTMLAttributes<HTMLDivElement> {
   icon?: ReactNode
 }
 
-export interface SidebarHeaderProps extends React.HTMLAttributes<HTMLDivElement> {
-}
-
 export function SidebarSection({className, title, children}: SidebarSectionProps) {
   return (
-    <div className="py-2">
-      <h2 className={cn("mb-2 px-4 text-lg font-semibold tracking-tight", className)}>
-        {title}
-      </h2>
+    <div className={cn(title !== undefined && "py-2")}>
+      {
+        title !== undefined &&
+          <h2 className={cn("mb-2 px-4 text-lg font-semibold tracking-tight", className)}>
+            {title}
+          </h2>
+      }
       <div className="space-y-1">
         {children}
       </div>
@@ -39,16 +40,11 @@ export function SidebarItem({className, children, active, icon}: SidebarItemProp
   )
 }
 
-export function SidebarHeader({children, className}: SidebarHeaderProps) {
-  return (
-    <div className={cn("mb-2", className)}>{children}</div>
-  )
-}
-
-export function Sidebar({className, children}: SidebarProps) {
+export function Sidebar({className, children, header}: SidebarProps) {
   return (
     <div className={cn("pb-12 px-3", className)}>
-      <div className="space-y-4 py-2">
+      {header && <div className={"my-4"}>{header}</div>}
+      <div className="space-y-4">
         {children}
       </div>
     </div>
