@@ -3,17 +3,19 @@ import {Sidebar, SidebarSection} from "@/components/ui/sidebar";
 import {BiHome, BiMoviePlay, BiTrash} from "react-icons/bi";
 import {FiSettings} from "react-icons/fi";
 import {SidebarLinkItem} from "@/components/ui/sidebar-link-item";
-import {Button} from "@/components/ui/button";
-import {LuPanelLeftClose} from "react-icons/lu";
+import {cn} from "@/lib/utils";
+import ToggleSidebarButton, {isSidebarOpen} from "@/components/ui/toggle-sidebar-button";
 
 export default function DashboardLayout(
   {children}: { children: React.ReactNode }
 ) {
+  const sidebarOpen = isSidebarOpen();
+
   return (
     <div className={"h-screen flex"}>
-      <Sidebar className={"hidden lg:block lg:w-64"} header={
+      <Sidebar className={cn("hidden", sidebarOpen && "lg:border-r lg:block lg:w-64")} header={
         <div className={"text-right"}>
-          <Button variant={"ghost"} size={"icon"}><LuPanelLeftClose className={"w-4 h-4"}/></Button>
+          <ToggleSidebarButton/>
         </div>
       }>
         <SidebarSection>
@@ -31,7 +33,10 @@ export default function DashboardLayout(
           </SidebarLinkItem>
         </SidebarSection>
       </Sidebar>
-      <div className={"lg:border-l flex-auto"}>
+      <div className={"flex-auto px-3"}>
+        <div className={cn("my-4 invisible", !sidebarOpen && "lg:visible")}>
+          <ToggleSidebarButton/>
+        </div>
         {children}
       </div>
     </div>
