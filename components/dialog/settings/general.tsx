@@ -1,5 +1,5 @@
 import {SettingsItem, SettingsSection} from "@/components/dialog/settings/section";
-import {LuPalette} from "react-icons/lu";
+import {LuLanguages, LuPalette} from "react-icons/lu";
 import {useTheme} from "next-themes";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {useParams, usePathname, useRouter} from "next/navigation";
@@ -37,7 +37,7 @@ export function GeneralSettings() {
         </SettingsItem>
       </SettingsSection>
       <SettingsSection title={t("settings.language.title")}>
-        <SettingsItem icon={<LuPalette className={"w-4 h-4 mr-2"}/>} title={t("settings.language.change.title")}>
+        <SettingsItem icon={<LuLanguages className={"w-4 h-4 mr-2"}/>} title={t("settings.language.change.title")}>
           <Select value={params['lng'] as string} onValueChange={changeLanguage}>
             <SelectTrigger className="w-[180px]">
               <SelectValue/>

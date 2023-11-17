@@ -1,6 +1,7 @@
 import React from "react";
-import {Sidebar, SidebarSection} from "@/components/ui/sidebar";
+import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
 import {BiHome, BiMoviePlay, BiTrash} from "react-icons/bi";
+import {FiSettings} from "react-icons/fi";
 import {SidebarItems, SidebarSettingsItem} from "@/components/ui/sidebar-items";
 import {cn} from "@/lib/utils";
 import ToggleSidebarButton, {isSidebarOpen} from "@/components/ui/toggle-sidebar-button";
@@ -8,6 +9,7 @@ import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {LuPanelLeftOpen} from "react-icons/lu";
 import {Button} from "@/components/ui/button";
 import {useTranslation} from "@/app/i18n";
+import {useSettingsDialog} from "@/components/provider/dialog-provider";
 
 interface DashboardLayoutProps {
   params: {

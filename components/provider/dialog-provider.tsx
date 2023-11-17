@@ -2,6 +2,7 @@
 
 import React, {createContext, useContext, useState} from "react";
 import SettingsDialog from "@/components/dialog/settings";
+import {useCookies} from "react-cookie";
 
 export interface SettingsDialogContextType {
   open: boolean,
