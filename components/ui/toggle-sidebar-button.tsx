@@ -7,7 +7,7 @@ export function isSidebarOpen() {
   return cookies().get("sidebar.open")?.value !== 'false';
 }
 
-export default function ToggleSidebarButton() {
+export default function ToggleSidebarButton({className}: React.HTMLAttributes<HTMLDivElement>) {
 
   const sidebarOpen = isSidebarOpen();
 
@@ -17,7 +17,7 @@ export default function ToggleSidebarButton() {
   }
 
   return (
-    <form action={toggleSidebar}>
+    <form action={toggleSidebar} className={className}>
       <Button variant={"ghost"} size={"icon"}>
         {
           sidebarOpen ? <LuPanelLeftClose className={"w-4 h-4"}/> : <LuPanelLeftOpen className={"w-4 h-4"}/>
