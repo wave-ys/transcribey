@@ -43,7 +43,7 @@ export default function SettingsDialog({children}: React.HTMLAttributes<HTMLDivE
           <DialogTitle>Settings</DialogTitle>
         </DialogHeader>
         <div className={"grid grid-cols-4 h-[32rem]"}>
-          <Sidebar className={"border-r col-span-1 pt-4"}>
+          <Sidebar className={"border-r pl-0 pr-4 col-span-1 pt-4"}>
             <SidebarSection>
               {
                 settingPages.map(page =>
@@ -55,7 +55,7 @@ export default function SettingsDialog({children}: React.HTMLAttributes<HTMLDivE
               }
             </SidebarSection>
           </Sidebar>
-          <div className={"col-span-3 px-3"}>
+          <div className={"col-span-3 pl-4"}>
             {currentPageComponent}
           </div>
         </div>

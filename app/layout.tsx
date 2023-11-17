@@ -14,11 +14,12 @@ export const metadata: Metadata = {
   title: 'Transcribey'
 }
 
-export default function RootLayout({
-                                     children,
-                                   }: {
-  children: React.ReactNode
-}) {
+export default function RootLayout(
+  {
+    children,
+  }: {
+    children: React.ReactNode
+  }) {
   return (
     <html lang="en" suppressHydrationWarning>
     <body className={cn(
@@ -29,7 +30,6 @@ export default function RootLayout({
       attribute="class"
       defaultTheme="system"
       enableSystem
-      disableTransitionOnChange
     >
       {children}
     </ThemeProvider>
