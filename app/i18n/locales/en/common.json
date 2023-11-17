@@ -4,5 +4,27 @@
     "media": "Media",
     "trash": "Trash",
     "settings": "Settings"
+  },
+  "settings": {
+    "title": "Settings",
+    "sidebar": {
+      "general": "General",
+      "models": "Models"
+    },
+    "appearance": {
+      "title": "Appearance",
+      "theme": {
+        "title": "Theme",
+        "system": "System",
+        "dark": "Dark",
+        "light": "Light"
+      }
+    },
+    "language": {
+      "title": "Language",
+      "change": {
+        "title": "Change Languages"
+      }
+    }
   }
 }

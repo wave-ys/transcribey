@@ -5,12 +5,14 @@ import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/c
 import {useParams, usePathname, useRouter} from "next/navigation";
 import {languageEntities} from "@/app/i18n/settings";
 import {useCallback} from "react";
+import {useTranslation} from "@/app/i18n/client";
 
 export function GeneralSettings() {
   const theme = useTheme();
   const params = useParams();
   const router = useRouter();
   const pathname = usePathname();
+  const {t} = useTranslation();
 
   const changeLanguage = useCallback((language: string) => {
     const items = pathname.split('/');
@@ -20,25 +22,25 @@ export function GeneralSettings() {
 
   return (
     <>
-      <SettingsSection title={"Appearance"}>
-        <SettingsItem icon={<LuPalette className={"w-4 h-4 mr-2"}/>} title={"Theme"}>
+      <SettingsSection title={t("settings.appearance.title")}>
+        <SettingsItem icon={<LuPalette className={"w-4 h-4 mr-2"}/>} title={t("settings.appearance.theme.title")}>
           <Select value={theme.theme} onValueChange={theme.setTheme}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Theme"/>
+              <SelectValue/>
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="system">System</SelectItem>
-              <SelectItem value="light">Light</SelectItem>
-              <SelectItem value="dark">Dark</SelectItem>
+              <SelectItem value="system">{t("settings.appearance.theme.system")}</SelectItem>
+              <SelectItem value="light">{t("settings.appearance.theme.light")}</SelectItem>
+              <SelectItem value="dark">{t("settings.appearance.theme.dark")}</SelectItem>
             </SelectContent>
           </Select>
         </SettingsItem>
       </SettingsSection>
-      <SettingsSection title={"Language"}>
-        <SettingsItem icon={<LuPalette className={"w-4 h-4 mr-2"}/>} title={"Change Languages"}>
+      <SettingsSection title={t("settings.language.title")}>
+        <SettingsItem icon={<LuPalette className={"w-4 h-4 mr-2"}/>} title={t("settings.language.change.title")}>
           <Select value={params['lng'] as string} onValueChange={changeLanguage}>
             <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Language"/>
+              <SelectValue/>
             </SelectTrigger>
             <SelectContent>
               {languageEntities.map(language => (
