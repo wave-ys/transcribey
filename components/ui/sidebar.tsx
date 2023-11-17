@@ -10,9 +10,10 @@ export interface SidebarSectionProps extends React.HTMLAttributes<HTMLDivElement
   title?: string
 }
 
-export interface SidebarItemProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface SidebarItemProps extends React.HTMLAttributes<HTMLButtonElement> {
   active?: boolean,
-  icon?: ReactNode
+  icon?: ReactNode,
+  enableSmall?: boolean
 }
 
 export function SidebarSection({className, title, children}: SidebarSectionProps) {
@@ -31,11 +32,15 @@ export function SidebarSection({className, title, children}: SidebarSectionProps
   )
 }
 
-export function SidebarItem({className, children, active, icon}: SidebarItemProps) {
+export function SidebarItem({className, children, active, icon, enableSmall, onClick}: SidebarItemProps) {
   return (
-    <Button variant={active ? "secondary" : "ghost"} className={cn("w-full justify-start", className)}>
-      {icon}
-      {children}
+    <Button variant={active ? "secondary" : "ghost"} className={cn(
+      "w-full justify-start",
+      enableSmall && "flex flex-col h-fit sm:inline-flex sm:flex-row",
+      className
+    )} onClick={onClick}>
+      <span>{icon}</span>
+      <span>{children}</span>
     </Button>
   )
 }

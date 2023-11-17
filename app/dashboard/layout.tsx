@@ -1,5 +1,5 @@
 import React, {useMemo} from "react";
-import {Sidebar, SidebarSection} from "@/components/ui/sidebar";
+import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
 import {BiHome, BiMoviePlay, BiTrash} from "react-icons/bi";
 import {FiSettings} from "react-icons/fi";
 import {SidebarLinkItem} from "@/components/ui/sidebar-link-item";
@@ -8,6 +8,7 @@ import ToggleSidebarButton, {isSidebarOpen} from "@/components/ui/toggle-sidebar
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {LuPanelLeftOpen} from "react-icons/lu";
 import {Button} from "@/components/ui/button";
+import SettingsDialog from "@/components/dialog/settings";
 
 export default function DashboardLayout(
   {children}: { children: React.ReactNode }
@@ -25,9 +26,11 @@ export default function DashboardLayout(
       <SidebarLinkItem href={"/dashboard/trash"} icon={<BiTrash className={"w-4 h-4 mr-2"}/>}>
         Trash
       </SidebarLinkItem>
-      <SidebarLinkItem href={"/dashboard/settings"} icon={<FiSettings className={"w-4 h-4 mr-2"}/>}>
-        Settings
-      </SidebarLinkItem>
+      <SettingsDialog>
+        <SidebarItem icon={<FiSettings className={"w-4 h-4 mr-2"}/>}>
+          Settings
+        </SidebarItem>
+      </SettingsDialog>
     </SidebarSection>
   ), [])
 
