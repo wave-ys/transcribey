@@ -1,14 +1,12 @@
 import React from "react";
-import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
+import {Sidebar, SidebarSection} from "@/components/ui/sidebar";
 import {BiHome, BiMoviePlay, BiTrash} from "react-icons/bi";
-import {FiSettings} from "react-icons/fi";
-import {SidebarLinkItem} from "@/components/ui/sidebar-link-item";
+import {SidebarItems, SidebarSettingsItem} from "@/components/ui/sidebar-items";
 import {cn} from "@/lib/utils";
 import ToggleSidebarButton, {isSidebarOpen} from "@/components/ui/toggle-sidebar-button";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {LuPanelLeftOpen} from "react-icons/lu";
 import {Button} from "@/components/ui/button";
-import SettingsDialog from "@/components/dialog/settings";
 import {useTranslation} from "@/app/i18n";
 
 interface DashboardLayoutProps {
@@ -26,20 +24,18 @@ export default async function DashboardLayout(
 
   const sidebarContent = (
     <SidebarSection>
-      <SidebarLinkItem href={`/${lng}/dashboard/home`} icon={<BiHome className={"w-4 h-4 mr-2"}/>}>
+      <SidebarItems href={`/${lng}/dashboard/home`} icon={<BiHome className={"w-4 h-4 mr-2"}/>}>
         {t("sidebar.home")}
-      </SidebarLinkItem>
-      <SidebarLinkItem href={`/${lng}/dashboard/media`} icon={<BiMoviePlay className={"w-4 h-4 mr-2"}/>}>
+      </SidebarItems>
+      <SidebarItems href={`/${lng}/dashboard/media`} icon={<BiMoviePlay className={"w-4 h-4 mr-2"}/>}>
         {t("sidebar.media")}
-      </SidebarLinkItem>
-      <SidebarLinkItem href={`/${lng}/dashboard/trash`} icon={<BiTrash className={"w-4 h-4 mr-2"}/>}>
+      </SidebarItems>
+      <SidebarItems href={`/${lng}/dashboard/trash`} icon={<BiTrash className={"w-4 h-4 mr-2"}/>}>
         {t("sidebar.trash")}
-      </SidebarLinkItem>
-      <SettingsDialog>
-        <SidebarItem icon={<FiSettings className={"w-4 h-4 mr-2"}/>}>
-          {t("sidebar.settings")}
-        </SidebarItem>
-      </SettingsDialog>
+      </SidebarItems>
+      <SidebarSettingsItem>
+        {t("sidebar.settings")}
+      </SidebarSettingsItem>
     </SidebarSection>
   )
 

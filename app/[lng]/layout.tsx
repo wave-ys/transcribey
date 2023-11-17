@@ -6,6 +6,7 @@ import {ThemeProvider} from "@/components/provider/theme-provider";
 import {cn} from "@/lib/utils";
 import {dir} from 'i18next'
 import {languages} from "@/app/i18n/settings";
+import {SettingsDialogProvider} from "@/components/provider/dialog-provider";
 
 export async function generateStaticParams() {
   return languages.map((lng) => ({lng}))
@@ -43,7 +44,9 @@ export default function RootLayout(
       defaultTheme="system"
       enableSystem
     >
-      {children}
+      <SettingsDialogProvider>
+        {children}
+      </SettingsDialogProvider>
     </ThemeProvider>
     </body>
     </html>

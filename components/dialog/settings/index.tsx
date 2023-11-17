@@ -1,12 +1,13 @@
 "use client";
 
-import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import React, {useMemo, useState} from "react";
 import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
 import {FiFolder, FiSettings} from "react-icons/fi";
 import {GeneralSettings} from "@/components/dialog/settings/general";
 import {ModelsSettings} from "@/components/dialog/settings/models";
 import {useTranslation} from "@/app/i18n/client";
+import {useSettingsDialog} from "@/components/provider/dialog-provider";
 
 interface SettingsPageItem {
   key: string;
@@ -15,8 +16,9 @@ interface SettingsPageItem {
   page: React.ReactNode;
 }
 
-export default function SettingsDialog({children}: React.HTMLAttributes<HTMLDivElement>) {
+export default function SettingsDialog() {
   const {t} = useTranslation();
+  const dialogState = useSettingsDialog();
   const [currentPage, setCurrentPage] = useState<string>("general");
 
   const settingPages: SettingsPageItem[] = useMemo(() => [
@@ -39,8 +41,7 @@ export default function SettingsDialog({children}: React.HTMLAttributes<HTMLDivE
   ), [currentPage, settingPages])
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>{children}</DialogTrigger>
+    <Dialog open={dialogState.open} onOpenChange={open => dialogState.setState({open})}>
       <DialogContent className={"max-w-4xl"}>
         <DialogHeader>
           <DialogTitle>{t("settings.title")}</DialogTitle>
