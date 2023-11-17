@@ -4,6 +4,12 @@ import './globals.css'
 import React from "react";
 import {ThemeProvider} from "@/components/provider/theme-provider";
 import {cn} from "@/lib/utils";
+import {dir} from 'i18next'
+import {languages} from "@/app/i18n/settings";
+
+export async function generateStaticParams() {
+  return languages.map((lng) => ({lng}))
+}
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -17,11 +23,17 @@ export const metadata: Metadata = {
 export default function RootLayout(
   {
     children,
+    params: {
+      lng
+    }
   }: {
-    children: React.ReactNode
+    children: React.ReactNode,
+    params: {
+      lng: string
+    }
   }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang={lng} dir={dir(lng)} suppressHydrationWarning>
     <body className={cn(
       "min-h-screen bg-background font-sans antialiased",
       fontSans.variable

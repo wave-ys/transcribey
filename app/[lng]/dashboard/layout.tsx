@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React from "react";
 import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
 import {BiHome, BiMoviePlay, BiTrash} from "react-icons/bi";
 import {FiSettings} from "react-icons/fi";
@@ -9,30 +9,39 @@ import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {LuPanelLeftOpen} from "react-icons/lu";
 import {Button} from "@/components/ui/button";
 import SettingsDialog from "@/components/dialog/settings";
+import {useTranslation} from "@/app/i18n";
 
-export default function DashboardLayout(
-  {children}: { children: React.ReactNode }
+interface DashboardLayoutProps {
+  params: {
+    lng: string
+  },
+  children: React.ReactNode
+}
+
+export default async function DashboardLayout(
+  {children, params: {lng}}: DashboardLayoutProps
 ) {
   const sidebarOpen = isSidebarOpen();
+  const {t} = await useTranslation(lng);
 
-  const sidebarContent = useMemo(() => (
+  const sidebarContent = (
     <SidebarSection>
-      <SidebarLinkItem href={"/dashboard/home"} icon={<BiHome className={"w-4 h-4 mr-2"}/>}>
-        Home
+      <SidebarLinkItem href={`/${lng}/dashboard/home`} icon={<BiHome className={"w-4 h-4 mr-2"}/>}>
+        {t("sidebar.home")}
       </SidebarLinkItem>
-      <SidebarLinkItem href={"/dashboard/media"} icon={<BiMoviePlay className={"w-4 h-4 mr-2"}/>}>
-        Media
+      <SidebarLinkItem href={`/${lng}/dashboard/media`} icon={<BiMoviePlay className={"w-4 h-4 mr-2"}/>}>
+        {t("sidebar.media")}
       </SidebarLinkItem>
-      <SidebarLinkItem href={"/dashboard/trash"} icon={<BiTrash className={"w-4 h-4 mr-2"}/>}>
-        Trash
+      <SidebarLinkItem href={`/${lng}/dashboard/trash`} icon={<BiTrash className={"w-4 h-4 mr-2"}/>}>
+        {t("sidebar.trash")}
       </SidebarLinkItem>
       <SettingsDialog>
         <SidebarItem icon={<FiSettings className={"w-4 h-4 mr-2"}/>}>
-          Settings
+          {t("sidebar.settings")}
         </SidebarItem>
       </SettingsDialog>
     </SidebarSection>
-  ), [])
+  )
 
   return (
     <div className={"h-screen flex"}>
