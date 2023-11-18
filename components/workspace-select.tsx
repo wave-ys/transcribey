@@ -10,6 +10,7 @@ import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover"
 import {LuCheck, LuChevronsUpDown, LuPlus} from "react-icons/lu";
 import {useTranslation} from "@/app/i18n/client";
 import {TbNut} from "react-icons/tb";
+import {usePathname, useRouter} from "next/navigation";
 
 const workspaces = [
   {
@@ -39,9 +40,10 @@ const workspaces = [
   },
 ]
 
-export function WorkspaceSelect() {
+export function WorkspaceSelect({value}: { value: string }) {
+  const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false)
-  const [value, setValue] = useState("")
   const [filterText, setFilterText] = useState("");
   const {t} = useTranslation();
 
@@ -65,7 +67,7 @@ export function WorkspaceSelect() {
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {value
+          {value && value !== '_'
             ? <div className={"flex items-center"}>
               <div className={"rounded-full w-4 h-4 mr-2"} style={{backgroundColor: current?.color}}></div>
               <span>{current?.label}</span>
@@ -85,8 +87,10 @@ export function WorkspaceSelect() {
                 key={workspace.value}
                 value={workspace.value}
                 onSelect={(currentValue) => {
-                  setValue(currentValue)
                   setOpen(false)
+                  const strings = pathname.split('/');
+                  strings[3] = currentValue;
+                  router.push(strings.join('/'));
                 }}
                 className={"flex justify-between items-center"}
               >

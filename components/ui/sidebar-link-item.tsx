@@ -11,7 +11,7 @@ export interface SidebarLinkItemProps extends SidebarItemProps {
   href: string
 }
 
-export function SidebarItems({href, ...other}: SidebarLinkItemProps) {
+export function SidebarLinkItem({href, ...other}: SidebarLinkItemProps) {
   const pathname = usePathname();
 
   return (

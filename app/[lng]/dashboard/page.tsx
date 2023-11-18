@@ -7,5 +7,5 @@ interface DashboardProps {
 }
 
 export default function Dashboard({params: {lng}}: DashboardProps) {
-  redirect(`/${lng}/dashboard/home`);
+  redirect(`/${lng}/dashboard/_`);
 }

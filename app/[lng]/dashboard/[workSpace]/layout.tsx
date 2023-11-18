@@ -1,7 +1,7 @@
 import React from "react";
 import {Sidebar, SidebarSection} from "@/components/ui/sidebar";
 import {BiHome, BiMoviePlay, BiTrash} from "react-icons/bi";
-import {SidebarItems, SidebarSettingsItem} from "@/components/ui/sidebar-items";
+import {SidebarLinkItem, SidebarSettingsItem} from "@/components/ui/sidebar-link-item";
 import {cn} from "@/lib/utils";
 import ToggleSidebarButton, {isSidebarOpen} from "@/components/toggle-sidebar-button";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
@@ -12,13 +12,14 @@ import {WorkspaceSelect} from "@/components/workspace-select";
 
 interface DashboardLayoutProps {
   params: {
-    lng: string
+    lng: string,
+    workSpace: string
   },
   children: React.ReactNode
 }
 
 export default async function DashboardLayout(
-  {children, params: {lng}}: DashboardLayoutProps
+  {children, params: {lng, workSpace}}: DashboardLayoutProps
 ) {
   const sidebarOpen = isSidebarOpen();
   const {t} = await useTranslation(lng);
@@ -26,18 +27,18 @@ export default async function DashboardLayout(
   const sidebarContent = (
     <>
       <SidebarSection>
-        <WorkspaceSelect/>
+        <WorkspaceSelect value={workSpace}/>
       </SidebarSection>
       <SidebarSection>
-        <SidebarItems href={`/${lng}/dashboard/home`} icon={<BiHome className={"w-4 h-4 mr-2"}/>}>
+        <SidebarLinkItem href={`/${lng}/dashboard/${workSpace}/home`} icon={<BiHome className={"w-4 h-4 mr-2"}/>}>
           {t("sidebar.home")}
-        </SidebarItems>
-        <SidebarItems href={`/${lng}/dashboard/media`} icon={<BiMoviePlay className={"w-4 h-4 mr-2"}/>}>
+        </SidebarLinkItem>
+        <SidebarLinkItem href={`/${lng}/dashboard/${workSpace}/media`} icon={<BiMoviePlay className={"w-4 h-4 mr-2"}/>}>
           {t("sidebar.media")}
-        </SidebarItems>
-        <SidebarItems href={`/${lng}/dashboard/trash`} icon={<BiTrash className={"w-4 h-4 mr-2"}/>}>
+        </SidebarLinkItem>
+        <SidebarLinkItem href={`/${lng}/dashboard/${workSpace}/trash`} icon={<BiTrash className={"w-4 h-4 mr-2"}/>}>
           {t("sidebar.trash")}
-        </SidebarItems>
+        </SidebarLinkItem>
         <SidebarSettingsItem>
           {t("sidebar.settings")}
         </SidebarSettingsItem>
