@@ -9,6 +9,8 @@ import {LuPanelLeftOpen} from "react-icons/lu";
 import {Button} from "@/components/ui/button";
 import {useTranslation} from "@/app/i18n";
 import {WorkspaceSelect} from "@/components/workspace-select";
+import {getWorkspaceListApi} from "@/request/workspace";
+import {serverRequest} from "@/request";
 
 interface DashboardLayoutProps {
   params: {
@@ -24,10 +26,12 @@ export default async function DashboardLayout(
   const sidebarOpen = isSidebarOpen();
   const {t} = await useTranslation(lng);
 
+  const {data: workspaces} = await getWorkspaceListApi(serverRequest);
+
   const sidebarContent = (
     <>
       <SidebarSection>
-        <WorkspaceSelect value={workspace}/>
+        <WorkspaceSelect value={workspace} workspaces={workspaces}/>
       </SidebarSection>
       <SidebarSection>
         <SidebarLinkItem href={`/${lng}/dashboard/${workspace}/home`} icon={<BiHome className={"w-4 h-4 mr-2"}/>}>

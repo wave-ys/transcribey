@@ -11,36 +11,14 @@ import {LuCheck, LuChevronsUpDown, LuPlus} from "react-icons/lu";
 import {useTranslation} from "@/app/i18n/client";
 import {TbNut} from "react-icons/tb";
 import {usePathname, useRouter} from "next/navigation";
+import {WorkspaceModel} from "@/request/workspace";
 
-const workspaces = [
-  {
-    value: "next.js",
-    label: "Next.js",
-    color: "#FF0000"
-  },
-  {
-    value: "sveltekit",
-    label: "SvelteKit",
-    color: "#00FFFF"
-  },
-  {
-    value: "nuxt.js",
-    label: "Nuxt.js",
-    color: "#0000FF"
-  },
-  {
-    value: "remix",
-    label: "Remix",
-    color: "#FFFF00"
-  },
-  {
-    value: "astro",
-    label: "Astro",
-    color: "#009000"
-  },
-]
+export interface WorkspaceSelectProps {
+  value: string;
+  workspaces: WorkspaceModel[];
+}
 
-export function WorkspaceSelect({value}: { value: string }) {
+export function WorkspaceSelect({value, workspaces}: WorkspaceSelectProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [open, setOpen] = useState(false)
@@ -48,10 +26,10 @@ export function WorkspaceSelect({value}: { value: string }) {
   const {t} = useTranslation();
 
   const current = useMemo(
-    () => workspaces.find(w => w.value === value), [value]);
+    () => workspaces.find(w => w.id + "" === value), [value, workspaces]);
   const filteredWorkspaces = useMemo(
     () => workspaces.filter(w => w.label.toLowerCase().indexOf(filterText.toLowerCase()) !== -1),
-    [filterText]
+    [filterText, workspaces]
   );
 
   return (
@@ -84,8 +62,8 @@ export function WorkspaceSelect({value}: { value: string }) {
                 <div className={"py-6 text-center text-sm"}>{t("sidebar.workspaceSelect.notFound")}</div>}
             {filteredWorkspaces.map((workspace) => (
               <CommandItem
-                key={workspace.value}
-                value={workspace.value}
+                key={workspace.id}
+                value={workspace.id + ""}
                 onSelect={(currentValue) => {
                   setOpen(false)
                   const strings = pathname.split('/');
@@ -101,7 +79,7 @@ export function WorkspaceSelect({value}: { value: string }) {
                 <LuCheck
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === workspace.value ? "opacity-100" : "opacity-0"
+                    value === workspace.id + "" ? "opacity-100" : "opacity-0"
                   )}
                 />
               </CommandItem>

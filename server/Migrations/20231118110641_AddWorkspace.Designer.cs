@@ -11,7 +11,7 @@ using Transcribey.Data;
 namespace Transcribey.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20231118104731_AddWorkspace")]
+    [Migration("20231118110641_AddWorkspace")]
     partial class AddWorkspace
     {
         /// <inheritdoc />
