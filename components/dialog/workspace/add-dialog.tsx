@@ -10,6 +10,7 @@ import {Form, FormControl, FormField, FormItem, FormMessage} from "@/components/
 import {Input} from "@/components/ui/input";
 import ColorPicker from "@/components/ui/color-picker";
 import {randomColor} from "@/lib/utils";
+import {submitAddDialog} from "@/components/dialog/workspace/actions";
 
 export interface AddWorkspaceDialogProps {
   children: (setOpen: (v: boolean) => void) => React.ReactNode
@@ -20,17 +21,20 @@ export default function AddWorkspaceDialog({children}: AddWorkspaceDialogProps) 
   const {t} = useTranslation();
 
   const formSchema = z.object({
-    name: z.string().min(1),
+    label: z.string().min(1),
     color: z.string()
   })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {name: "", color: randomColor()}
+    defaultValues: {label: "", color: randomColor()}
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+  const action = async () => {
+    if (!await form.trigger())
+      return;
+    const values = form.getValues();
+    return submitAddDialog(values);
   }
 
   return (
@@ -48,11 +52,11 @@ export default function AddWorkspaceDialog({children}: AddWorkspaceDialogProps) 
               {t("sidebar.createWorkspace.description")}
             </DialogDescription>
             <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2">
+              <form action={action} className="space-y-2">
                 <div className={"flex space-x-2"}>
                   <FormField
                     control={form.control}
-                    name="name"
+                    name="label"
                     render={({field}) => (
                       <FormItem className={"flex-auto"}>
                         <FormControl>
