@@ -4,7 +4,7 @@ import Link from "next/link";
 import React from "react";
 import {SidebarItem, SidebarItemProps} from "@/components/ui/sidebar";
 import {usePathname} from "next/navigation";
-import {useSettingsDialog} from "@/components/provider/dialog-provider";
+import {useSettingsDialog} from "@/components/provider/settings-dialog-provider";
 import {FiSettings} from "react-icons/fi";
 
 export interface SidebarLinkItemProps extends SidebarItemProps {

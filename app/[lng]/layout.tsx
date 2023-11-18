@@ -6,7 +6,7 @@ import {ThemeProvider} from "@/components/provider/theme-provider";
 import {cn} from "@/lib/utils";
 import {dir} from 'i18next'
 import {languages} from "@/app/i18n/settings";
-import {SettingsDialogProvider} from "@/components/provider/dialog-provider";
+import {SettingsDialogProvider} from "@/components/provider/settings-dialog-provider";
 
 export async function generateStaticParams() {
   return languages.map((lng) => ({lng}))

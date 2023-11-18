@@ -7,7 +7,7 @@ import {FiFolder, FiSettings} from "react-icons/fi";
 import {GeneralSettings} from "@/components/dialog/settings/general";
 import {ModelsSettings} from "@/components/dialog/settings/models";
 import {useTranslation} from "@/app/i18n/client";
-import {useSettingsDialog} from "@/components/provider/dialog-provider";
+import {useSettingsDialog} from "@/components/provider/settings-dialog-provider";
 
 interface SettingsPageItem {
   key: string;

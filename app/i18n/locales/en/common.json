@@ -9,6 +9,12 @@
       "notFound": "No workspace found.",
       "createButton": "Create Workspace",
       "manageButton": "Management"
+    },
+    "createWorkspace": {
+      "title": "Create Workspace",
+      "description": "Create a new workspace where all your resource are consolidated here.",
+      "namePlaceholder": "Enter the workspace name",
+      "submitButton": "Create"
     }
   },
   "settings": {
