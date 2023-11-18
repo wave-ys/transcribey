@@ -5,14 +5,7 @@ import {useMemo, useState} from "react"
 
 import {cn} from "@/lib/utils"
 import {Button} from "@/components/ui/button"
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandSeparator,
-} from "@/components/ui/command"
+import {Command, CommandGroup, CommandInput, CommandItem, CommandSeparator,} from "@/components/ui/command"
 import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover"
 import {LuCheck, LuChevronsUpDown, LuPlus} from "react-icons/lu";
 import {useTranslation} from "@/app/i18n/client";
@@ -60,7 +53,11 @@ export function WorkspaceSelect() {
   );
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={(open) => {
+      setOpen(open);
+      if (open)
+        setFilterText("");
+    }}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
@@ -80,8 +77,9 @@ export function WorkspaceSelect() {
       <PopoverContent className="w-[200px] p-0">
         <Command shouldFilter={false}>
           <CommandInput value={filterText} onValueChange={setFilterText} placeholder="Search framework..."/>
-          <CommandEmpty>{t("sidebar.workspaceSelect.notFound")}</CommandEmpty>
           <CommandGroup>
+            {filteredWorkspaces.length === 0 &&
+                <div className={"py-6 text-center text-sm"}>{t("sidebar.workspaceSelect.notFound")}</div>}
             {filteredWorkspaces.map((workspace) => (
               <CommandItem
                 key={workspace.value}
