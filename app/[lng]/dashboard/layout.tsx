@@ -3,12 +3,12 @@ import {Sidebar, SidebarSection} from "@/components/ui/sidebar";
 import {BiHome, BiMoviePlay, BiTrash} from "react-icons/bi";
 import {SidebarItems, SidebarSettingsItem} from "@/components/ui/sidebar-items";
 import {cn} from "@/lib/utils";
-import ToggleSidebarButton, {isSidebarOpen} from "@/components/ui/toggle-sidebar-button";
+import ToggleSidebarButton, {isSidebarOpen} from "@/components/toggle-sidebar-button";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {LuPanelLeftOpen} from "react-icons/lu";
 import {Button} from "@/components/ui/button";
 import {useTranslation} from "@/app/i18n";
-import {WorkspaceSelect} from "@/components/ui/workspace-select";
+import {WorkspaceSelect} from "@/components/workspace-select";
 
 interface DashboardLayoutProps {
   params: {
