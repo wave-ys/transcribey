@@ -112,7 +112,7 @@ export function WorkspaceSelect({value, workspaces}: WorkspaceSelectProps) {
   return (
     <AddWorkspaceDialog>
       {setAddWorkspaceOpen => (
-        <ManageWorkspaceDialog list={workspaces}>
+        <ManageWorkspaceDialog workspaces={workspaces}>
           {setManageWorkspaceOpen => popOver(setAddWorkspaceOpen, setManageWorkspaceOpen)}
         </ManageWorkspaceDialog>
       )}
