@@ -3,7 +3,11 @@
     "home": "首页",
     "media": "媒体",
     "trash": "回收站",
-    "settings": "设置"
+    "settings": "设置",
+    "workspaceSelect": {
+      "placeholder": "选择工作空间...",
+      "notFound": "无工作空间。"
+    }
   },
   "settings": {
     "title": "设置",

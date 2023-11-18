@@ -3,7 +3,11 @@
     "home": "Home",
     "media": "Media",
     "trash": "Trash",
-    "settings": "Settings"
+    "settings": "Settings",
+    "workspaceSelect": {
+      "placeholder": "Select workspace...",
+      "notFound": "No workspace found."
+    }
   },
   "settings": {
     "title": "Settings",
