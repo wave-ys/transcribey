@@ -15,6 +15,13 @@
       "description": "Create a new workspace where all your resource are consolidated here.",
       "namePlaceholder": "Enter the workspace name",
       "submitButton": "Create"
+    },
+    "workspaceManagement": {
+      "title": "Workspace Management",
+      "description": "You can change the workspace name or delete the workspace.",
+      "removeButton": "Remove",
+      "submitButton": "Submit",
+      "cancelButton": "Cancel"
     }
   },
   "settings": {

@@ -15,6 +15,13 @@
       "description": "创建一个新的工作空间，你的资源都汇总到这里。",
       "namePlaceholder": "请输入工作空间名称",
       "submitButton": "创建"
+    },
+    "workspaceManagement": {
+      "title": "工作空间管理",
+      "description": "您可以更改工作空间名称或删除工作空间。",
+      "removeButton": "移除",
+      "submitButton": "确认",
+      "cancelButton": "取消"
     }
   },
   "settings": {
