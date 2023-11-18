@@ -1,13 +1,22 @@
 "use client"
 
 import * as React from "react"
+import {useMemo, useState} from "react"
 
 import {cn} from "@/lib/utils"
 import {Button} from "@/components/ui/button"
-import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem,} from "@/components/ui/command"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandSeparator,
+} from "@/components/ui/command"
 import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover"
-import {LuCheck, LuChevronsUpDown} from "react-icons/lu";
+import {LuCheck, LuChevronsUpDown, LuPlus} from "react-icons/lu";
 import {useTranslation} from "@/app/i18n/client";
+import {TbNut} from "react-icons/tb";
 
 const workspaces = [
   {
@@ -38,11 +47,17 @@ const workspaces = [
 ]
 
 export function WorkspaceSelect() {
-  const [open, setOpen] = React.useState(false)
-  const [value, setValue] = React.useState("")
+  const [open, setOpen] = useState(false)
+  const [value, setValue] = useState("")
+  const [filterText, setFilterText] = useState("");
   const {t} = useTranslation();
 
-  const current = workspaces.find(w => w.value === value);
+  const current = useMemo(
+    () => workspaces.find(w => w.value === value), [value]);
+  const filteredWorkspaces = useMemo(
+    () => workspaces.filter(w => w.label.toLowerCase().indexOf(filterText.toLowerCase()) !== -1),
+    [filterText]
+  );
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
@@ -63,11 +78,11 @@ export function WorkspaceSelect() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <Command>
-          <CommandInput placeholder="Search framework..."/>
+        <Command shouldFilter={false}>
+          <CommandInput value={filterText} onValueChange={setFilterText} placeholder="Search framework..."/>
           <CommandEmpty>{t("sidebar.workspaceSelect.notFound")}</CommandEmpty>
           <CommandGroup>
-            {workspaces.map((workspace) => (
+            {filteredWorkspaces.map((workspace) => (
               <CommandItem
                 key={workspace.value}
                 value={workspace.value}
@@ -89,6 +104,17 @@ export function WorkspaceSelect() {
                 />
               </CommandItem>
             ))}
+          </CommandGroup>
+          <CommandSeparator alwaysRender={true}/>
+          <CommandGroup>
+            <CommandItem>
+              <LuPlus className={"w-4 h-4 mr-2"}/>
+              {t("sidebar.workspaceSelect.createButton")}
+            </CommandItem>
+            <CommandItem>
+              <TbNut className={"w-4 h-4 mr-2"}/>
+              {t("sidebar.workspaceSelect.manageButton")}
+            </CommandItem>
           </CommandGroup>
         </Command>
       </PopoverContent>

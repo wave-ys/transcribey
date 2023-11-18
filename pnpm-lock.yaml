@@ -20,6 +20,9 @@ dependencies:
   '@radix-ui/react-select':
     specifier: ^2.0.0
     version: registry.npmjs.org/@radix-ui/react-select@2.0.0(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+  '@radix-ui/react-separator':
+    specifier: ^1.0.3
+    version: registry.npmjs.org/@radix-ui/react-separator@1.0.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
   '@radix-ui/react-slot':
     specifier: ^1.0.2
     version: registry.npmjs.org/@radix-ui/react-slot@1.0.2(@types/react@18.2.37)(react@18.2.0)
@@ -1047,6 +1050,30 @@ packages:
       react: registry.npmjs.org/react@18.2.0
       react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
       react-remove-scroll: registry.npmjs.org/react-remove-scroll@2.5.5(@types/react@18.2.37)(react@18.2.0)
+    dev: false
+
+  registry.npmjs.org/@radix-ui/react-separator@1.0.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0):
+    resolution: { integrity: sha512-itYmTy/kokS21aiV5+Z56MZB54KrhPgn6eHDKkFeOLR34HMN2s8PaN47qZZAGnvupcjxHaFZnW4pQEh0BvvVuw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@radix-ui/react-separator/-/react-separator-1.0.3.tgz }
+    id: registry.npmjs.org/@radix-ui/react-separator/1.0.3
+    name: '@radix-ui/react-separator'
+    version: 1.0.3
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': registry.npmjs.org/@babel/runtime@7.23.2
+      '@radix-ui/react-primitive': registry.npmjs.org/@radix-ui/react-primitive@1.0.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+      '@types/react': registry.npmjs.org/@types/react@18.2.37
+      '@types/react-dom': registry.npmjs.org/@types/react-dom@18.2.15
+      react: registry.npmjs.org/react@18.2.0
+      react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
     dev: false
 
   registry.npmjs.org/@radix-ui/react-slot@1.0.0(react@18.2.0):

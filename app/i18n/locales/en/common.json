@@ -6,7 +6,9 @@
     "settings": "Settings",
     "workspaceSelect": {
       "placeholder": "Select workspace...",
-      "notFound": "No workspace found."
+      "notFound": "No workspace found.",
+      "createButton": "Create Workspace",
+      "manageButton": "Management"
     }
   },
   "settings": {

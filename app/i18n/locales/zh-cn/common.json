@@ -6,7 +6,9 @@
     "settings": "设置",
     "workspaceSelect": {
       "placeholder": "选择工作空间...",
-      "notFound": "无工作空间。"
+      "notFound": "无工作空间。",
+      "createButton": "创建工作空间",
+      "manageButton": "管理"
     }
   },
   "settings": {
