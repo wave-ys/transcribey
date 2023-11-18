@@ -1,6 +1,6 @@
 'use client';
 
-import React, {createContext, useContext, useState} from "react";
+import React, {createContext, useContext, useEffect, useState} from "react";
 import SettingsDialog from "@/components/dialog/settings";
 
 export interface SettingsDialogContextType {
@@ -19,19 +19,21 @@ export function useSettingsDialog() {
 }
 
 export function SettingsDialogProvider({children}: { children: React.ReactNode }) {
-  const open = sessionStorage.getItem('settings.open')
-
   const [state, setState] = useState<Omit<SettingsDialogContextType, "setState">>({
-    open: open === 'true'
-  })
+    open: false
+  });
+
+  useEffect(() => {
+    if (sessionStorage.getItem('settings.reopen') === 'true') {
+      setState(prev => ({...prev, open: true}));
+      sessionStorage.removeItem('settings.reopen');
+    }
+  }, [])
 
   return (
     <SettingsDialogContext.Provider value={{
       ...state,
-      setState: (v) => {
-        sessionStorage.setItem('settings.open', '' + v.open)
-        setState(v);
-      }
+      setState
     }}>
       {children}
       <SettingsDialog/>

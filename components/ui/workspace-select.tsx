@@ -72,7 +72,7 @@ export function WorkspaceSelect() {
                 key={workspace.value}
                 value={workspace.value}
                 onSelect={(currentValue) => {
-                  setValue(currentValue === value ? "" : currentValue)
+                  setValue(currentValue)
                   setOpen(false)
                 }}
                 className={"flex justify-between items-center"}

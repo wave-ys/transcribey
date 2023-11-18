@@ -15,6 +15,7 @@ export function GeneralSettings() {
   const {t} = useTranslation();
 
   const changeLanguage = useCallback((language: string) => {
+    sessionStorage.setItem('settings.reopen', 'true');
     const items = pathname.split('/');
     items[1] = language;
     router.push(items.join('/'));
