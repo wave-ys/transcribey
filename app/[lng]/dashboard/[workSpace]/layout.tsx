@@ -13,13 +13,13 @@ import {WorkspaceSelect} from "@/components/workspace-select";
 interface DashboardLayoutProps {
   params: {
     lng: string,
-    workSpace: string
+    workspace: string
   },
   children: React.ReactNode
 }
 
 export default async function DashboardLayout(
-  {children, params: {lng, workSpace}}: DashboardLayoutProps
+  {children, params: {lng, workspace}}: DashboardLayoutProps
 ) {
   const sidebarOpen = isSidebarOpen();
   const {t} = await useTranslation(lng);
@@ -27,16 +27,16 @@ export default async function DashboardLayout(
   const sidebarContent = (
     <>
       <SidebarSection>
-        <WorkspaceSelect value={workSpace}/>
+        <WorkspaceSelect value={workspace}/>
       </SidebarSection>
       <SidebarSection>
-        <SidebarLinkItem href={`/${lng}/dashboard/${workSpace}/home`} icon={<BiHome className={"w-4 h-4 mr-2"}/>}>
+        <SidebarLinkItem href={`/${lng}/dashboard/${workspace}/home`} icon={<BiHome className={"w-4 h-4 mr-2"}/>}>
           {t("sidebar.home")}
         </SidebarLinkItem>
-        <SidebarLinkItem href={`/${lng}/dashboard/${workSpace}/media`} icon={<BiMoviePlay className={"w-4 h-4 mr-2"}/>}>
+        <SidebarLinkItem href={`/${lng}/dashboard/${workspace}/media`} icon={<BiMoviePlay className={"w-4 h-4 mr-2"}/>}>
           {t("sidebar.media")}
         </SidebarLinkItem>
-        <SidebarLinkItem href={`/${lng}/dashboard/${workSpace}/trash`} icon={<BiTrash className={"w-4 h-4 mr-2"}/>}>
+        <SidebarLinkItem href={`/${lng}/dashboard/${workspace}/trash`} icon={<BiTrash className={"w-4 h-4 mr-2"}/>}>
           {t("sidebar.trash")}
         </SidebarLinkItem>
         <SidebarSettingsItem>

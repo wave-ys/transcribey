@@ -3,10 +3,10 @@ import {redirect} from "next/navigation";
 interface DashboardProps {
   params: {
     lng: string,
-    workSpace: string
+    workspace: string
   }
 }
 
-export default function DashboardPage({params: {lng, workSpace}}: DashboardProps) {
-  redirect(`/${lng}/dashboard/${workSpace}/home`);
+export default function DashboardPage({params: {lng, workspace}}: DashboardProps) {
+  redirect(`/${lng}/dashboard/${workspace}/home`);
 }
