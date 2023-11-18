@@ -17,13 +17,13 @@ export const cookieName = 'i18n'
 
 export function getOptions(lng = fallbackLng, ns = defaultNS): InitOptions {
   return {
-    // debug: true,
+    // debug: process.env.NODE_ENV === 'development',
     supportedLngs: languages,
     fallbackLng,
     lng,
     fallbackNS: defaultNS,
     defaultNS,
-    ns,
+    ns: [ns, 'zod'],
     load: 'currentOnly',
     lowerCaseLng: true
   }

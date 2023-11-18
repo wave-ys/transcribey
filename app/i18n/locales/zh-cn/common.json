@@ -12,7 +12,7 @@
     },
     "createWorkspace": {
       "title": "创建工作空间",
-      "description": "创建一个新的工作空间，你的资源都汇总到这里",
+      "description": "创建一个新的工作空间，你的资源都汇总到这里。",
       "namePlaceholder": "请输入工作空间名称",
       "submitButton": "创建"
     }

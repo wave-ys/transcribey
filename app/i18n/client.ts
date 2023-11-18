@@ -8,21 +8,30 @@ import resourcesToBackend from 'i18next-resources-to-backend'
 import LanguageDetector from 'i18next-browser-languagedetector'
 import {cookieName, getOptions, languages} from './settings'
 import {useParams} from "next/navigation";
+import {zodI18nMap} from "zod-i18n-map";
+import {z} from "zod";
+import {toUpperCaseLng} from "@/lib/utils";
 
 const runsOnServerSide = typeof window === 'undefined'
 
 i18next
   .use(initReactI18next)
   .use(LanguageDetector)
-  .use(resourcesToBackend((language: string, namespace: string) => import(`./locales/${language}/${namespace}.json`)))
+  .use(resourcesToBackend((language: string, namespace: string) => {
+    if (namespace === 'zod')
+      return import(`zod-i18n-map/locales/${toUpperCaseLng(language)}/zod.json`)
+    return import(`./locales/${language}/${namespace}.json`);
+  }))
   .init({
     ...getOptions(),
     lng: undefined, // let detect the language on client side
     detection: {
       order: ['path', 'htmlTag', 'cookie', 'navigator'],
     },
-    preload: runsOnServerSide ? languages : []
+    preload: runsOnServerSide ? languages : [],
   }).then()
+
+z.setErrorMap(zodI18nMap);
 
 export function useTranslation(lng?: string, ns?: string) {
   const params = useParams();
