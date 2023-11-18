@@ -11,6 +11,7 @@ import {Input} from "@/components/ui/input";
 import ColorPicker from "@/components/ui/color-picker";
 import {randomColor} from "@/lib/utils";
 import {submitAddDialog} from "@/components/dialog/workspace/actions";
+import {useRouter} from "next/navigation";
 
 export interface AddWorkspaceDialogProps {
   children: (setOpen: (v: boolean) => void) => React.ReactNode
@@ -18,6 +19,7 @@ export interface AddWorkspaceDialogProps {
 
 export default function AddWorkspaceDialog({children}: AddWorkspaceDialogProps) {
   const [open, setOpen] = useState(false);
+  const router = useRouter();
   const {t} = useTranslation();
 
   const formSchema = z.object({
@@ -34,7 +36,9 @@ export default function AddWorkspaceDialog({children}: AddWorkspaceDialogProps) 
     if (!await form.trigger())
       return;
     const values = form.getValues();
-    return submitAddDialog(values);
+    await submitAddDialog(values);
+    router.refresh();
+    setOpen(false);
   }
 
   return (
