@@ -3,6 +3,7 @@
 import React, {useCallback, useRef, useState} from "react";
 import TranscribeOptionsDialog from "@/components/dialog/transcribe-options";
 import {startTranscribeLocalFileApi, TranscribeOptionsDto} from "@/request/transcribe";
+import {TransmitProgressState} from "@/components/ui/transmit-progress-bar";
 
 export interface MediaUploaderProps {
   children: React.ReactNode
@@ -12,11 +13,7 @@ export default function MediaUploader({children}: MediaUploaderProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File>();
-  const [progress, setProgress] = useState({
-    show: false,
-    progress: 0,
-    rate: 0
-  });
+  const [progress, setProgress] = useState<TransmitProgressState>();
 
   const handleClick = useCallback(() => {
     fileInputRef.current!.value = "";
@@ -34,15 +31,10 @@ export default function MediaUploader({children}: MediaUploaderProps) {
     if (!file)
       return;
     await startTranscribeLocalFileApi(file, options, e => {
-      console.log(e)
-      setProgress({
-        show: true,
-        progress: e.progress ?? 0,
-        rate: e.rate ?? 0
-      });
+      setProgress(e);
     });
-    setProgress({show: false, progress: 0, rate: 0});
     setDialogOpen(false);
+    setProgress(undefined);
   }, [file])
 
   return (

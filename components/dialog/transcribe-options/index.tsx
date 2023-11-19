@@ -12,6 +12,7 @@ import {DialogProps} from "@radix-ui/react-dialog";
 import {useTranslation} from "@/app/i18n/client";
 import {useMemo} from "react";
 import {TranscribeOptionsDto} from "@/request/transcribe";
+import TransmitProgressBar, {TransmitProgressState} from "@/components/ui/transmit-progress-bar";
 
 const formSchema = z.object({
   model: z.string().min(1),
@@ -20,11 +21,7 @@ const formSchema = z.object({
 
 export interface TranscribeOptionsDialogProps extends DialogProps {
   onSubmit?: (data: TranscribeOptionsDto) => void,
-  progress?: {
-    show: boolean,
-    progress: number,
-    rate: number
-  }
+  progress?: TransmitProgressState
 }
 
 export default function TranscribeOptionsDialog(props: TranscribeOptionsDialogProps) {
@@ -63,7 +60,7 @@ export default function TranscribeOptionsDialog(props: TranscribeOptionsDialogPr
                     <FormLabel>{t("home.transcribeOptions.language")}</FormLabel>
                     <FormControl>
                       <ComboBox className={"ml-auto"} options={languages} value={field.value}
-                                onChange={field.onChange} disabled={props.progress?.show}/>
+                                onChange={field.onChange} disabled={!!props.progress}/>
                     </FormControl>
                   </div>
                   <FormMessage/>
@@ -79,21 +76,23 @@ export default function TranscribeOptionsDialog(props: TranscribeOptionsDialogPr
                     <FormLabel>{t("home.transcribeOptions.model")}</FormLabel>
                     <FormControl>
                       <ComboBox className={"ml-auto"} options={fakeModals} value={field.value}
-                                onChange={field.onChange} disabled={props.progress?.show}/>
+                                onChange={field.onChange} disabled={!!props.progress}/>
                     </FormControl>
                   </div>
                   <FormMessage/>
                 </FormItem>
               )}
             />
-            <div className={"flex justify-between"}>
-              <div>{props.progress?.show && `${(props.progress.progress * 100).toFixed(2)}%`}</div>
+            <div className={"flex justify-between space-x-12"}>
+              <div className={"flex-auto"}>
+                {props.progress && <TransmitProgressBar state={props.progress}/>}
+              </div>
               <div className={"w-fit space-x-2"}>
-                <Button type={"button"} variant={"outline"} disabled={props.progress?.show}
+                <Button type={"button"} variant={"outline"} disabled={!!props.progress}
                         onClick={() => props.onOpenChange?.(false)}>
                   {t("home.transcribeOptions.cancelButton")}
                 </Button>
-                <Button type="submit" disabled={props.progress?.show}>
+                <Button type="submit" disabled={!!props.progress}>
                   {t("home.transcribeOptions.submitButton")}
                 </Button>
               </div>

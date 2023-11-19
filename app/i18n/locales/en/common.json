@@ -59,6 +59,9 @@
     "defaultSearchPlaceholder": "Search...",
     "defaultNoResultText": "No result found."
   },
+  "transmitProgressBar": {
+    "uploading": "Uploading..."
+  },
   "home": {
     "welcomePrefix": "Welcome to ",
     "welcomeSuffix": " AI Audio-to-Text.",
