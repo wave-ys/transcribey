@@ -17,7 +17,7 @@ export async function getWorkspaceListApi() {
 }
 
 export async function addWorkspaceApi(data: AddWorkspaceDto) {
-  return request({
+  return request<WorkspaceModel>({
     url: '/api/workspace',
     method: 'post',
     data

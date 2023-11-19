@@ -10,7 +10,7 @@ import {Form, FormControl, FormField, FormItem, FormMessage} from "@/components/
 import {Input} from "@/components/ui/input";
 import ColorPicker from "@/components/ui/color-picker";
 import {randomColor} from "@/lib/utils";
-import {useRouter} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import {addWorkspaceAction} from "@/components/dialog/workspace/actions";
 
 export interface AddWorkspaceDialogProps {
@@ -21,6 +21,7 @@ export default function AddWorkspaceDialog({children}: AddWorkspaceDialogProps) 
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const {t} = useTranslation();
+  const params = useParams();
 
   const formSchema = z.object({
     label: z.string().min(1),
@@ -32,14 +33,11 @@ export default function AddWorkspaceDialog({children}: AddWorkspaceDialogProps) 
     defaultValues: {label: "", color: randomColor()}
   })
 
-  const action = async () => {
-    if (!await form.trigger())
-      return;
-    const values = form.getValues();
-    await addWorkspaceAction(values);
-    router.refresh();
+  const handleSubmit = form.handleSubmit(async (data) => {
+    const result = await addWorkspaceAction(data);
+    router.push(`/${params['lng']}/dashboard/${result.id}`);
     setOpen(false);
-  }
+  })
 
   return (
     <>
@@ -56,7 +54,7 @@ export default function AddWorkspaceDialog({children}: AddWorkspaceDialogProps) 
               {t("sidebar.createWorkspace.description")}
             </DialogDescription>
             <Form {...form}>
-              <form action={action} className="space-y-2">
+              <form onSubmit={handleSubmit} className="space-y-2">
                 <div className={"flex space-x-2"}>
                   <FormField
                     control={form.control}

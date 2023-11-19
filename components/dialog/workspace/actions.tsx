@@ -12,8 +12,9 @@ export async function deleteWorkspaceAction(id: number) {
   await deleteWorkspaceApi(id);
 }
 
-export async function addWorkspaceAction(data: AddWorkspaceDto) {
-  await addWorkspaceApi(data);
+export async function addWorkspaceAction(payload: AddWorkspaceDto) {
+  const {data} = await addWorkspaceApi(payload);
+  return data;
 }
 
 export async function updateWorkspaceAction(data: UpdateWorkspaceDto) {

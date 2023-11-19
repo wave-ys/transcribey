@@ -18,7 +18,9 @@ export function useSettingsDialog() {
   return useContext(SettingsDialogContext);
 }
 
-export function SettingsDialogProvider({children}: { children: React.ReactNode }) {
+export function SettingsDialogProvider({children}: {
+  children: React.ReactNode
+}) {
   const [state, setState] = useState<Omit<SettingsDialogContextType, "setState">>({
     open: false
   });

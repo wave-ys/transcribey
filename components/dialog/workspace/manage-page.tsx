@@ -75,15 +75,13 @@ export default function ManagePage({workspace, onDirtyChange}: ManagePageProps) 
           {form.formState.isDirty &&
               <Button type="submit">{t("sidebar.workspaceManagement.submitButton")}</Button>}
           <Button variant={"destructive"} onClick={async () => {
-            await alert({
+            if (!await alert({
               title: t("sidebar.workspaceManagement.confirmRemoveTitle"),
               description: t("sidebar.workspaceManagement.confirmRemoveDescription"),
-              async action() {
-                await deleteWorkspaceAction(workspace.id);
-                onDirtyChange?.(false);
-                router.refresh();
-              }
-            })
+            }))
+              return;
+            await deleteWorkspaceAction(workspace.id);
+            router.refresh();
           }}>
             {t("sidebar.workspaceManagement.removeButton")}
           </Button>

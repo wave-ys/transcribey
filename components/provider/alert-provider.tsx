@@ -16,7 +16,6 @@ import {
 export interface AlertState {
   title?: string,
   description?: string,
-  action?: () => Promise<any>
 }
 
 export type AlertFun = (state?: AlertState) => Promise<boolean>
@@ -27,19 +26,22 @@ export function useAlert() {
   return useContext(AlertContext);
 }
 
-export function AlertProvider({children}: { children: React.ReactNode }) {
+export function AlertProvider({children}: {
+  children: React.ReactNode
+}) {
   const {t} = useTranslation();
   const [open, setOpen] = useState(false);
   const [state, setState] = useState<AlertState>({
     title: t("alert.defaultTitle")
   });
-  const [executors, setExecutors] = useState<{ res: (v: boolean) => void }>();
+  const [executors, setExecutors] = useState<{
+    res: (v: boolean) => void
+  }>();
 
   const alertFun = useCallback((newState?: AlertState) => {
     setState({
       title: newState?.title ?? t("alert.defaultTitle"),
       description: newState?.description,
-      action: newState?.action
     });
     setOpen(true);
     return new Promise<boolean>((res) => setExecutors({res}));
@@ -49,29 +51,26 @@ export function AlertProvider({children}: { children: React.ReactNode }) {
     <AlertContext.Provider value={alertFun}>
       <AlertDialog open={open}>
         <AlertDialogContent>
-          <form action={state.action}>
-            <AlertDialogHeader>
-              <AlertDialogTitle>{state.title}</AlertDialogTitle>
-              {state.description &&
-                  <AlertDialogDescription>
-                    {state.description}
-                  </AlertDialogDescription>
-              }
-            </AlertDialogHeader>
-            <AlertDialogFooter>
-              <AlertDialogCancel
-                onClick={() => {
-                  setOpen(false);
-                  executors?.res(false)
-                }}>{t("alert.defaultCancelButton")}</AlertDialogCancel>
-              <AlertDialogAction
-                type={state.action ? "submit" : "button"}
-                onClick={() => {
-                  setOpen(false);
-                  executors?.res(true)
-                }}>{t("alert.defaultContinueButton")}</AlertDialogAction>
-            </AlertDialogFooter>
-          </form>
+          <AlertDialogHeader>
+            <AlertDialogTitle>{state.title}</AlertDialogTitle>
+            {state.description &&
+                <AlertDialogDescription>
+                  {state.description}
+                </AlertDialogDescription>
+            }
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              onClick={() => {
+                setOpen(false);
+                executors?.res(false)
+              }}>{t("alert.defaultCancelButton")}</AlertDialogCancel>
+            <AlertDialogAction
+              onClick={() => {
+                setOpen(false);
+                executors?.res(true)
+              }}>{t("alert.defaultContinueButton")}</AlertDialogAction>
+          </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
       {children}

@@ -21,7 +21,9 @@ export function SidebarLinkItem({href, ...other}: SidebarLinkItemProps) {
   )
 }
 
-export function SidebarSettingsItem({children}: { children: React.ReactNode }) {
+export function SidebarSettingsItem({children}: {
+  children: React.ReactNode
+}) {
   'use client';
   const settingsDialogContext = useSettingsDialog();
   return (
