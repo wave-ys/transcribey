@@ -55,12 +55,23 @@
     "defaultContinueButton": "Continue",
     "defaultCancelButton": "Cancel"
   },
+  "comboBox": {
+    "defaultSearchPlaceholder": "Search...",
+    "defaultNoResultText": "No result found."
+  },
   "home": {
     "welcomePrefix": "Welcome to ",
     "welcomeSuffix": " AI Audio-to-Text.",
     "localFileButton": {
       "title": "Local File",
       "subtitle": "MP4, MP3, AAC, M4A..."
+    },
+    "transcribeParameter": {
+      "language": "Language",
+      "model": "Model",
+      "submitButton": "Submit",
+      "cancelButton": "Cancel",
+      "autoLanguage": "Auto"
     }
   }
 }

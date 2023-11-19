@@ -2,6 +2,7 @@ import React from "react";
 import {useTranslation} from "@/app/i18n";
 import CardButton from "@/components/ui/card-button";
 import {LuUpload} from "react-icons/lu";
+import MediaUploader from "@/components/media-uploader";
 
 interface HomeProps {
   params: {
@@ -9,7 +10,6 @@ interface HomeProps {
     workspace: string
   }
 }
-
 
 export default async function Home({params: {lng, workspace}}: HomeProps) {
   const {t} = await useTranslation(lng);
@@ -23,10 +23,12 @@ export default async function Home({params: {lng, workspace}}: HomeProps) {
       </div>
 
       <div className={"flex mt-8"}>
-        <CardButton
-          icon={<LuUpload />}
-          title={t("home.localFileButton.title")}
-          subtitle={t("home.localFileButton.subtitle")} />
+        <MediaUploader>
+          <CardButton
+            icon={<LuUpload/>}
+            title={t("home.localFileButton.title")}
+            subtitle={t("home.localFileButton.subtitle")}/>
+        </MediaUploader>
       </div>
     </div>
   )

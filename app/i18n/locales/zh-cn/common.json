@@ -54,12 +54,23 @@
     "defaultContinueButton": "继续",
     "defaultCancelButton": "取消"
   },
+  "comboBox": {
+    "defaultSearchPlaceholder": "搜索...",
+    "defaultNoResultText": "未找到结果。"
+  },
   "home": {
     "welcomePrefix": "欢迎使用 ",
     "welcomeSuffix": " AI 语音转文字。",
     "localFileButton": {
       "title": "选择本地媒体",
       "subtitle": "MP4、MP3、AAC、M4A..."
+    },
+    "transcribeParameter": {
+      "language": "语言",
+      "model": "模型",
+      "submitButton": "提交",
+      "cancelButton": "取消",
+      "autoLanguage": "自动检测"
     }
   }
 }
