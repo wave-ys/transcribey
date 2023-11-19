@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
+using Minio;
 using Transcribey.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,14 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("TranscribeyContext") ??
                          throw new InvalidOperationException(
                              "Connection string 'TranscribeyContext' not found.")));
+
+builder.Services.AddMinio(client => client
+    .WithEndpoint(builder.Configuration.GetValue<string>("MinIO:Endpoint"))
+    .WithSSL(builder.Configuration.GetValue<bool>("MinIO:UseSSL"))
+    .WithCredentials(
+        builder.Configuration.GetValue<string>("MinIO:AccessKey"),
+        builder.Configuration.GetValue<string>("MinIO:SecretKey")));
+builder.Services.AddScoped<IObjectStorage, ObjectStorage>();
 
 builder.Services.Configure<KestrelServerOptions>(options =>
 {
