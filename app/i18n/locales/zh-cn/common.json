@@ -53,5 +53,9 @@
     "defaultTitle": "您确定要继续吗?",
     "defaultContinueButton": "继续",
     "defaultCancelButton": "取消"
+  },
+  "home": {
+    "welcomePrefix": "欢迎使用 ",
+    "welcomeSuffix": " AI 语音转文字。"
   }
 }

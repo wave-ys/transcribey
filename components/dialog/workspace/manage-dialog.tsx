@@ -30,7 +30,7 @@ export default function ManageWorkspaceDialog({children, workspaces}: AddWorkspa
       {children((v) => {
         setOpen(v);
       })}
-      <Dialog open={open} onOpenChange={(v:boolean) => {
+      <Dialog open={open} onOpenChange={(v: boolean) => {
         setOpen(v);
         if (!v && !current)
           router.push(`/${params['lng']}/dashboard`);

@@ -54,5 +54,9 @@
     "defaultTitle": "Are you absolutely sure?",
     "defaultContinueButton": "Continue",
     "defaultCancelButton": "Cancel"
+  },
+  "home": {
+    "welcomePrefix": "Welcome to ",
+    "welcomeSuffix": " AI Audio-to-Text."
   }
 }
