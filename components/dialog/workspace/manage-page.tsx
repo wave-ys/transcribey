@@ -1,4 +1,4 @@
-import {WorkspaceModel} from "@/request/workspace";
+import {deleteWorkspaceApi, updateWorkspaceApi, WorkspaceModel} from "@/request/workspace";
 import * as z from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -8,8 +8,8 @@ import ColorPicker from "@/components/ui/color-picker";
 import {Button} from "@/components/ui/button";
 import React, {useCallback, useEffect} from "react";
 import {useTranslation} from "@/app/i18n/client";
-import {submitChangeDialog} from "@/components/dialog/workspace/actions";
 import {useRouter} from "next/navigation";
+import {useAlert} from "@/components/provider/alert-provider";
 
 export interface ManagePageProps {
   workspace: WorkspaceModel,
@@ -19,6 +19,7 @@ export interface ManagePageProps {
 export default function ManagePage({workspace, onDirtyChange}: ManagePageProps) {
   const {t} = useTranslation();
   const router = useRouter();
+  const alert = useAlert();
 
   const formSchema = z.object({
     id: z.number(),
@@ -36,7 +37,7 @@ export default function ManagePage({workspace, onDirtyChange}: ManagePageProps) 
   const action = useCallback(async () => {
     if (!await form.trigger())
       return;
-    await submitChangeDialog(form.getValues());
+    await updateWorkspaceApi(form.getValues());
     router.refresh();
   }, [form, router])
 
@@ -72,7 +73,19 @@ export default function ManagePage({workspace, onDirtyChange}: ManagePageProps) 
         <div className={"w-fit space-x-2 ml-auto"}>
           {form.formState.isDirty &&
               <Button type="submit">{t("sidebar.workspaceManagement.submitButton")}</Button>}
-          <Button variant={"destructive"}>{t("sidebar.workspaceManagement.removeButton")}</Button>
+          <Button variant={"destructive"} onClick={async () => {
+            await alert({
+              title: t("sidebar.workspaceManagement.confirmRemoveTitle"),
+              description: t("sidebar.workspaceManagement.confirmRemoveDescription"),
+              async action() {
+                await deleteWorkspaceApi(workspace.id);
+                onDirtyChange?.(false);
+                router.refresh();
+              }
+            })
+          }}>
+            {t("sidebar.workspaceManagement.removeButton")}
+          </Button>
         </div>
       </form>
     </Form>

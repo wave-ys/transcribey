@@ -10,7 +10,6 @@ import {Button} from "@/components/ui/button";
 import {useTranslation} from "@/app/i18n";
 import {WorkspaceSelect} from "@/components/workspace-select";
 import {getWorkspaceListApi} from "@/request/workspace";
-import {serverRequest} from "@/request";
 
 interface DashboardLayoutProps {
   params: {
@@ -26,7 +25,7 @@ export default async function DashboardLayout(
   const sidebarOpen = isSidebarOpen();
   const {t} = await useTranslation(lng);
 
-  const {data: workspaces} = await getWorkspaceListApi(serverRequest);
+  const {data: workspaces} = await getWorkspaceListApi();
 
   const sidebarContent = (
     <>

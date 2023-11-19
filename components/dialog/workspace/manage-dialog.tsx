@@ -46,7 +46,7 @@ export default function ManageWorkspaceDialog({children, workspaces}: AddWorkspa
                                  onClick={async () => {
                                    if (dirty && !await alert({
                                      title: t("sidebar.workspaceManagement.confirmSwitchTitle"),
-                                     description: t("sidebar.workspaceManagement.confirmSwitch")
+                                     description: t("sidebar.workspaceManagement.confirmSwitchDescription")
                                    }))
                                      return;
                                    setDirty(false);

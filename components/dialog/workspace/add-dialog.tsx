@@ -10,8 +10,8 @@ import {Form, FormControl, FormField, FormItem, FormMessage} from "@/components/
 import {Input} from "@/components/ui/input";
 import ColorPicker from "@/components/ui/color-picker";
 import {randomColor} from "@/lib/utils";
-import {submitAddDialog} from "@/components/dialog/workspace/actions";
 import {useRouter} from "next/navigation";
+import {addWorkspaceApi} from "@/request/workspace";
 
 export interface AddWorkspaceDialogProps {
   children: (setOpen: (v: boolean) => void) => React.ReactNode
@@ -36,7 +36,7 @@ export default function AddWorkspaceDialog({children}: AddWorkspaceDialogProps) 
     if (!await form.trigger())
       return;
     const values = form.getValues();
-    await submitAddDialog(values);
+    await addWorkspaceApi(values);
     router.refresh();
     setOpen(false);
   }

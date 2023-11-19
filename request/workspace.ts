@@ -1,4 +1,4 @@
-import {AxiosInstance} from "axios";
+import {request} from "@/request/index";
 
 export interface WorkspaceModel {
   id: number;
@@ -9,14 +9,14 @@ export interface WorkspaceModel {
 export type AddWorkspaceDto = Omit<WorkspaceModel, "id">
 export type UpdateWorkspaceDto = WorkspaceModel
 
-export async function getWorkspaceListApi(request: AxiosInstance) {
+export async function getWorkspaceListApi() {
   return request<WorkspaceModel[]>({
     url: '/api/workspace',
     method: 'get'
   });
 }
 
-export async function addWorkspaceApi(request: AxiosInstance, data: AddWorkspaceDto) {
+export async function addWorkspaceApi(data: AddWorkspaceDto) {
   return request({
     url: '/api/workspace',
     method: 'post',
@@ -24,7 +24,7 @@ export async function addWorkspaceApi(request: AxiosInstance, data: AddWorkspace
   })
 }
 
-export async function updateWorkspaceApi(request: AxiosInstance, data: UpdateWorkspaceDto) {
+export async function updateWorkspaceApi(data: UpdateWorkspaceDto) {
   return request({
     url: '/api/workspace/' + data.id,
     method: 'put',
@@ -32,7 +32,7 @@ export async function updateWorkspaceApi(request: AxiosInstance, data: UpdateWor
   })
 }
 
-export async function deleteWorkspaceApi(request: AxiosInstance, id: number) {
+export async function deleteWorkspaceApi(id: number) {
   return request({
     url: '/api/workspace/' + id,
     method: 'delete',

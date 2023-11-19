@@ -45,11 +45,11 @@ export default function RootLayout(
       defaultTheme="system"
       enableSystem
     >
-      <SettingsDialogProvider>
-        <AlertProvider>
+      <AlertProvider>
+        <SettingsDialogProvider>
           {children}
-        </AlertProvider>
-      </SettingsDialogProvider>
+        </SettingsDialogProvider>
+      </AlertProvider>
     </ThemeProvider>
     </body>
     </html>

@@ -22,7 +22,9 @@
       "removeButton": "移除工作空间",
       "submitButton": "保存",
       "confirmSwitchTitle": "您想要继续吗？",
-      "confirmSwitch": "您的更改将会丢失！"
+      "confirmSwitchDescription": "您的更改将会丢失！",
+      "confirmRemoveTitle": "确定要这样操作吗？",
+      "confirmRemoveDescription": "该操作不可撤回，将永久删除您的工作空间。"
     }
   },
   "settings": {

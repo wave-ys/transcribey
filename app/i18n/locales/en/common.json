@@ -23,7 +23,9 @@
       "removeButton": "Remove Workspace",
       "submitButton": "Save",
       "confirmSwitchTitle": "Do you want to continue?",
-      "confirmSwitch": "Your changes will be lost!"
+      "confirmSwitchDescription": "Your changes will be lost!",
+      "confirmRemoveTitle": "Are you absolutely sure?",
+      "confirmRemoveDescription": "This action cannot be undone. This will permanently delete your workspace."
     }
   },
   "settings": {
