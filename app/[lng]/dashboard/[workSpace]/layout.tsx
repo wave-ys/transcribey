@@ -60,7 +60,7 @@ export default async function DashboardLayout(
       </Sidebar>
       <div className={"flex-auto px-3"}>
         <div className={"my-4"}>
-          {!sidebarOpen && <ToggleSidebarButton className={"hidden lg:block"}/>}
+          {!sidebarOpen && <ToggleSidebarButton className={"hidden lg:inline-flex"}/>}
           <Sheet>
             <SheetTrigger asChild>
               <Button className={"inline-flex lg:hidden"} variant={"ghost"} size={"icon"}>
