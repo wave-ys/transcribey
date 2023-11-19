@@ -1,4 +1,4 @@
-import {deleteWorkspaceApi, updateWorkspaceApi, WorkspaceModel} from "@/request/workspace";
+import {WorkspaceModel} from "@/request/workspace";
 import * as z from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -10,6 +10,7 @@ import React, {useCallback, useEffect} from "react";
 import {useTranslation} from "@/app/i18n/client";
 import {useRouter} from "next/navigation";
 import {useAlert} from "@/components/provider/alert-provider";
+import {deleteWorkspaceAction, updateWorkspaceAction} from "@/components/dialog/workspace/actions";
 
 export interface ManagePageProps {
   workspace: WorkspaceModel,
@@ -37,7 +38,7 @@ export default function ManagePage({workspace, onDirtyChange}: ManagePageProps) 
   const action = useCallback(async () => {
     if (!await form.trigger())
       return;
-    await updateWorkspaceApi(form.getValues());
+    await updateWorkspaceAction(form.getValues());
     router.refresh();
   }, [form, router])
 
@@ -78,7 +79,7 @@ export default function ManagePage({workspace, onDirtyChange}: ManagePageProps) 
               title: t("sidebar.workspaceManagement.confirmRemoveTitle"),
               description: t("sidebar.workspaceManagement.confirmRemoveDescription"),
               async action() {
-                await deleteWorkspaceApi(workspace.id);
+                await deleteWorkspaceAction(workspace.id);
                 onDirtyChange?.(false);
                 router.refresh();
               }

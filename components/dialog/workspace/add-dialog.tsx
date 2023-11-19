@@ -11,7 +11,7 @@ import {Input} from "@/components/ui/input";
 import ColorPicker from "@/components/ui/color-picker";
 import {randomColor} from "@/lib/utils";
 import {useRouter} from "next/navigation";
-import {addWorkspaceApi} from "@/request/workspace";
+import {addWorkspaceAction} from "@/components/dialog/workspace/actions";
 
 export interface AddWorkspaceDialogProps {
   children: (setOpen: (v: boolean) => void) => React.ReactNode
@@ -36,7 +36,7 @@ export default function AddWorkspaceDialog({children}: AddWorkspaceDialogProps) 
     if (!await form.trigger())
       return;
     const values = form.getValues();
-    await addWorkspaceApi(values);
+    await addWorkspaceAction(values);
     router.refresh();
     setOpen(false);
   }
