@@ -47,10 +47,10 @@ export function WorkspaceSelect({value, workspaces}: WorkspaceSelectProps) {
           aria-expanded={open}
           className="w-full justify-between"
         >
-          {value && value !== '_'
+          {current
             ? <div className={"flex items-center"}>
-              <div className={"rounded-full w-4 h-4 mr-2"} style={{backgroundColor: current?.color}}></div>
-              <span>{current?.label}</span>
+              <div className={"rounded-full w-4 h-4 mr-2"} style={{backgroundColor: current.color}}></div>
+              <span>{current.label}</span>
             </div>
             : t("sidebar.workspaceSelect.placeholder")}
           <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>

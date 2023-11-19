@@ -24,13 +24,18 @@ export function middleware(req: NextRequest) {
     return NextResponse.redirect(new URL(`/${lng}${req.nextUrl.pathname}`, req.url))
   }
 
+  const response = NextResponse.next();
+
+  const url = new URL(req.url)
+  const parts = url.pathname.split('/');
+  if (parts.length >= 4 && parts[2] === 'dashboard')
+    response.cookies.set("workspace.recent", parts[3]);
+
   if (req.headers.has('referer')) {
     const refererUrl = new URL(req.headers.get('referer')!)
     const lngInReferer = languages.find((l) => refererUrl.pathname.startsWith(`/${l}`))
-    const response = NextResponse.next()
     if (lngInReferer) response.cookies.set(cookieName, lngInReferer)
-    return response
   }
 
-  return NextResponse.next()
+  return response;
 }
