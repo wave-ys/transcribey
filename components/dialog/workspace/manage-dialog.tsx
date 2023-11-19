@@ -3,7 +3,7 @@ import {Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle,} fr
 import {useTranslation} from "@/app/i18n/client";
 import {WorkspaceModel} from "@/request/workspace";
 import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
-import {useParams} from "next/navigation";
+import {useParams, useRouter} from "next/navigation";
 import ManagePage from "@/components/dialog/workspace/manage-page";
 import {useAlert} from "@/components/provider/alert-provider";
 import {ScrollArea} from "@/components/ui/scroll-area";
@@ -17,6 +17,7 @@ export default function ManageWorkspaceDialog({children, workspaces}: AddWorkspa
   const [open, setOpen] = useState(false);
   const {t} = useTranslation();
   const params = useParams();
+  const router = useRouter();
   const [currentId, setCurrentId] = useState<string>(params['workspace'] as string);
   const [dirty, setDirty] = useState(false);
   const alert = useAlert();
@@ -29,7 +30,11 @@ export default function ManageWorkspaceDialog({children, workspaces}: AddWorkspa
       {children((v) => {
         setOpen(v);
       })}
-      <Dialog open={open} onOpenChange={setOpen}>
+      <Dialog open={open} onOpenChange={(v:boolean) => {
+        setOpen(v);
+        if (!v && !current)
+          router.push(`/${params['lng']}/dashboard`);
+      }}>
         <DialogContent className={"max-w-3xl"}>
           <DialogHeader>
             <DialogTitle>{t("sidebar.workspaceManagement.title")}</DialogTitle>
