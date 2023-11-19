@@ -6,8 +6,10 @@ import {Form, FormControl, FormField, FormItem, FormMessage} from "@/components/
 import {Input} from "@/components/ui/input";
 import ColorPicker from "@/components/ui/color-picker";
 import {Button} from "@/components/ui/button";
-import React, {useEffect} from "react";
+import React, {useCallback, useEffect} from "react";
 import {useTranslation} from "@/app/i18n/client";
+import {submitChangeDialog} from "@/components/dialog/workspace/actions";
+import {useRouter} from "next/navigation";
 
 export interface ManagePageProps {
   workspace: WorkspaceModel,
@@ -16,6 +18,7 @@ export interface ManagePageProps {
 
 export default function ManagePage({workspace, onDirtyChange}: ManagePageProps) {
   const {t} = useTranslation();
+  const router = useRouter();
 
   const formSchema = z.object({
     id: z.number(),
@@ -30,9 +33,16 @@ export default function ManagePage({workspace, onDirtyChange}: ManagePageProps) 
 
   useEffect(() => onDirtyChange?.(form.formState.isDirty), [form.formState.isDirty, onDirtyChange]);
 
+  const action = useCallback(async () => {
+    if (!await form.trigger())
+      return;
+    await submitChangeDialog(form.getValues());
+    router.refresh();
+  }, [form, router])
+
   return (
     <Form {...form}>
-      <form className="space-y-2">
+      <form className="space-y-2" action={action}>
         <div className={"flex space-x-2"}>
           <FormField
             control={form.control}

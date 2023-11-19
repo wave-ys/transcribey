@@ -13,7 +13,10 @@ export default function ColorPicker({value, onChange, className}: ColorPickerPro
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <div style={{backgroundColor: value}} className={cn("w-6 h-6 rounded-full cursor-pointer", className)}></div>
+        <div style={{backgroundColor: value}} className={cn(
+          "w-6 h-6 rounded-full cursor-pointer border",
+          className)}
+        ></div>
       </PopoverTrigger>
       <PopoverContent className={"p-0"} asChild>
         <Sketch disableAlpha color={value} onChange={color => onChange(color.hex)}/>
