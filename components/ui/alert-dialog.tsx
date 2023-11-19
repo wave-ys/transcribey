@@ -1,3 +1,5 @@
+// noinspection JSUnusedGlobalSymbols
+
 "use client"
 
 import * as React from "react"

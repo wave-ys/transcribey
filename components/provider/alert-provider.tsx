@@ -20,7 +20,7 @@ export interface AlertState {
 
 export type AlertFun = (state?: AlertState) => Promise<boolean>
 
-const AlertContext = createContext<AlertFun>(state => Promise.resolve(true));
+const AlertContext = createContext<AlertFun>(() => Promise.resolve(true));
 
 export function useAlert() {
   return useContext(AlertContext);
