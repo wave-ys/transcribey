@@ -23,6 +23,8 @@ export async function startTranscribeLocalFileApi(
     url: '/api/transcribe/upload',
     method: 'post',
     data: formData,
-    onUploadProgress: onProgress
+    onUploadProgress: onProgress,
+    maxBodyLength: Infinity,
+    maxContentLength: Infinity
   });
 }

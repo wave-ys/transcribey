@@ -12,6 +12,11 @@ export default function MediaUploader({children}: MediaUploaderProps) {
   const [dialogOpen, setDialogOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File>();
+  const [progress, setProgress] = useState({
+    show: false,
+    progress: 0,
+    rate: 0
+  });
 
   const handleClick = useCallback(() => {
     fileInputRef.current!.value = "";
@@ -28,7 +33,15 @@ export default function MediaUploader({children}: MediaUploaderProps) {
   const handleSubmit = useCallback(async (options: TranscribeOptionsDto) => {
     if (!file)
       return;
-    await startTranscribeLocalFileApi(file, options);
+    await startTranscribeLocalFileApi(file, options, e => {
+      console.log(e)
+      setProgress({
+        show: true,
+        progress: e.progress ?? 0,
+        rate: e.rate ?? 0
+      });
+    });
+    setProgress({show: false, progress: 0, rate: 0});
     setDialogOpen(false);
   }, [file])
 
@@ -38,7 +51,8 @@ export default function MediaUploader({children}: MediaUploaderProps) {
         {children}
       </div>
       <input ref={fileInputRef} hidden type={"file"} onChange={e => handleFileChange(e.target.files?.[0])}/>
-      <TranscribeOptionsDialog open={dialogOpen} onOpenChange={setDialogOpen} onSubmit={handleSubmit}/>
+      <TranscribeOptionsDialog progress={progress} open={dialogOpen} onOpenChange={setDialogOpen}
+                               onSubmit={handleSubmit}/>
     </>
   )
 }

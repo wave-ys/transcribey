@@ -27,10 +27,11 @@ export interface ComboBoxProps {
   onChange?: (v: string) => void;
   searchPlaceholder?: string;
   noResultText?: string;
-  className?: string
+  className?: string;
+  disabled?: boolean
 }
 
-export function ComboBox({options, value, onChange, searchPlaceholder, noResultText, className}: ComboBoxProps) {
+export function ComboBox({options, value, onChange, searchPlaceholder, noResultText, className, disabled}: ComboBoxProps) {
   const {t} = useTranslation();
   const [open, setOpen] = useState(false)
 
@@ -43,6 +44,7 @@ export function ComboBox({options, value, onChange, searchPlaceholder, noResultT
       <PopoverTrigger asChild>
         <FormControl>
           <Button
+            disabled={disabled}
             variant="outline"
             role="combobox"
             className={cn(

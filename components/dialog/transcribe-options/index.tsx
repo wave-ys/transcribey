@@ -19,7 +19,12 @@ const formSchema = z.object({
 })
 
 export interface TranscribeOptionsDialogProps extends DialogProps {
-  onSubmit?: (data: TranscribeOptionsDto) => void
+  onSubmit?: (data: TranscribeOptionsDto) => void,
+  progress?: {
+    show: boolean,
+    progress: number,
+    rate: number
+  }
 }
 
 export default function TranscribeOptionsDialog(props: TranscribeOptionsDialogProps) {
@@ -58,7 +63,7 @@ export default function TranscribeOptionsDialog(props: TranscribeOptionsDialogPr
                     <FormLabel>{t("home.transcribeOptions.language")}</FormLabel>
                     <FormControl>
                       <ComboBox className={"ml-auto"} options={languages} value={field.value}
-                                onChange={field.onChange}/>
+                                onChange={field.onChange} disabled={props.progress?.show}/>
                     </FormControl>
                   </div>
                   <FormMessage/>
@@ -74,20 +79,24 @@ export default function TranscribeOptionsDialog(props: TranscribeOptionsDialogPr
                     <FormLabel>{t("home.transcribeOptions.model")}</FormLabel>
                     <FormControl>
                       <ComboBox className={"ml-auto"} options={fakeModals} value={field.value}
-                                onChange={field.onChange}/>
+                                onChange={field.onChange} disabled={props.progress?.show}/>
                     </FormControl>
                   </div>
                   <FormMessage/>
                 </FormItem>
               )}
             />
-            <div className={"w-fit ml-auto space-x-2"}>
-              <Button variant={"outline"} onClick={() => props.onOpenChange?.(false)}>
-                {t("home.transcribeOptions.cancelButton")}
-              </Button>
-              <Button type="submit">
-                {t("home.transcribeOptions.submitButton")}
-              </Button>
+            <div className={"flex justify-between"}>
+              <div>{props.progress?.show && `${(props.progress.progress * 100).toFixed(2)}%`}</div>
+              <div className={"w-fit space-x-2"}>
+                <Button type={"button"} variant={"outline"} disabled={props.progress?.show}
+                        onClick={() => props.onOpenChange?.(false)}>
+                  {t("home.transcribeOptions.cancelButton")}
+                </Button>
+                <Button type="submit" disabled={props.progress?.show}>
+                  {t("home.transcribeOptions.submitButton")}
+                </Button>
+              </div>
             </div>
           </form>
         </Form>
