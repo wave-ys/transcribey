@@ -11,14 +11,18 @@ import {ComboBox, ComboBoxGroup} from "@/components/ui/combo-box";
 import {DialogProps} from "@radix-ui/react-dialog";
 import {useTranslation} from "@/app/i18n/client";
 import {useMemo} from "react";
+import {TranscribeOptionsDto} from "@/request/transcribe";
 
 const formSchema = z.object({
   model: z.string().min(1),
   language: z.string().min(1),
-  file: z.any()
 })
 
-export default function TranscribeParameterDialog(props: DialogProps) {
+export interface TranscribeOptionsDialogProps extends DialogProps {
+  onSubmit?: (data: TranscribeOptionsDto) => void
+}
+
+export default function TranscribeOptionsDialog(props: TranscribeOptionsDialogProps) {
   const {t} = useTranslation();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -26,17 +30,16 @@ export default function TranscribeParameterDialog(props: DialogProps) {
     defaultValues: {
       model: "small",
       language: "auto",
-      file: null
     },
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
+    props?.onSubmit?.(values);
   }
 
   const languages = useMemo(() => {
     const value = fakeLanguages;
-    value[0].children[0].label = t("home.transcribeParameter.autoLanguage");
+    value[0].children[0].label = t("home.transcribeOptions.autoLanguage");
     return value;
   }, [t])
 
@@ -52,7 +55,7 @@ export default function TranscribeParameterDialog(props: DialogProps) {
               render={({field}) => (
                 <FormItem>
                   <div className={"flex justify-between items-center"}>
-                    <FormLabel>{t("home.transcribeParameter.language")}</FormLabel>
+                    <FormLabel>{t("home.transcribeOptions.language")}</FormLabel>
                     <FormControl>
                       <ComboBox className={"ml-auto"} options={languages} value={field.value}
                                 onChange={field.onChange}/>
@@ -68,7 +71,7 @@ export default function TranscribeParameterDialog(props: DialogProps) {
               render={({field}) => (
                 <FormItem>
                   <div className={"flex justify-between items-center"}>
-                    <FormLabel>{t("home.transcribeParameter.model")}</FormLabel>
+                    <FormLabel>{t("home.transcribeOptions.model")}</FormLabel>
                     <FormControl>
                       <ComboBox className={"ml-auto"} options={fakeModals} value={field.value}
                                 onChange={field.onChange}/>
@@ -80,10 +83,10 @@ export default function TranscribeParameterDialog(props: DialogProps) {
             />
             <div className={"w-fit ml-auto space-x-2"}>
               <Button variant={"outline"} onClick={() => props.onOpenChange?.(false)}>
-                {t("home.transcribeParameter.cancelButton")}
+                {t("home.transcribeOptions.cancelButton")}
               </Button>
               <Button type="submit">
-                {t("home.transcribeParameter.submitButton")}
+                {t("home.transcribeOptions.submitButton")}
               </Button>
             </div>
           </form>

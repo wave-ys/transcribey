@@ -66,7 +66,7 @@
       "title": "Local File",
       "subtitle": "MP4, MP3, AAC, M4A..."
     },
-    "transcribeParameter": {
+    "transcribeOptions": {
       "language": "Language",
       "model": "Model",
       "submitButton": "Submit",
