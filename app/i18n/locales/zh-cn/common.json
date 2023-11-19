@@ -56,6 +56,10 @@
   },
   "home": {
     "welcomePrefix": "欢迎使用 ",
-    "welcomeSuffix": " AI 语音转文字。"
+    "welcomeSuffix": " AI 语音转文字。",
+    "localFileButton": {
+      "title": "选择本地媒体",
+      "subtitle": "MP4、MP3、AAC、M4A..."
+    }
   }
 }

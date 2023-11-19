@@ -57,6 +57,10 @@
   },
   "home": {
     "welcomePrefix": "Welcome to ",
-    "welcomeSuffix": " AI Audio-to-Text."
+    "welcomeSuffix": " AI Audio-to-Text.",
+    "localFileButton": {
+      "title": "Local File",
+      "subtitle": "MP4, MP3, AAC, M4A..."
+    }
   }
 }
