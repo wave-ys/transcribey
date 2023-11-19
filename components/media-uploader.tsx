@@ -2,8 +2,7 @@
 
 import React, {useCallback, useRef, useState} from "react";
 import TranscribeOptionsDialog from "@/components/dialog/transcribe-options";
-import {TranscribeOptionsDto} from "@/request/transcribe";
-import {submitTranscribeLocalFile} from "@/components/dialog/transcribe-options/actions";
+import {startTranscribeLocalFileApi, TranscribeOptionsDto} from "@/request/transcribe";
 
 export interface MediaUploaderProps {
   children: React.ReactNode
@@ -15,7 +14,8 @@ export default function MediaUploader({children}: MediaUploaderProps) {
   const [file, setFile] = useState<File>();
 
   const handleClick = useCallback(() => {
-    fileInputRef.current?.click();
+    fileInputRef.current!.value = "";
+    fileInputRef.current!.click();
   }, [])
 
   const handleFileChange = useCallback((file?: File) => {
@@ -28,11 +28,7 @@ export default function MediaUploader({children}: MediaUploaderProps) {
   const handleSubmit = useCallback(async (options: TranscribeOptionsDto) => {
     if (!file)
       return;
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('model', options.model);
-    formData.append('language', options.language);
-    await submitTranscribeLocalFile(formData);
+    await startTranscribeLocalFileApi(file, options);
     setDialogOpen(false);
   }, [file])
 
