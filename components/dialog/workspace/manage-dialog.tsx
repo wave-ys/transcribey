@@ -4,6 +4,8 @@ import {useTranslation} from "@/app/i18n/client";
 import {WorkspaceModel} from "@/request/workspace";
 import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
 import {useParams} from "next/navigation";
+import ManagePage from "@/components/dialog/workspace/manage-page";
+import {useAlert} from "@/components/provider/alert-provider";
 
 export interface AddWorkspaceDialogProps {
   children: (setOpen: (v: boolean) => void) => React.ReactNode,
@@ -15,6 +17,8 @@ export default function ManageWorkspaceDialog({children, workspaces}: AddWorkspa
   const {t} = useTranslation();
   const params = useParams();
   const [currentId, setCurrentId] = useState<string>(params['workspace'] as string);
+  const [dirty, setDirty] = useState(false);
+  const alert = useAlert();
   const current = useMemo(
     () => workspaces.find(w => w.id + "" === currentId) ?? null,
     [currentId, workspaces]);
@@ -39,14 +43,22 @@ export default function ManageWorkspaceDialog({children, workspaces}: AddWorkspa
                   workspaces.map(workspace =>
                     <SidebarItem key={workspace.id} enableSmall
                                  active={workspace.id + "" === currentId}
-                                 onClick={() => setCurrentId(workspace.id + "")}>
+                                 onClick={async () => {
+                                   if (dirty && !await alert({
+                                     title: t("sidebar.workspaceManagement.confirmSwitchTitle"),
+                                     description: t("sidebar.workspaceManagement.confirmSwitch")
+                                   }))
+                                     return;
+                                   setDirty(false);
+                                   setCurrentId(workspace.id + "");
+                                 }}>
                       {workspace.label}
                     </SidebarItem>)
                 }
               </SidebarSection>
             </Sidebar>
             <div className={"col-span-3 pl-4"}>
-              {current?.label}
+              {current && <ManagePage key={current.id} workspace={current} onDirtyChange={setDirty}/>}
             </div>
           </div>
         </DialogContent>

@@ -7,6 +7,7 @@ import {cn} from "@/lib/utils";
 import {dir} from 'i18next'
 import {languages} from "@/app/i18n/settings";
 import {SettingsDialogProvider} from "@/components/provider/settings-dialog-provider";
+import {AlertProvider} from "@/components/provider/alert-provider";
 
 export async function generateStaticParams() {
   return languages.map((lng) => ({lng}))
@@ -45,7 +46,9 @@ export default function RootLayout(
       enableSystem
     >
       <SettingsDialogProvider>
-        {children}
+        <AlertProvider>
+          {children}
+        </AlertProvider>
       </SettingsDialogProvider>
     </ThemeProvider>
     </body>

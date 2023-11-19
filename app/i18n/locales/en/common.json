@@ -19,9 +19,11 @@
     "workspaceManagement": {
       "title": "Workspace Management",
       "description": "You can change the workspace name or delete the workspace.",
-      "removeButton": "Remove",
-      "submitButton": "Submit",
-      "cancelButton": "Cancel"
+      "namePlaceholder": "Enter the workspace name",
+      "removeButton": "Remove Workspace",
+      "submitButton": "Save",
+      "confirmSwitchTitle": "Do you want to continue?",
+      "confirmSwitch": "Your changes will be lost!"
     }
   },
   "settings": {
@@ -45,5 +47,10 @@
         "title": "Change Languages"
       }
     }
+  },
+  "alert": {
+    "defaultTitle": "Are you absolutely sure?",
+    "defaultContinueButton": "Continue",
+    "defaultCancelButton": "Cancel"
   }
 }

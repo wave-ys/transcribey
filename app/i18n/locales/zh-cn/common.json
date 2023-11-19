@@ -12,16 +12,17 @@
     },
     "createWorkspace": {
       "title": "创建工作空间",
-      "description": "创建一个新的工作空间，你的资源都汇总到这里。",
+      "description": "创建一个新的工作空间，您的资源都汇总到这里。",
       "namePlaceholder": "请输入工作空间名称",
       "submitButton": "创建"
     },
     "workspaceManagement": {
       "title": "工作空间管理",
       "description": "您可以更改工作空间名称或删除工作空间。",
-      "removeButton": "移除",
-      "submitButton": "确认",
-      "cancelButton": "取消"
+      "removeButton": "移除工作空间",
+      "submitButton": "保存",
+      "confirmSwitchTitle": "您想要继续吗？",
+      "confirmSwitch": "您的更改将会丢失！"
     }
   },
   "settings": {
@@ -45,5 +46,10 @@
         "title": "变更语言"
       }
     }
+  },
+  "alert": {
+    "defaultTitle": "您确定要继续吗?",
+    "defaultContinueButton": "继续",
+    "defaultCancelButton": "取消"
   }
 }
