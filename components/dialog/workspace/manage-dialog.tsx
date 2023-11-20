@@ -6,7 +6,6 @@ import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
 import {useParams, useRouter} from "next/navigation";
 import ManagePage from "@/components/dialog/workspace/manage-page";
 import {useAlert} from "@/components/provider/alert-provider";
-import {ScrollArea} from "@/components/ui/scroll-area";
 
 export interface AddWorkspaceDialogProps {
   children: (setOpen: (v: boolean) => void) => React.ReactNode,
@@ -43,28 +42,27 @@ export default function ManageWorkspaceDialog({children, workspaces}: AddWorkspa
             </DialogDescription>
           </DialogHeader>
           <div className={"grid grid-cols-4 h-[24rem]"}>
-            <ScrollArea>
-              <Sidebar className={"border-r pl-0 pr-4 col-span-1 pt-4 min-h-h-[24rem]"}>
-                <SidebarSection>
-                  {
-                    workspaces.map(workspace =>
-                      <SidebarItem key={workspace.id} enableSmall
-                                   active={workspace.id + "" === currentId}
-                                   onClick={async () => {
-                                     if (dirty && !await alert({
-                                       title: t("sidebar.workspaceManagement.confirmSwitchTitle"),
-                                       description: t("sidebar.workspaceManagement.confirmSwitchDescription")
-                                     }))
-                                       return;
-                                     setDirty(false);
-                                     setCurrentId(workspace.id + "");
-                                   }}>
-                        {workspace.label}
-                      </SidebarItem>)
-                  }
-                </SidebarSection>
-              </Sidebar>
-            </ScrollArea>
+            <Sidebar className={"border-r pl-0 pr-4 col-span-1 pt-4 overflow-y-scroll"}>
+              <SidebarSection>
+                {
+                  workspaces.map(workspace =>
+                    <SidebarItem key={workspace.id} enableSmall
+                                 className={"overflow-x-hidden"}
+                                 active={workspace.id + "" === currentId}
+                                 onClick={async () => {
+                                   if (dirty && !await alert({
+                                     title: t("sidebar.workspaceManagement.confirmSwitchTitle"),
+                                     description: t("sidebar.workspaceManagement.confirmSwitchDescription")
+                                   }))
+                                     return;
+                                   setDirty(false);
+                                   setCurrentId(workspace.id + "");
+                                 }}>
+                      {workspace.label}
+                    </SidebarItem>)
+                }
+              </SidebarSection>
+            </Sidebar>
             <div className={"col-span-3 pl-4"}>
               {current && <ManagePage workspace={current} onDirtyChange={setDirty}/>}
             </div>

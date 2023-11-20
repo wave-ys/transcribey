@@ -48,9 +48,9 @@ export function WorkspaceSelect({value, workspaces}: WorkspaceSelectProps) {
           className="w-full justify-between"
         >
           {current
-            ? <div className={"flex items-center"}>
-              <div className={"rounded-full w-4 h-4 mr-2"} style={{backgroundColor: current.color}}></div>
-              <span>{current.label}</span>
+            ? <div className={"flex items-center overflow-hidden"}>
+              <div className={"rounded-full w-4 h-4 mr-2 flex-none"} style={{backgroundColor: current.color}}></div>
+              <div className={"flex-auto"}>{current.label}</div>
             </div>
             : t("sidebar.workspaceSelect.placeholder")}
           <LuChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
@@ -72,16 +72,17 @@ export function WorkspaceSelect({value, workspaces}: WorkspaceSelectProps) {
                   strings[3] = currentValue;
                   router.push(strings.join('/'));
                 }}
-                className={"flex justify-between items-center"}
+                className={"flex justify-between items-center overflow-hidden"}
               >
-                <div className={"flex items-center"}>
-                  <div className={"rounded-full w-4 h-4 mr-2"} style={{backgroundColor: workspace.color}}></div>
-                  <div>{workspace.label}</div>
+                <div className={"flex items-center flex-auto overflow-hidden"}>
+                  <div className={"rounded-full w-4 h-4 mr-2 flex-none"}
+                       style={{backgroundColor: workspace.color}}></div>
+                  <div className={"flex-auto"}>{workspace.label}</div>
                 </div>
                 <LuCheck
                   className={cn(
-                    "mr-2 h-4 w-4",
-                    value === workspace.id + "" ? "opacity-100" : "opacity-0"
+                    "mx-2 h-4 w-4 flex-none",
+                    value === workspace.id + "" ? "" : "hidden"
                   )}
                 />
               </CommandItem>
