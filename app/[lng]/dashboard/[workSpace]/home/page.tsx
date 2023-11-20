@@ -11,7 +11,7 @@ interface HomeProps {
   }
 }
 
-export default async function Home({params: {lng, workspace}}: HomeProps) {
+export default async function Home({params: {lng}}: HomeProps) {
   const {t} = await useTranslation(lng);
 
   return (

@@ -38,6 +38,9 @@ dependencies:
   '@radix-ui/react-slot':
     specifier: ^1.0.2
     version: registry.npmjs.org/@radix-ui/react-slot@1.0.2(@types/react@18.2.37)(react@18.2.0)
+  '@radix-ui/react-toast':
+    specifier: ^1.1.5
+    version: registry.npmjs.org/@radix-ui/react-toast@1.1.5(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
   '@uiw/react-color':
     specifier: ^2.0.2
     version: registry.npmjs.org/@uiw/react-color@2.0.2(@babel/runtime@7.23.2)(react-dom@18.2.0)(react@18.2.0)
@@ -1221,6 +1224,41 @@ packages:
       '@radix-ui/react-compose-refs': registry.npmjs.org/@radix-ui/react-compose-refs@1.0.1(@types/react@18.2.37)(react@18.2.0)
       '@types/react': registry.npmjs.org/@types/react@18.2.37
       react: registry.npmjs.org/react@18.2.0
+    dev: false
+
+  registry.npmjs.org/@radix-ui/react-toast@1.1.5(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0):
+    resolution: { integrity: sha512-fRLn227WHIBRSzuRzGJ8W+5YALxofH23y0MlPLddaIpLpCDqdE0NZlS2NRQDRiptfxDeeCjgFIpexB1/zkxDlw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@radix-ui/react-toast/-/react-toast-1.1.5.tgz }
+    id: registry.npmjs.org/@radix-ui/react-toast/1.1.5
+    name: '@radix-ui/react-toast'
+    version: 1.1.5
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': registry.npmjs.org/@babel/runtime@7.23.2
+      '@radix-ui/primitive': registry.npmjs.org/@radix-ui/primitive@1.0.1
+      '@radix-ui/react-collection': registry.npmjs.org/@radix-ui/react-collection@1.0.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-compose-refs': registry.npmjs.org/@radix-ui/react-compose-refs@1.0.1(@types/react@18.2.37)(react@18.2.0)
+      '@radix-ui/react-context': registry.npmjs.org/@radix-ui/react-context@1.0.1(@types/react@18.2.37)(react@18.2.0)
+      '@radix-ui/react-dismissable-layer': registry.npmjs.org/@radix-ui/react-dismissable-layer@1.0.5(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-portal': registry.npmjs.org/@radix-ui/react-portal@1.0.4(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-presence': registry.npmjs.org/@radix-ui/react-presence@1.0.1(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-primitive': registry.npmjs.org/@radix-ui/react-primitive@1.0.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-use-callback-ref': registry.npmjs.org/@radix-ui/react-use-callback-ref@1.0.1(@types/react@18.2.37)(react@18.2.0)
+      '@radix-ui/react-use-controllable-state': registry.npmjs.org/@radix-ui/react-use-controllable-state@1.0.1(@types/react@18.2.37)(react@18.2.0)
+      '@radix-ui/react-use-layout-effect': registry.npmjs.org/@radix-ui/react-use-layout-effect@1.0.1(@types/react@18.2.37)(react@18.2.0)
+      '@radix-ui/react-visually-hidden': registry.npmjs.org/@radix-ui/react-visually-hidden@1.0.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+      '@types/react': registry.npmjs.org/@types/react@18.2.37
+      '@types/react-dom': registry.npmjs.org/@types/react-dom@18.2.15
+      react: registry.npmjs.org/react@18.2.0
+      react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
     dev: false
 
   registry.npmjs.org/@radix-ui/react-use-callback-ref@1.0.0(react@18.2.0):
