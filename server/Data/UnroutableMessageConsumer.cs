@@ -31,10 +31,14 @@ public static class UnroutableMessageConsumer
 
             await using var scope = app.Services.CreateAsyncScope();
             var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-            dataContext.Attach(media);
+
             media.Failed = true;
             media.FailedReason = MediaFailedReason.Unroutable;
-            dataContext.Medias.Update(media);
+
+            dataContext.Medias.Attach(media);
+            dataContext.Entry(media).Property(m => m.Failed).IsModified = true;
+            dataContext.Entry(media).Property(m => m.FailedReason).IsModified = true;
+
             await dataContext.SaveChangesAsync();
         };
 
