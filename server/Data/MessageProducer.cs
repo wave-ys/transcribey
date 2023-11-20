@@ -1,5 +1,5 @@
 using System.Text;
-using Newtonsoft.Json;
+using System.Text.Json;
 using RabbitMQ.Client;
 using Transcribey.Models;
 
@@ -29,7 +29,7 @@ public class MessageProducer(IModel channel) : IMessageProducer
         channel.BasicPublish(
             TranscribeRequestExchange,
             "transcribe",
-            body: Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(media)),
+            body: Encoding.UTF8.GetBytes(JsonSerializer.Serialize(media)),
             basicProperties: basicProperties);
     }
 }

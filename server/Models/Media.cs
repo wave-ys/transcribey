@@ -37,3 +37,8 @@ public class MediaStatus
     public const string Transcribing = "transcribing";
     public const string Completed = "completed";
 }
+
+public class MediaFailedReason
+{
+    public const string Unroutable = "unroutable";
+}
