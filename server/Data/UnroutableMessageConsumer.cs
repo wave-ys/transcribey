@@ -1,5 +1,6 @@
 using System.Text;
 using System.Text.Json;
+using Microsoft.EntityFrameworkCore;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Transcribey.Models;
@@ -32,14 +33,12 @@ public static class UnroutableMessageConsumer
             await using var scope = app.Services.CreateAsyncScope();
             var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
 
-            media.Failed = true;
-            media.FailedReason = MediaFailedReason.Unroutable;
-
-            dataContext.Medias.Attach(media);
-            dataContext.Entry(media).Property(m => m.Failed).IsModified = true;
-            dataContext.Entry(media).Property(m => m.FailedReason).IsModified = true;
-
-            await dataContext.SaveChangesAsync();
+            await dataContext.Medias
+                .Where(m => m.Id == media.Id)
+                .ExecuteUpdateAsync(setter => setter
+                    .SetProperty(m => m.Failed, true)
+                    .SetProperty(m => m.FailedReason, MediaFailedReason.Unroutable)
+                );
         };
 
         channel.BasicConsume(que.QueueName, false, consumer);
