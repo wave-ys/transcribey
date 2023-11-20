@@ -11,7 +11,7 @@ import {ComboBox, ComboBoxGroup} from "@/components/ui/combo-box";
 import {DialogProps} from "@radix-ui/react-dialog";
 import {useTranslation} from "@/app/i18n/client";
 import {useMemo} from "react";
-import {TranscribeOptionsDto} from "@/request/transcribe";
+import {TranscribeOptionsDto} from "@/request/media";
 import TransmitProgressBar, {TransmitProgressState} from "@/components/ui/transmit-progress-bar";
 
 const formSchema = z.object({

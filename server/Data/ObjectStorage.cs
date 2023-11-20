@@ -7,7 +7,7 @@ public class ObjectStorage(IConfiguration configuration, IMinioClient minioClien
 {
     private readonly string _bucketName = configuration.GetValue<string>("MinIO:BucketName") ?? "transcribey";
 
-    public async Task StoreMedia(Stream fileStream, string fileExtension, long fileSize)
+    public async Task StoreMedia(Stream fileStream, string storePath, long fileSize, string contentType)
     {
         if (!await minioClient.BucketExistsAsync(new BucketExistsArgs().WithBucket(_bucketName)))
             await minioClient.MakeBucketAsync(new MakeBucketArgs().WithBucket(_bucketName));
@@ -16,7 +16,8 @@ public class ObjectStorage(IConfiguration configuration, IMinioClient minioClien
                 .WithBucket(_bucketName)
                 .WithStreamData(fileStream)
                 .WithObjectSize(fileSize)
-                .WithObject(Guid.NewGuid() + "." + fileExtension)
+                .WithContentType(contentType)
+                .WithObject(storePath)
         );
     }
 }

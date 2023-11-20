@@ -3,7 +3,7 @@ import {AxiosProgressEvent} from "axios";
 
 export interface TranscribeOptionsDto {
   model: string;
-  language: string
+  language: string;
 }
 
 function convertToFormData(options: TranscribeOptionsDto) {
@@ -16,11 +16,13 @@ function convertToFormData(options: TranscribeOptionsDto) {
 export async function startTranscribeLocalFileApi(
   file: File,
   options: TranscribeOptionsDto,
+  workspaceId: number,
   onProgress?: (e: AxiosProgressEvent) => void) {
   const formData = convertToFormData(options);
   formData.append('file', file);
+  formData.append('workspaceId', workspaceId + "");
   return request<void>({
-    url: '/api/transcribe/upload',
+    url: '/api/media/upload',
     method: 'post',
     data: formData,
     onUploadProgress: onProgress,

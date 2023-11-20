@@ -60,7 +60,8 @@
     "defaultNoResultText": "No result found."
   },
   "transmitProgressBar": {
-    "uploading": "Uploading..."
+    "uploading": "Uploading...",
+    "processing": "Processing..."
   },
   "home": {
     "welcomePrefix": "Welcome to ",

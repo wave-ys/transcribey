@@ -31,7 +31,15 @@ export interface ComboBoxProps {
   disabled?: boolean
 }
 
-export function ComboBox({options, value, onChange, searchPlaceholder, noResultText, className, disabled}: ComboBoxProps) {
+export function ComboBox({
+                           options,
+                           value,
+                           onChange,
+                           searchPlaceholder,
+                           noResultText,
+                           className,
+                           disabled
+                         }: ComboBoxProps) {
   const {t} = useTranslation();
   const [open, setOpen] = useState(false)
 

@@ -10,4 +10,6 @@ public class DataContext : DbContext
     }
 
     public DbSet<Workspace> Workspaces { get; set; } = null!;
+
+    public DbSet<Media> Medias { get; set; } = null!;
 }

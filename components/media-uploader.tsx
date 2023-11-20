@@ -2,14 +2,16 @@
 
 import React, {useCallback, useRef, useState} from "react";
 import TranscribeOptionsDialog from "@/components/dialog/transcribe-options";
-import {startTranscribeLocalFileApi, TranscribeOptionsDto} from "@/request/transcribe";
+import {startTranscribeLocalFileApi, TranscribeOptionsDto} from "@/request/media";
 import {TransmitProgressState} from "@/components/ui/transmit-progress-bar";
+import {useParams} from "next/navigation";
 
 export interface MediaUploaderProps {
   children: React.ReactNode
 }
 
 export default function MediaUploader({children}: MediaUploaderProps) {
+  const params = useParams();
   const [dialogOpen, setDialogOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File>();
@@ -30,12 +32,12 @@ export default function MediaUploader({children}: MediaUploaderProps) {
   const handleSubmit = useCallback(async (options: TranscribeOptionsDto) => {
     if (!file)
       return;
-    await startTranscribeLocalFileApi(file, options, e => {
+    await startTranscribeLocalFileApi(file, options, +params['workspace'], e => {
       setProgress(e);
     });
     setDialogOpen(false);
     setProgress(undefined);
-  }, [file])
+  }, [file, params])
 
   return (
     <>

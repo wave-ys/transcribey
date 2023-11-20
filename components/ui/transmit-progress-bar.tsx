@@ -23,7 +23,11 @@ export default function TransmitProgressBar({state}: { state: TransmitProgressSt
   return (
     <div className={"text-sm text-gray-500"}>
       <div className={"flex justify-between"}>
-        <span>{t("transmitProgressBar.uploading")}</span>
+        {
+          state.progress === 1 ?
+            <span>{t("transmitProgressBar.processing")}</span> :
+            <span>{t("transmitProgressBar.uploading")}</span>
+        }
         <span>{progressText}</span>
       </div>
       <Progress value={state.progress ? state.progress * 100 : 0}/>

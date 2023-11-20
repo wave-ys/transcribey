@@ -59,7 +59,8 @@
     "defaultNoResultText": "未找到结果。"
   },
   "transmitProgressBar": {
-    "uploading": "上传中..."
+    "uploading": "上传中...",
+    "processing": "处理中..."
   },
   "home": {
     "welcomePrefix": "欢迎使用 ",
