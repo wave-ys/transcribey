@@ -33,6 +33,10 @@ export default function ManagePage({workspace, onDirtyChange}: ManagePageProps) 
     defaultValues: {label: workspace.label, color: workspace.color, id: workspace.id}
   })
 
+  useEffect(() => {
+    form.reset({label: workspace.label, color: workspace.color, id: workspace.id})
+  }, [form, workspace]);
+
   useEffect(() => onDirtyChange?.(form.formState.isDirty), [form.formState.isDirty, onDirtyChange]);
 
   const action = useCallback(async () => {

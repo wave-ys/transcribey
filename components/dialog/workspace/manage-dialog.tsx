@@ -44,7 +44,7 @@ export default function ManageWorkspaceDialog({children, workspaces}: AddWorkspa
           </DialogHeader>
           <div className={"grid grid-cols-4 h-[24rem]"}>
             <ScrollArea>
-              <Sidebar className={"border-r pl-0 pr-4 col-span-1 pt-4"}>
+              <Sidebar className={"border-r pl-0 pr-4 col-span-1 pt-4 min-h-h-[24rem]"}>
                 <SidebarSection>
                   {
                     workspaces.map(workspace =>
@@ -66,7 +66,7 @@ export default function ManageWorkspaceDialog({children, workspaces}: AddWorkspa
               </Sidebar>
             </ScrollArea>
             <div className={"col-span-3 pl-4"}>
-              {current && <ManagePage key={current.id} workspace={current} onDirtyChange={setDirty}/>}
+              {current && <ManagePage workspace={current} onDirtyChange={setDirty}/>}
             </div>
           </div>
         </DialogContent>
