@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Minio;
+using RabbitMQ.Client;
 using Transcribey.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +22,25 @@ builder.Services.AddMinio(client => client
         builder.Configuration.GetValue<string>("MinIO:AccessKey"),
         builder.Configuration.GetValue<string>("MinIO:SecretKey")));
 builder.Services.AddScoped<IObjectStorage, ObjectStorage>();
+
+builder.Services.AddSingleton<IConnection>(_ =>
+{
+    var connectionFactory = new ConnectionFactory
+    {
+        Uri = new Uri(builder.Configuration.GetValue<string>("RabbitMQ:Uri") ??
+                      throw new InvalidOperationException("RabbitMQ Connection URI not found")),
+        DispatchConsumersAsync = true
+    };
+    return connectionFactory.CreateConnection();
+});
+
+builder.Services.AddScoped<IModel>(serviceProvider =>
+{
+    var connection = serviceProvider.GetRequiredService<IConnection>();
+    return connection.CreateModel();
+});
+
+builder.Services.AddScoped<IMessageProducer, MessageProducer>();
 
 builder.Services.Configure<KestrelServerOptions>(options =>
 {
@@ -52,5 +72,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseUnroutableMessageConsumer();
 
 app.Run();

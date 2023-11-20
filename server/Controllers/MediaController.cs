@@ -8,7 +8,8 @@ namespace Transcribey.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MediaController(IObjectStorage objectStorage, DataContext dataContext) : ControllerBase
+public class MediaController
+    (IObjectStorage objectStorage, DataContext dataContext, IMessageProducer messageProducer) : ControllerBase
 {
     [HttpGet]
     public async Task<ActionResult<Media>> GetMedia(long id)
@@ -36,12 +37,18 @@ public class MediaController(IObjectStorage objectStorage, DataContext dataConte
             StorePath = storePath,
             FileName = options.File.FileName,
             FileType = MediaFileType.Detecting,
+            Model = options.Model,
+            Language = options.Language,
             Deleted = false,
             CreatedTime = DateTime.UtcNow,
             WorkspaceId = options.WorkspaceId
         };
         await objectStorage.StoreMedia(options.File.OpenReadStream(), storePath, options.File.Length, contentType);
         dataContext.Medias.Add(media);
+        await dataContext.SaveChangesAsync();
+
+        messageProducer.PublishTranscribeTask(media);
+        media.Status = MediaStatus.Published;
         await dataContext.SaveChangesAsync();
 
         return CreatedAtAction("GetMedia", new { id = media.Id }, media);
