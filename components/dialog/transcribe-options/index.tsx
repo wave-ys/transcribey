@@ -47,7 +47,7 @@ export default function TranscribeOptionsDialog(props: TranscribeOptionsDialogPr
 
   return (
     <Dialog {...props}>
-      <DialogContent>
+      <DialogContent hideClose>
         <DialogHeader></DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
