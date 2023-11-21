@@ -50,6 +50,8 @@ class MessageConsumer:
         self.db_context.update_media_status(media["Id"], MEDIA_STATUS_TRANSCRIBING)
         self.db_context.commit()
 
-        ch.basic_ack(delivery_tag=method.delivery_tag)
-
         self.transcriber.do_transcribe(media)
+
+        self.db_context.update_media_status(media["Id"], MEDIA_STATUS_COMPLETED)
+        self.db_context.commit()
+        ch.basic_ack(delivery_tag=method.delivery_tag)
