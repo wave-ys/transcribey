@@ -77,13 +77,13 @@ sudo ln -s /opt/homebrew/etc/odbc.ini /etc/odbc.ini
 
 #### Login timeout expired
 
-It seems that in `pyodbc` connection url the hostname cannot be `localhost`, or it may throw this error:
+If `pyodbc` throws this error:
 
 ```text
 pyodbc.OperationalError: ('HYT00', u'[HYT00] [unixODBC][Microsoft][ODBC Driver 18 for SQL Server]Login timeout expired (0) (SQLDriverConnect)')
 ```
 
-Changing `localhost` to `127.0.0.1` can solve it.
+Changing `localhost` to `127.0.0.1` may solve it, though the reason is not certain.
 
 ### References
 
