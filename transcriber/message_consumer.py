@@ -3,7 +3,7 @@ import json
 import pika
 
 import database_context
-import transcriber
+from transcriber import Transcriber
 
 HANDLE_TRANSCRIBE_QUEUE = 'handle-transcribe-queue'
 TRANSCRIBE_REQUEST_EXCHANGE = 'transcribe-requests'
@@ -13,9 +13,11 @@ MEDIA_STATUS_COMPLETED = 'completed'
 
 
 class MessageConsumer:
-    def __init__(self, mq_connection: pika.BlockingConnection, db_context: database_context.DatabaseContext):
+    def __init__(self, mq_connection: pika.BlockingConnection, db_context: database_context.DatabaseContext,
+                 transcriber: Transcriber):
         self.mq_connection = mq_connection
         self.db_context = db_context
+        self.transcriber = transcriber
 
     def start_consume(self, ):
         channel = self.mq_connection.channel()
@@ -33,10 +35,10 @@ class MessageConsumer:
         channel.start_consuming()
 
     def __callback(self,
-                 ch: pika.adapters.blocking_connection.BlockingChannel,
-                 method: pika.spec.Basic.Deliver,
-                 properties: pika.spec.BasicProperties,
-                 body: bytes):
+                   ch: pika.adapters.blocking_connection.BlockingChannel,
+                   method: pika.spec.Basic.Deliver,
+                   properties: pika.spec.BasicProperties,
+                   body: bytes):
         media = json.loads(body)
 
         self.db_context.update_media_status(media["Id"], MEDIA_STATUS_TRANSCRIBING)
@@ -44,4 +46,4 @@ class MessageConsumer:
 
         ch.basic_ack(delivery_tag=method.delivery_tag)
 
-        transcriber.do_transcribe(media)
+        self.transcriber.do_transcribe(media)

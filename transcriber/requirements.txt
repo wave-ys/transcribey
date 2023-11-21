@@ -2,3 +2,5 @@ pika
 python-dotenv
 SQLAlchemy
 pyodbc --no-binary=pyodbc
+openai-whisper
+minio
