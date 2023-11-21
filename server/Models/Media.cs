@@ -6,6 +6,7 @@ public class Media
 
     public string StorePath { get; set; } = "";
     public string FileName { get; set; } = "";
+    public string ResultPath { get; set; } = "";
 
     public string Model { get; set; } = "";
     public string Language { get; set; } = "";

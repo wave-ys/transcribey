@@ -24,7 +24,7 @@ public class MediaController
     public async Task<ActionResult<Media>> StartTranscribeUploadFile([FromForm] TranscribeOptionsDto options)
     {
         var extension = options.File.FileName.Split('.')[^1];
-        var storePath = Guid.NewGuid() + "." + extension;
+        var storePath = "/media/" + Guid.NewGuid() + "." + extension;
         if (!new FileExtensionContentTypeProvider().TryGetContentType(options.File.FileName, out var contentType))
             return BadRequest();
         if (!contentType.StartsWith("audio") && !contentType.StartsWith("video"))

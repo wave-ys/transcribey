@@ -110,16 +110,20 @@ const fakeModals: ComboBoxGroup[] = [
     key: 'multi',
     children: [
       {
-        label: "Small",
-        value: "small"
-      },
-      {
         label: "Tiny",
         value: "tiny"
       },
       {
         label: "Base",
         value: "base"
+      },
+      {
+        label: "Small",
+        value: "small"
+      },
+      {
+        label: "Medium",
+        value: "medium"
       }
     ]
   },

@@ -6,9 +6,9 @@ from dotenv import load_dotenv
 
 import database_context
 import message_consumer
+from message_producer import MessageProducer
 from object_storage import ObjectStorage
 from transcriber import Transcriber
-from message_producer import MessageProducer
 
 
 def main():

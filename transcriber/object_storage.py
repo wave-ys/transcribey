@@ -1,3 +1,5 @@
+import io
+
 from minio import Minio
 
 
@@ -10,3 +12,9 @@ class ObjectStorage:
 
     def download_media(self, media, download_path):
         self.client.fget_object(self.bucket_name, media['StorePath'], download_path)
+
+    def store_result(self, text: str, upload_path: str):
+        data = text.encode('utf-8')
+        # TODO: try leveraging multi-thread to improve speed
+        self.client.put_object(self.bucket_name, upload_path, io.BytesIO(data), len(data),
+                               content_type='application/json')

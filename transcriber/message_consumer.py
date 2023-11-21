@@ -1,4 +1,5 @@
 import json
+import uuid
 
 import pika
 
@@ -7,9 +8,6 @@ from transcriber import Transcriber
 
 HANDLE_TRANSCRIBE_QUEUE = 'handle-transcribe-queue'
 TRANSCRIBE_REQUEST_EXCHANGE = 'transcribe-requests'
-
-MEDIA_STATUS_TRANSCRIBING = 'transcribing'
-MEDIA_STATUS_COMPLETED = 'completed'
 
 
 class MessageConsumer:
@@ -47,11 +45,12 @@ class MessageConsumer:
                    body: bytes):
         media = json.loads(body)
 
-        self.db_context.update_media_status(media["Id"], MEDIA_STATUS_TRANSCRIBING)
+        self.db_context.start_transcribe(media["Id"])
         self.db_context.commit()
 
-        self.transcriber.transcribe(media)
+        result_path = '/transcription/' + str(uuid.uuid4()) + '.json'
+        self.transcriber.transcribe(media, result_path)
 
-        self.db_context.update_media_status(media["Id"], MEDIA_STATUS_COMPLETED)
+        self.db_context.complete_transcribe(media["Id"], result_path)
         self.db_context.commit()
         ch.basic_ack(delivery_tag=method.delivery_tag)
