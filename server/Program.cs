@@ -73,6 +73,7 @@ app.UseAuthorization();
 
 app.MapControllers();
 
+app.UseMessagePublisher();
 app.UseUnroutableMessageConsumer();
 
 app.Run();

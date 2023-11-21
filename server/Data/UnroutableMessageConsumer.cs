@@ -10,6 +10,7 @@ namespace Transcribey.Data;
 public static class UnroutableMessageConsumer
 {
     public const string AlternativeExchange = "unroutable-transcribe-requests";
+    public const string MarkUnroutableQueue = "mark-unroutable-queue";
 
     public static void UseUnroutableMessageConsumer(this WebApplication app)
     {
@@ -17,7 +18,7 @@ public static class UnroutableMessageConsumer
         var channel = connection.CreateModel();
         channel.ExchangeDeclare(AlternativeExchange, ExchangeType.Headers);
 
-        var que = channel.QueueDeclare();
+        var que = channel.QueueDeclare(MarkUnroutableQueue, exclusive: false);
         channel.QueueBind(que.QueueName, AlternativeExchange, "#", new Dictionary<string, object>
         {
             ["x-match"] = "all"
@@ -39,8 +40,10 @@ public static class UnroutableMessageConsumer
                     .SetProperty(m => m.Failed, true)
                     .SetProperty(m => m.FailedReason, MediaFailedReason.Unroutable)
                 );
+            channel.BasicAck(e.DeliveryTag, false);
         };
 
+        channel.BasicQos(0, 5, false);
         channel.BasicConsume(que.QueueName, false, consumer);
     }
 }
