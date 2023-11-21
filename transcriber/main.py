@@ -13,19 +13,21 @@ from transcriber import Transcriber
 def main():
     load_dotenv()
 
+    object_storage = ObjectStorage(
+        env['MINIO_ENDPOINT'], env['MINIO_ACCESS_KEY'], env['MINIO_SECRET_KEY'],
+        env['MINIO_BUCKET_NAME'], env['MINIO_USE_SSL'] == 'true'
+    )
+
+    supported_models = env['SUPPORTED_MODELS'].split(',')
+    transcriber = Transcriber(object_storage, supported_models, env['USE_GPU'] == 'true')
+
     mq_connection = pika.BlockingConnection(pika.URLParameters(env['RABBITMQ_URI']))
     db_engine = sqlalchemy.create_engine(env['DATABASE_URI'], echo=True)
-
     with db_engine.connect() as db_connection:
         db_context = database_context.DatabaseContext(db_connection)
-        object_storage = ObjectStorage(
-            env['MINIO_ENDPOINT'], env['MINIO_ACCESS_KEY'], env['MINIO_SECRET_KEY'],
-            env['MINIO_BUCKET_NAME'], env['MINIO_USE_SSL'] == 'true'
-        )
 
-        transcriber = Transcriber(object_storage)
-
-        msg_consumer = message_consumer.MessageConsumer(mq_connection, db_context, transcriber)
+        msg_consumer = message_consumer.MessageConsumer(mq_connection, db_context, transcriber, supported_models,
+                                                        env['USE_GPU'] == 'true')
         msg_consumer.start_consume()
 
 

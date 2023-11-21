@@ -15,9 +15,8 @@ public class MessageProducer(IModel channel) : IMessageProducer
         basicProperties.ContentType = "application/json";
         basicProperties.Headers = new Dictionary<string, object>
         {
-            ["language"] = media.Language,
             ["model"] = media.Model,
-            ["type"] = media.FileType
+            ["use_gpu"] = false
         };
 
         channel.BasicPublish(
