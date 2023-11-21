@@ -24,7 +24,12 @@ class Transcriber:
         try:
             self.object_storage.download_media(media, temp_file.name)
             result = self.do_transcribe(media, temp_file.name)
-            self.object_storage.store_result(json.dumps(result['segments']), result_path)
+            data = [{
+                'start': segment['start'],
+                'end': segment['end'],
+                'text': segment['text']
+            } for segment in result['segments']]
+            self.object_storage.store_result(json.dumps(data), result_path)
         finally:
             os.unlink(temp_file.name)
 
