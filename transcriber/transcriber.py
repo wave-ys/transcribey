@@ -1,9 +1,8 @@
 import os
 import tempfile
 
-import whisper
-
 from object_storage import ObjectStorage
+from whisper import whisper
 
 
 class Transcriber:
@@ -24,6 +23,9 @@ class Transcriber:
             os.unlink(temp_file.name)
 
     def do_transcribe(self, media, file_path):
-        result = self.models[media['Model']].transcribe(file_path, fp16=False, verbose=True, language=(
-            media['Language'] if media['Language'] != 'auto' else None))
+        result = self.models[media['Model']].transcribe(file_path, fp16=False, language=(
+            media['Language'] if media['Language'] != 'auto' else None), on_progress=self.__on_progress)
         print(result['language'])
+
+    def __on_progress(self, all_segments, current_segments, total_progress, current_progress):
+        print(current_segments)

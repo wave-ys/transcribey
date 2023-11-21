@@ -116,6 +116,10 @@ const fakeModals: ComboBoxGroup[] = [
       {
         label: "Tiny",
         value: "tiny"
+      },
+      {
+        label: "Base",
+        value: "base"
       }
     ]
   },
