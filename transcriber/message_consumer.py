@@ -50,7 +50,7 @@ class MessageConsumer:
         self.db_context.update_media_status(media["Id"], MEDIA_STATUS_TRANSCRIBING)
         self.db_context.commit()
 
-        self.transcriber.do_transcribe(media)
+        self.transcriber.transcribe(media)
 
         self.db_context.update_media_status(media["Id"], MEDIA_STATUS_COMPLETED)
         self.db_context.commit()

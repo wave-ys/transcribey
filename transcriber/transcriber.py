@@ -11,15 +11,19 @@ class Transcriber:
         self.object_storage = object_storage
         self.models = dict()
         for model in supported_models:
-            self.models[model] = whisper.load_model(model)
+            self.models[model] = whisper.load_model(model, device=('cuda' if use_gpu else 'cpu'))
 
-    def do_transcribe(self, media):
+    def transcribe(self, media):
         temp_file = tempfile.NamedTemporaryFile(delete=False)
         temp_file.close()
 
         try:
             self.object_storage.download_media(media, temp_file.name)
-            result = self.models[media['Model']].transcribe(temp_file.name, fp16=False)
-            print(result['text'])
+            self.do_transcribe(media, temp_file.name)
         finally:
             os.unlink(temp_file.name)
+
+    def do_transcribe(self, media, file_path):
+        result = self.models[media['Model']].transcribe(file_path, fp16=False, verbose=True, language=(
+            media['Language'] if media['Language'] != 'auto' else None))
+        print(result['language'])
