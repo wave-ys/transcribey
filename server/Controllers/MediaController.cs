@@ -35,7 +35,7 @@ public class MediaController
             .ToListAsync();
         return medias.ConvertAll(m => new MediaDto(m));
     }
-    
+
 
     [HttpPost("upload")]
     public async Task<ActionResult<MediaDto>> StartTranscribeUploadFile([FromForm] TranscribeOptionsDto options)
@@ -83,7 +83,7 @@ public record TranscribeOptionsDto
 public class MediaDto(Media media)
 {
     public long Id { get; set; } = media.Id;
-    
+
     public string FileName { get; set; } = media.FileName;
 
     public string Model { get; set; } = media.Model;
