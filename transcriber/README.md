@@ -6,8 +6,8 @@ The transcriber is for doing the audio-to-text work.
 
 [FFmpeg](https://ffmpeg.org/) is needed to decode media file.
 
-It's also needed to meet some prerequisites in order to connect python application to MS SQL Server. For Mac OS X Arm64 the
-processes are as followed.
+It's also needed to meet some prerequisites in order to connect python application to MS SQL Server. For Mac OS X Arm64
+the processes are as followed.
 
 ### Install the driver manager unixODBC
 

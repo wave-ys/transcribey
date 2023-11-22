@@ -21,7 +21,7 @@ def main():
 
     message_producer = MessageProducer()
     supported_models = env['SUPPORTED_MODELS'].split(',')
-    transcriber = Transcriber(object_storage, supported_models, env['USE_GPU'] == 'true', message_producer)
+    transcriber = Transcriber(supported_models, env['USE_GPU'] == 'true', message_producer)
 
     db_engine = sqlalchemy.create_engine(env['DATABASE_URI'], echo=True)
     with db_engine.connect() as db_connection:
@@ -29,7 +29,8 @@ def main():
 
         mq_connection = pika.BlockingConnection(pika.URLParameters(env['RABBITMQ_URI']))
         message_producer.init(mq_connection)
-        msg_consumer = message_consumer.MessageConsumer(mq_connection, db_context, transcriber, supported_models,
+        msg_consumer = message_consumer.MessageConsumer(object_storage, mq_connection, db_context,
+                                                        transcriber, supported_models,
                                                         env['USE_GPU'] == 'true')
         msg_consumer.start_consume()
 
