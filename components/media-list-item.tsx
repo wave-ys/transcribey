@@ -40,7 +40,7 @@ export default async function MediaListItem({media, lng, active}: MediaListItemP
 
       <div className={"flex-none flex items-center space-x-2"}>
         <span
-          className={"bg-muted rounded-full py-0.5 px-2 text-xs flex items-center w-fit space-x-2 h-fit"}>
+          className={"dark:bg-muted rounded-full py-0.5 px-2 text-xs flex items-center w-fit space-x-2 h-fit"}>
           <div className={"h-1 w-1 rounded-full bg-blue-600"}></div>
           <span>{t("media.fileType." + media.fileType)}</span>
         </span>
