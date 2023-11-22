@@ -10,7 +10,8 @@ interface MediaLayoutProps {
   params: {
     lng: string,
     workspace: string,
-    category: string | 'all' | 'video' | 'audio'
+    category: string | 'all' | 'video' | 'audio' | 'details',
+    media: string
   },
   children: React.ReactNode
 }
@@ -18,13 +19,16 @@ interface MediaLayoutProps {
 export default async function MediaLayout({children, params}: MediaLayoutProps) {
   const {t} = await useTranslation(params.lng)
 
-  if (params.category !== 'all' && params.category !== 'video' && params.category !== 'audio')
+  if (params.category !== 'all' && params.category !== 'video' && params.category !== 'audio' && params.category !== 'details')
     return redirect(`/${params.lng}/dashboard/${params.workspace}/media/all`);
+
+  if (params.category === 'details')
+    return <>detail</>
 
   const {data: medias} = await getMediaListApi(+params.workspace, params.category, false)
 
   return (
-    <div className={"flex flex-col space-y-2 h-full"}>
+    <div className={"flex flex-col space-y-3 h-full"}>
       <div className={"flex-none"}>
         <Tabs defaultValue={params.category}>
           <TabsList>
@@ -41,8 +45,13 @@ export default async function MediaLayout({children, params}: MediaLayoutProps) 
         </Tabs>
       </div>
       <div className={"flex-auto flex space-x-3"}>
-        <div className={"flex-none w-96 h-full"}>
-          {medias.map(media => <MediaListItem key={media.id} media={media} lng={params.lng}/>)}
+        <div className={"flex-none w-96 h-full space-y-2 flex flex-col"}>
+          {medias.map(media => (
+            <Link key={media.id}
+                  href={`/${params.lng}/dashboard/${params.workspace}/media/${params.category}/${media.id}`}>
+              <MediaListItem active={media.id + "" === params.media} media={media} lng={params.lng}/>
+            </Link>
+          ))}
         </div>
         <div className={"flex-auto border-l pl-3 h-full"}>{children}</div>
       </div>

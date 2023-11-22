@@ -1,22 +1,27 @@
 import {MediaModel} from "@/request/media";
 import {formatDistance} from 'date-fns'
-import {toUpperCaseLng} from "@/lib/utils";
+import {cn, toUpperCaseLng} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {AiOutlineEllipsis} from "react-icons/ai";
 import {useTranslation} from "@/app/i18n";
 
 export interface MediaListItemProps {
   media: MediaModel,
-  lng: string
+  lng: string,
+  active: boolean
 }
 
-export default async function MediaListItem({media, lng}: MediaListItemProps) {
+export default async function MediaListItem({media, lng, active}: MediaListItemProps) {
   const {t} = await useTranslation(lng);
   const dateLocales = await import('date-fns/locale')
   const dateLocale = dateLocales[toUpperCaseLng(lng).split('-').join('') as keyof typeof dateLocales] as Locale;
 
   return (
-    <div className={"border rounded-xl p-2 flex space-x-2 cursor-pointer hover:border-blue-600"}>
+    <div className={cn(
+      "border rounded-xl p-2 flex space-x-2 cursor-pointer",
+      "hover:border-blue-600",
+      active && "border-blue-600"
+    )}>
       <div className={"space-y-2 flex-auto min-w-0"}>
         <div className={"flex justify-between items-center space-x-4"}>
           <span
