@@ -27,8 +27,11 @@ public class MediaController
         [FromQuery] bool deleted
     )
     {
-        var medias = await dataContext.Medias
-            .Where(m => m.WorkspaceId == workspace && m.Deleted == deleted)
+        var queryable = dataContext.Medias
+            .Where(m => m.WorkspaceId == workspace && m.Deleted == deleted);
+        if (category != "all")
+            queryable = queryable.Where(m => m.FileType == category);
+        var medias = await queryable
             .ToListAsync();
         return medias.ConvertAll(m => new MediaDto(m));
     }
