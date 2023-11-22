@@ -94,6 +94,12 @@
       "video": "Video",
       "audio": "Audio",
       "detecting": "Detecting"
+    },
+    "listItem": {
+      "dropDownMenu": {
+        "subtitleEditing": "Subtitle Editing",
+        "delete": "Delete"
+      }
     }
   }
 }

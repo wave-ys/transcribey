@@ -4,6 +4,8 @@ import {cn, toUpperCaseLng} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {AiOutlineEllipsis} from "react-icons/ai";
 import {useTranslation} from "@/app/i18n";
+import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
+
 
 export interface MediaListItemProps {
   media: MediaModel,
@@ -44,7 +46,15 @@ export default async function MediaListItem({media, lng, active}: MediaListItemP
           <div className={"h-1 w-1 rounded-full bg-blue-600"}></div>
           <span>{t("media.fileType." + media.fileType)}</span>
         </span>
-        <Button variant={'outline'} size={'icon'}><AiOutlineEllipsis/></Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant={'outline'} size={'icon'}><AiOutlineEllipsis/></Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent>
+            <DropdownMenuItem>{t("media.listItem.dropDownMenu.subtitleEditing")}</DropdownMenuItem>
+            <DropdownMenuItem>{t("media.listItem.dropDownMenu.delete")}</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
 
     </div>

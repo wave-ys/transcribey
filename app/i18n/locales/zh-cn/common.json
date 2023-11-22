@@ -93,6 +93,12 @@
       "video": "视频",
       "audio": "音频",
       "detecting": "检测中"
+    },
+    "listItem": {
+      "dropDownMenu": {
+        "subtitleEditing": "编辑字幕",
+        "delete": "删除"
+      }
     }
   }
 }
