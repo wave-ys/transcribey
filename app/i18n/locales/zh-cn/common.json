@@ -81,5 +81,12 @@
     "noWorkspace": {
       "title": "请先创建一个工作空间。"
     }
+  },
+  "media": {
+    "tabs": {
+      "all": "全部",
+      "video": "视频",
+      "audio": "音频"
+    }
   }
 }

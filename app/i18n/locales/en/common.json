@@ -82,5 +82,12 @@
     "noWorkspace": {
       "title": "Please add a workspace to continue."
     }
+  },
+  "media": {
+    "tabs": {
+      "all": "All",
+      "video": "Video",
+      "audio": "Audio"
+    }
   }
 }
