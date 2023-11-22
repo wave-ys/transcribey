@@ -6,6 +6,8 @@ import {startTranscribeLocalFileApi, TranscribeOptionsDto} from "@/request/media
 import {TransmitProgressState} from "@/components/ui/transmit-progress-bar";
 import {useWorkspace} from "@/components/provider/workspace-provider";
 import AddWorkspaceDialog from "@/components/dialog/workspace/add-dialog";
+import {useToast} from "@/components/ui/use-toast";
+import {useTranslation} from "@/app/i18n/client";
 
 export interface MediaUploaderProps {
   children: React.ReactNode
@@ -17,6 +19,8 @@ export default function MediaUploader({children}: MediaUploaderProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File>();
   const [progress, setProgress] = useState<TransmitProgressState>();
+  const {toast} = useToast();
+  const {t} = useTranslation();
 
   const handleFileChange = useCallback((file?: File) => {
     if (!file)
@@ -40,8 +44,13 @@ export default function MediaUploader({children}: MediaUploaderProps) {
       {openAddWorkspaceDialog => (
         <>
           <div onClick={() => {
-            if (currentWorkspace === null)
+            if (currentWorkspace === null) {
+              toast({
+                title: t('toast.noWorkspace.title'),
+                duration: 3000
+              })
               return openAddWorkspaceDialog(true);
+            }
             fileInputRef.current!.value = "";
             fileInputRef.current!.click();
           }}>

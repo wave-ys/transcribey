@@ -77,5 +77,10 @@
       "cancelButton": "Cancel",
       "autoLanguage": "Auto"
     }
+  },
+  "toast": {
+    "noWorkspace": {
+      "title": "Please add a workspace to continue."
+    }
   }
 }

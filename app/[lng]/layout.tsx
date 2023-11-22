@@ -8,6 +8,7 @@ import {dir} from 'i18next'
 import {languages} from "@/app/i18n/settings";
 import {SettingsDialogProvider} from "@/components/provider/settings-dialog-provider";
 import {AlertProvider} from "@/components/provider/alert-provider";
+import {Toaster} from "@/components/ui/toaster";
 
 export async function generateStaticParams() {
   return languages.map((lng) => ({lng}))
@@ -50,6 +51,7 @@ export default function RootLayout(
           {children}
         </SettingsDialogProvider>
       </AlertProvider>
+      <Toaster/>
     </ThemeProvider>
     </body>
     </html>

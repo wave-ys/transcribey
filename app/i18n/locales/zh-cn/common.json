@@ -76,5 +76,10 @@
       "cancelButton": "取消",
       "autoLanguage": "自动检测"
     }
+  },
+  "toast": {
+    "noWorkspace": {
+      "title": "请先创建一个工作空间。"
+    }
   }
 }
