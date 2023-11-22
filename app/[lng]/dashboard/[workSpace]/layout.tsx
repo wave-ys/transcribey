@@ -60,25 +60,24 @@ export default async function DashboardLayout(
         }>
           {sidebarContent}
         </Sidebar>
-        <div className={"flex-auto px-3 flex flex-col"}>
-          <div className={cn("my-4 flex-none", sidebarOpen && "lg:my-2")}>
-            {!sidebarOpen && <ToggleSidebarButton className={"hidden lg:inline-flex"}/>}
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button className={"inline-flex lg:hidden"} variant={"ghost"} size={"icon"}>
-                  <LuPanelLeftOpen className={"w-4 h-4"}/>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side={"left"} className={"p-0"}>
-                <Sidebar className={"mt-12"}>
-                  {sidebarContent}
-                </Sidebar>
-              </SheetContent>
-            </Sheet>
-          </div>
-          <div className={"flex-auto"}>
-            {children}
-          </div>
+
+        <div className={cn("my-4 flex-none absolute left-3", sidebarOpen && "lg:my-2")}>
+          {!sidebarOpen && <ToggleSidebarButton className={"hidden lg:inline-flex"}/>}
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button className={"inline-flex lg:hidden"} variant={"ghost"} size={"icon"}>
+                <LuPanelLeftOpen className={"w-4 h-4"}/>
+              </Button>
+            </SheetTrigger>
+            <SheetContent side={"left"} className={"p-0"}>
+              <Sidebar className={"mt-12"}>
+                {sidebarContent}
+              </Sidebar>
+            </SheetContent>
+          </Sheet>
+        </div>
+        <div className={cn("flex-auto px-3 flex flex-col pt-4")}>
+          {children}
         </div>
       </div>
     </WorkspaceProvider>

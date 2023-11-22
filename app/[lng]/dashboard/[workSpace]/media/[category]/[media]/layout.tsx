@@ -5,6 +5,8 @@ import {useTranslation} from "@/app/i18n";
 import Link from "next/link";
 import {getMediaListApi} from "@/request/media";
 import MediaListItem from "@/components/media-list-item";
+import {isSidebarOpen} from "@/components/toggle-sidebar-button";
+import {cn} from "@/lib/utils";
 
 interface MediaLayoutProps {
   params: {
@@ -18,6 +20,7 @@ interface MediaLayoutProps {
 
 export default async function MediaLayout({children, params}: MediaLayoutProps) {
   const {t} = await useTranslation(params.lng)
+  const sidebarOpen = isSidebarOpen()
 
   if (params.category !== 'all' && params.category !== 'video' && params.category !== 'audio' && params.category !== 'details')
     return redirect(`/${params.lng}/dashboard/${params.workspace}/media/all`);
@@ -29,7 +32,7 @@ export default async function MediaLayout({children, params}: MediaLayoutProps) 
 
   return (
     <div className={"flex flex-col space-y-3 h-full"}>
-      <div className={"flex-none"}>
+      <div className={cn("flex-none pl-12", sidebarOpen && "lg:pl-0")}>
         <Tabs defaultValue={params.category}>
           <TabsList>
             <Link href={`/${params.lng}/dashboard/${params.workspace}/media/all`}>
