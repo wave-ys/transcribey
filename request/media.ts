@@ -6,6 +6,20 @@ export interface TranscribeOptionsDto {
   language: string;
 }
 
+export interface MediaModel {
+  id: number,
+  fileName: string,
+  model: string,
+  language: string,
+  fileType: string,
+  status: string,
+  failed: boolean,
+  failedReason: string,
+  deleted: boolean,
+  createdTime: string,
+  workspaceId: number
+}
+
 function convertToFormData(options: TranscribeOptionsDto) {
   const formData = new FormData();
   formData.append('model', options.model);
@@ -29,4 +43,20 @@ export async function startTranscribeLocalFileApi(
     maxBodyLength: Infinity,
     maxContentLength: Infinity
   });
+}
+
+export async function getMediaListApi(
+  workspaceId: number,
+  category: 'all' | 'video' | 'audio',
+  deleted: boolean
+) {
+  return request<MediaModel[]>({
+    url: '/api/media',
+    method: 'get',
+    params: {
+      workspace: workspaceId,
+      category,
+      deleted
+    }
+  })
 }

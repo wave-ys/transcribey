@@ -62,6 +62,9 @@ dependencies:
   cmdk:
     specifier: ^0.2.0
     version: registry.npmjs.org/cmdk@0.2.0(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+  date-fns:
+    specifier: ^2.30.0
+    version: registry.npmjs.org/date-fns@2.30.0
   i18next:
     specifier: ^23.7.6
     version: registry.npmjs.org/i18next@23.7.6
@@ -2549,6 +2552,15 @@ packages:
     name: damerau-levenshtein
     version: 1.0.8
     dev: true
+
+  registry.npmjs.org/date-fns@2.30.0:
+    resolution: { integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/date-fns/-/date-fns-2.30.0.tgz }
+    name: date-fns
+    version: 2.30.0
+    engines: { node: '>=0.11' }
+    dependencies:
+      '@babel/runtime': registry.npmjs.org/@babel/runtime@7.23.2
+    dev: false
 
   registry.npmjs.org/debug@3.2.7:
     resolution: { integrity: sha512-CFjzYYAi4ThfiQvizrFQevTTXHtnCqWfe7x1AhgEscTz6ZbLbfoLRLPugTQyBth6f8ZERVUSyWHFD/7Wu4t1XQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/debug/-/debug-3.2.7.tgz }
