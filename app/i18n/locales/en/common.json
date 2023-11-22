@@ -88,6 +88,12 @@
       "all": "All",
       "video": "Video",
       "audio": "Audio"
+    },
+    "fileType": {
+      "error": "Error",
+      "video": "Video",
+      "audio": "Audio",
+      "detecting": "Detecting"
     }
   }
 }

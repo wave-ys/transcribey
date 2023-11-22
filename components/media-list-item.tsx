@@ -3,6 +3,7 @@ import {formatDistance} from 'date-fns'
 import {toUpperCaseLng} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {AiOutlineEllipsis} from "react-icons/ai";
+import {useTranslation} from "@/app/i18n";
 
 export interface MediaListItemProps {
   media: MediaModel,
@@ -10,6 +11,7 @@ export interface MediaListItemProps {
 }
 
 export default async function MediaListItem({media, lng}: MediaListItemProps) {
+  const {t} = await useTranslation(lng);
   const dateLocales = await import('date-fns/locale')
   const dateLocale = dateLocales[toUpperCaseLng(lng).split('-').join('') as keyof typeof dateLocales] as Locale;
 
@@ -35,7 +37,7 @@ export default async function MediaListItem({media, lng}: MediaListItemProps) {
         <span
           className={"bg-muted rounded-full py-0.5 px-2 text-xs flex items-center w-fit space-x-2 h-fit"}>
           <div className={"h-1 w-1 rounded-full bg-blue-600"}></div>
-          <span>Video</span>
+          <span>{t("media.fileType." + media.fileType)}</span>
         </span>
         <Button variant={'outline'} size={'icon'}><AiOutlineEllipsis/></Button>
       </div>

@@ -87,6 +87,12 @@
       "all": "全部",
       "video": "视频",
       "audio": "音频"
+    },
+    "fileType": {
+      "error": "错误",
+      "video": "视频",
+      "audio": "音频",
+      "detecting": "检测中"
     }
   }
 }
