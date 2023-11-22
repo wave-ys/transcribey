@@ -44,16 +44,16 @@ export default async function MediaLayout({children, params}: MediaLayoutProps) 
           </TabsList>
         </Tabs>
       </div>
-      <div className={"flex-auto flex space-x-3"}>
-        <div className={"flex-none w-96 h-full space-y-2 flex flex-col"}>
+      <div className={"flex-auto flex h-0"}>
+        <div className={"flex-none w-96 pr-3 space-y-2 pb-3 overflow-y-auto"}>
           {medias.map(media => (
-            <Link key={media.id}
+            <Link className={"block"} key={media.id}
                   href={`/${params.lng}/dashboard/${params.workspace}/media/${params.category}/${media.id}`}>
               <MediaListItem active={media.id + "" === params.media} media={media} lng={params.lng}/>
             </Link>
           ))}
         </div>
-        <div className={"flex-auto border-l pl-3 h-full"}>{children}</div>
+        <div className={"flex-auto border-l pl-3"}>{children}</div>
       </div>
     </div>
   )

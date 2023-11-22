@@ -60,8 +60,8 @@ export default async function DashboardLayout(
         }>
           {sidebarContent}
         </Sidebar>
-        <div className={"flex-auto px-3"}>
-          <div className={"my-4"}>
+        <div className={"flex-auto px-3 flex flex-col"}>
+          <div className={cn("my-4 flex-none", sidebarOpen && "lg:my-2")}>
             {!sidebarOpen && <ToggleSidebarButton className={"hidden lg:inline-flex"}/>}
             <Sheet>
               <SheetTrigger asChild>
@@ -76,7 +76,9 @@ export default async function DashboardLayout(
               </SheetContent>
             </Sheet>
           </div>
-          {children}
+          <div className={"flex-auto"}>
+            {children}
+          </div>
         </div>
       </div>
     </WorkspaceProvider>
