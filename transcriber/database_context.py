@@ -26,5 +26,13 @@ class DatabaseContext:
                 "result_path": result_path
             })
 
+    def mark_failed(self, media_id: str, reason: str):
+        self.db_connection.execute(
+            text("update Medias set FileType = 'error', Failed = 1, FailedReason = :reason where Id = :id"),
+            {
+                "id": media_id,
+                "reason": reason
+            })
+
     def commit(self):
         self.db_connection.commit()

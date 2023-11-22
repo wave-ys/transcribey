@@ -15,7 +15,7 @@ def detect_file_type(file_path: str):
     try:
         streams = json.loads(run(cmd, capture_output=True, check=True).stdout)['streams']
     except CalledProcessError as e:
-        raise RuntimeError(f"Failed to detect file type: {e.stderr.decode()}") from e
+        return 'error'
 
     video_existed = any(x['codec_type'] == 'video' for x in streams)
     audio_existed = any(x['codec_type'] == 'audio' for x in streams)

@@ -57,6 +57,11 @@ class MessageConsumer:
         try:
             self.object_storage.download_media(media, temp_file.name)
             file_type = detect_file_type(temp_file.name)
+            if file_type == 'error':
+                self.db_context.mark_failed(media['Id'], 'wrong_file_type')
+                self.db_context.commit()
+                ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
+                return
 
             self.db_context.mark_start_transcribe(media["Id"], file_type)
             self.db_context.commit()
