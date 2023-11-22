@@ -14,7 +14,7 @@ export default async function MediaListItem({media, lng}: MediaListItemProps) {
   const dateLocale = dateLocales[toUpperCaseLng(lng).split('-').join('') as keyof typeof dateLocales] as Locale;
 
   return (
-    <div className={"border rounded-xl p-2 flex space-x-2"}>
+    <div className={"border rounded-xl p-2 flex space-x-2 cursor-pointer hover:border-blue-600"}>
       <div className={"space-y-2 flex-auto min-w-0"}>
         <div className={"flex justify-between items-center space-x-4"}>
           <span
