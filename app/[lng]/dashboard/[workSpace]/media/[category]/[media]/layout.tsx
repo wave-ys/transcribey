@@ -4,8 +4,8 @@ import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {useTranslation} from "@/app/i18n";
 import Link from "next/link";
 import {getMediaListApi} from "@/request/media";
-import MediaListItem from "@/components/media-list-item";
-import {isSidebarOpen} from "@/components/toggle-sidebar-button";
+import MediaListItem from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/media-list-item";
+import {isSidebarOpen} from "@/app/[lng]/dashboard/[workspace]/toggle-sidebar-button";
 import {cn} from "@/lib/utils";
 
 interface MediaLayoutProps {

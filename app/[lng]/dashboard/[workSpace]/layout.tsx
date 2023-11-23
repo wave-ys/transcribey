@@ -3,12 +3,12 @@ import {Sidebar, SidebarSection} from "@/components/ui/sidebar";
 import {BiHome, BiMoviePlay, BiTrash} from "react-icons/bi";
 import {SidebarLinkItem, SidebarSettingsItem} from "@/components/ui/sidebar-link-item";
 import {cn} from "@/lib/utils";
-import ToggleSidebarButton, {isSidebarOpen} from "@/components/toggle-sidebar-button";
+import ToggleSidebarButton, {isSidebarOpen} from "@/app/[lng]/dashboard/[workspace]/toggle-sidebar-button";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
 import {LuPanelLeftOpen} from "react-icons/lu";
 import {Button} from "@/components/ui/button";
 import {useTranslation} from "@/app/i18n";
-import {WorkspaceSelect} from "@/components/workspace-select";
+import {WorkspaceSelect} from "@/app/[lng]/dashboard/[workspace]/workspace-select";
 import {getWorkspaceListApi} from "@/request/workspace";
 import {WorkspaceProvider} from "@/components/provider/workspace-provider";
 

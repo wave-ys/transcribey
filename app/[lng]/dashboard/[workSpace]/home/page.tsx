@@ -2,7 +2,7 @@ import React from "react";
 import {useTranslation} from "@/app/i18n";
 import CardButton from "@/components/ui/card-button";
 import {LuUpload} from "react-icons/lu";
-import MediaUploader from "@/components/media-uploader";
+import MediaUploader from "@/app/[lng]/dashboard/[workspace]/home/media-uploader";
 
 interface HomeProps {
   params: {
