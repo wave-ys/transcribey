@@ -98,6 +98,10 @@
       "dropDownMenu": {
         "subtitleEditing": "编辑字幕",
         "delete": "删除"
+      },
+      "deleteConfirm": {
+        "title": "确认",
+        "description": "确定要删除本条记录吗？"
       }
     }
   }

@@ -60,3 +60,13 @@ export async function getMediaListApi(
     }
   })
 }
+
+export async function deleteMediaApi(id: number, permanent: boolean) {
+  return request({
+    url: '/api/media/' + id,
+    method: 'delete',
+    params: {
+      permanent
+    }
+  })
+}

@@ -99,6 +99,10 @@
       "dropDownMenu": {
         "subtitleEditing": "Subtitle Editing",
         "delete": "Delete"
+      },
+      "deleteConfirm": {
+        "title": "Confirm",
+        "description": "Are you sure you want to delete this record?"
       }
     }
   }

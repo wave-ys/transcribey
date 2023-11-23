@@ -14,7 +14,7 @@ public class MediaController
     [HttpGet("{id}")]
     public async Task<ActionResult<MediaDto>> GetMedia(long id)
     {
-        var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == id);
+        var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == id && !m.Deleted);
         if (media == null)
             return NotFound();
         return new MediaDto(media);
@@ -34,6 +34,20 @@ public class MediaController
         var medias = await queryable
             .ToListAsync();
         return medias.ConvertAll(m => new MediaDto(m));
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteMedia(long id, [FromQuery] bool permanent)
+    {
+        if (!permanent)
+            await dataContext.Medias.Where(m => m.Id == id)
+                .ExecuteUpdateAsync(setter => setter
+                    .SetProperty(m => m.Deleted, true));
+        else
+            await dataContext.Medias.Where(m => m.Id == id)
+                .ExecuteDeleteAsync();
+
+        return NoContent();
     }
 
 
@@ -65,9 +79,6 @@ public class MediaController
         await dataContext.SaveChangesAsync();
 
         messageProducer.PublishTranscribeTask(media);
-        media.Status = MediaStatus.Published;
-        await dataContext.SaveChangesAsync();
-
         return CreatedAtAction("GetMedia", new { id = media.Id }, media);
     }
 }

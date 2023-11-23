@@ -6,7 +6,7 @@ import {useTranslation} from "@/app/i18n";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import {TimeDistance} from "@/components/date-display";
 import {RiScissors2Line} from "react-icons/ri";
-import {HiOutlineTrash} from "react-icons/hi";
+import MediaRemove from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/media-remove";
 
 
 export interface MediaListItemProps {
@@ -52,10 +52,7 @@ export default async function MediaListItem({media, lng, active}: MediaListItemP
               <RiScissors2Line className={"w-4 h-4 mr-2"}/>
               {t("media.listItem.dropDownMenu.subtitleEditing")}
             </DropdownMenuItem>
-            <DropdownMenuItem className={"text-destructive"}>
-              <HiOutlineTrash className={"w-4 h-4 mr-2"}/>
-              {t("media.listItem.dropDownMenu.delete")}
-            </DropdownMenuItem>
+            <MediaRemove id={media.id}/>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

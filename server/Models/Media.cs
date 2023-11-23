@@ -34,7 +34,6 @@ public class MediaFileType
 public class MediaStatus
 {
     public const string Created = "created";
-    public const string Published = "published";
     public const string Transcribing = "transcribing";
     public const string Completed = "completed";
 }
