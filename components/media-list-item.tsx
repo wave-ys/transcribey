@@ -5,6 +5,8 @@ import {AiOutlineEllipsis} from "react-icons/ai";
 import {useTranslation} from "@/app/i18n";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import {TimeDistance} from "@/components/date-display";
+import {RiScissors2Line} from "react-icons/ri";
+import {HiOutlineTrash} from "react-icons/hi";
 
 
 export interface MediaListItemProps {
@@ -46,12 +48,17 @@ export default async function MediaListItem({media, lng, active}: MediaListItemP
             <Button variant={'outline'} size={'icon'}><AiOutlineEllipsis/></Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem>{t("media.listItem.dropDownMenu.subtitleEditing")}</DropdownMenuItem>
-            <DropdownMenuItem>{t("media.listItem.dropDownMenu.delete")}</DropdownMenuItem>
+            <DropdownMenuItem>
+              <RiScissors2Line className={"w-4 h-4 mr-2"}/>
+              {t("media.listItem.dropDownMenu.subtitleEditing")}
+            </DropdownMenuItem>
+            <DropdownMenuItem className={"text-destructive"}>
+              <HiOutlineTrash className={"w-4 h-4 mr-2"}/>
+              {t("media.listItem.dropDownMenu.delete")}
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-
     </div>
   )
 }
