@@ -6,7 +6,7 @@ import uuid
 import pika
 
 import database_context
-from file_type_detector import detect_file_type
+from media_detector import detect_file_type, generate_thumbnail
 from object_storage import ObjectStorage
 from transcriber import Transcriber
 
@@ -51,22 +51,31 @@ class MessageConsumer:
                    body: bytes):
         media = json.loads(body)
 
-        temp_file = tempfile.NamedTemporaryFile(delete=False)
-        temp_file.close()
+        media_file = tempfile.NamedTemporaryFile(delete=False)
+        media_file.close()
+
+        thumbnail_file = tempfile.NamedTemporaryFile(delete=False, suffix='.png')
+        thumbnail_file.close()
 
         try:
-            self.object_storage.download_media(media, temp_file.name)
-            file_type = detect_file_type(temp_file.name)
+            self.object_storage.download_media(media, media_file.name)
+            file_type = detect_file_type(media_file.name)
             if file_type == 'error':
                 self.db_context.mark_failed(media['Id'], 'wrong_file_type')
                 self.db_context.commit()
                 ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
                 return
 
-            self.db_context.mark_start_transcribe(media["Id"], file_type)
+            thumbnail_path = ''
+            if file_type == 'video':
+                thumbnail_path = '/thumbnail/' + str(uuid.uuid4()) + '.png'
+                generate_thumbnail(media_file.name, thumbnail_file.name)
+                self.object_storage.store_thumbnail(thumbnail_file.name, thumbnail_path)
+
+            self.db_context.mark_start_transcribe(media["Id"], file_type, thumbnail_path)
             self.db_context.commit()
 
-            data = self.transcriber.transcribe(media, temp_file.name)
+            data = self.transcriber.transcribe(media, media_file.name)
             result_path = '/transcription/' + str(uuid.uuid4()) + '.json'
             self.object_storage.store_result(json.dumps(data), result_path)
 
@@ -74,4 +83,5 @@ class MessageConsumer:
             self.db_context.commit()
             ch.basic_ack(delivery_tag=method.delivery_tag)
         finally:
-            os.unlink(temp_file.name)
+            os.unlink(media_file.name)
+            os.unlink(thumbnail_file.name)

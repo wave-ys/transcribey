@@ -101,7 +101,6 @@ public class MediaDto(Media media)
     public string Language { get; set; } = media.Language;
     public string FileType { get; set; } = media.FileType;
 
-
     public string Status { get; set; } = media.Status;
     public bool Failed { get; set; } = media.Failed;
     public string FailedReason { get; set; } = media.FailedReason;

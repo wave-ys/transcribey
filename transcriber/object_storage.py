@@ -18,3 +18,6 @@ class ObjectStorage:
         # TODO: try leveraging multi-thread to improve speed
         self.client.put_object(self.bucket_name, upload_path, io.BytesIO(data), len(data),
                                content_type='application/json')
+
+    def store_thumbnail(self, file_path: str, upload_path: str):
+        self.client.fput_object(self.bucket_name, upload_path, file_path, content_type='image/png')
