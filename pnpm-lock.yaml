@@ -68,6 +68,9 @@ dependencies:
   date-fns:
     specifier: ^2.30.0
     version: registry.npmjs.org/date-fns@2.30.0
+  date-fns-tz:
+    specifier: ^2.0.0
+    version: registry.npmjs.org/date-fns-tz@2.0.0(date-fns@2.30.0)
   i18next:
     specifier: ^23.7.6
     version: registry.npmjs.org/i18next@23.7.6
@@ -2626,6 +2629,17 @@ packages:
     name: damerau-levenshtein
     version: 1.0.8
     dev: true
+
+  registry.npmjs.org/date-fns-tz@2.0.0(date-fns@2.30.0):
+    resolution: { integrity: sha512-OAtcLdB9vxSXTWHdT8b398ARImVwQMyjfYGkKD2zaGpHseG2UPHbHjXELReErZFxWdSLph3c2zOaaTyHfOhERQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/date-fns-tz/-/date-fns-tz-2.0.0.tgz }
+    id: registry.npmjs.org/date-fns-tz/2.0.0
+    name: date-fns-tz
+    version: 2.0.0
+    peerDependencies:
+      date-fns: '>=2.0.0'
+    dependencies:
+      date-fns: registry.npmjs.org/date-fns@2.30.0
+    dev: false
 
   registry.npmjs.org/date-fns@2.30.0:
     resolution: { integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/date-fns/-/date-fns-2.30.0.tgz }

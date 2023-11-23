@@ -1,10 +1,10 @@
 import {MediaModel} from "@/request/media";
-import {formatDistance} from 'date-fns'
-import {cn, toUpperCaseLng} from "@/lib/utils";
+import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {AiOutlineEllipsis} from "react-icons/ai";
 import {useTranslation} from "@/app/i18n";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
+import {TimeDistance} from "@/components/date-display";
 
 
 export interface MediaListItemProps {
@@ -15,8 +15,6 @@ export interface MediaListItemProps {
 
 export default async function MediaListItem({media, lng, active}: MediaListItemProps) {
   const {t} = await useTranslation(lng);
-  const dateLocales = await import('date-fns/locale')
-  const dateLocale = dateLocales[toUpperCaseLng(lng).split('-').join('') as keyof typeof dateLocales] as Locale;
 
   return (
     <div className={cn(
@@ -29,11 +27,7 @@ export default async function MediaListItem({media, lng, active}: MediaListItemP
           <span
             className={"font-extrabold whitespace-nowrap overflow-x-hidden overflow-ellipsis"}>{media.fileName}</span>
           <span className={"text-xs text-muted-foreground flex-auto whitespace-nowrap"}>
-          {/*  TODO: correct the timezone issue*/}
-          {formatDistance(new Date(media.createdTime), new Date(), {
-            addSuffix: true,
-            locale: dateLocale
-          })}
+          <TimeDistance lng={lng} date={media.createdTime}/>
         </span>
         </div>
         <div className={"text-sm text-muted-foreground line-clamp-2"}>
