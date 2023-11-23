@@ -10,7 +10,7 @@ export interface CardButtonProps {
 export default function CardButton({icon, title, subtitle}: CardButtonProps) {
   return (
     <div className={cn(
-      "border w-72 h-28 rounded-xl font-medium cursor-pointer",
+      "border w-72 h-28 rounded-xl font-medium cursor-pointer shadow-md",
       "hover:border-blue-600 transition duration-300 bg-white/10",
       "p-4 flex space-x-4"
     )}>

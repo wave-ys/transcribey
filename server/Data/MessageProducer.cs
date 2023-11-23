@@ -1,3 +1,4 @@
+using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 using RabbitMQ.Client;
@@ -12,7 +13,7 @@ public class MessageProducer(IModel channel) : IMessageProducer
     public void PublishTranscribeTask(Media media)
     {
         var basicProperties = channel.CreateBasicProperties();
-        basicProperties.ContentType = "application/json";
+        basicProperties.ContentType = MediaTypeNames.Application.Json;
         basicProperties.Headers = new Dictionary<string, object>
         {
             ["model"] = media.Model,
