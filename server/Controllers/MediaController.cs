@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Transcribey.Data;
 using Transcribey.Models;
+using Transcribey.Utils;
 
 namespace Transcribey.Controllers;
 
@@ -54,32 +55,62 @@ public class MediaController
     [HttpPost("upload")]
     public async Task<ActionResult<MediaDto>> StartTranscribeUploadFile([FromForm] TranscribeOptionsDto options)
     {
-        var extension = options.File.FileName.Split('.')[^1];
-        var storePath = "/media/" + Guid.NewGuid() + "." + extension;
-        if (!new FileExtensionContentTypeProvider().TryGetContentType(options.File.FileName, out var contentType))
-            return BadRequest();
-        if (!contentType.StartsWith("audio") && !contentType.StartsWith("video"))
-            return BadRequest();
-        if (await dataContext.Workspaces.SingleOrDefaultAsync(w => w.Id == options.WorkspaceId) == null)
-            return BadRequest();
+        var filePath = Path.GetTempFileName();
+        var tempThumbnailFilePath = "";
 
-        var media = new Media
+        try
         {
-            StorePath = storePath,
-            FileName = options.File.FileName,
-            FileType = MediaFileType.Detecting,
-            Model = options.Model,
-            Language = options.Language,
-            Deleted = false,
-            CreatedTime = DateTime.UtcNow,
-            WorkspaceId = options.WorkspaceId
-        };
-        await objectStorage.StoreMedia(options.File.OpenReadStream(), storePath, options.File.Length, contentType);
-        dataContext.Medias.Add(media);
-        await dataContext.SaveChangesAsync();
+            var extension = options.File.FileName.Split('.')[^1];
+            var storePath = "/media/" + Guid.NewGuid() + "." + extension;
+            if (!new FileExtensionContentTypeProvider().TryGetContentType(options.File.FileName, out var contentType))
+                return BadRequest();
+            if (!contentType.StartsWith("audio") && !contentType.StartsWith("video"))
+                return BadRequest();
+            if (await dataContext.Workspaces.SingleOrDefaultAsync(w => w.Id == options.WorkspaceId) == null)
+                return BadRequest();
 
-        messageProducer.PublishTranscribeTask(media);
-        return CreatedAtAction("GetMedia", new { id = media.Id }, media);
+
+            var fileStream = new FileStream(filePath, FileMode.Create);
+            await options.File.CopyToAsync(fileStream);
+            fileStream.Close();
+
+            var fileType = await MediaDetector.DetectFileType(filePath);
+            if (fileType == MediaFileType.Error)
+                return BadRequest();
+
+            var thumbnailPath = fileType == MediaFileType.Video ? "/thumbnail/" + Guid.NewGuid() + ".png" : "";
+            if (fileType == MediaFileType.Video)
+            {
+                tempThumbnailFilePath = Path.GetTempFileName() + ".png";
+                await MediaDetector.GenerateThumbnail(filePath, tempThumbnailFilePath);
+                await objectStorage.StoreThumbnail(tempThumbnailFilePath, thumbnailPath);
+            }
+
+            var media = new Media
+            {
+                StorePath = storePath,
+                FileName = options.File.FileName,
+                FileType = fileType,
+                ThumbnailPath = thumbnailPath,
+                Model = options.Model,
+                Language = options.Language,
+                Deleted = false,
+                CreatedTime = DateTime.UtcNow,
+                WorkspaceId = options.WorkspaceId
+            };
+            await objectStorage.StoreMedia(filePath, storePath, options.File.Length, contentType);
+            dataContext.Medias.Add(media);
+            await dataContext.SaveChangesAsync();
+
+            messageProducer.PublishTranscribeTask(media);
+            return CreatedAtAction("GetMedia", new { id = media.Id }, media);
+        }
+        finally
+        {
+            if (tempThumbnailFilePath != "")
+                System.IO.File.Delete(tempThumbnailFilePath);
+            System.IO.File.Delete(filePath);
+        }
     }
 }
 

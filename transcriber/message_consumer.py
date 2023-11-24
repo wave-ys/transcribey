@@ -6,7 +6,6 @@ import uuid
 import pika
 
 import database_context
-from media_detector import detect_file_type, generate_thumbnail
 from object_storage import ObjectStorage
 from transcriber import Transcriber
 
@@ -59,20 +58,7 @@ class MessageConsumer:
 
         try:
             self.object_storage.download_media(media, media_file.name)
-            file_type = detect_file_type(media_file.name)
-            if file_type == 'error':
-                self.db_context.mark_failed(media['Id'], 'wrong_file_type')
-                self.db_context.commit()
-                ch.basic_nack(delivery_tag=method.delivery_tag, requeue=False)
-                return
-
-            thumbnail_path = ''
-            if file_type == 'video':
-                thumbnail_path = '/thumbnail/' + str(uuid.uuid4()) + '.png'
-                generate_thumbnail(media_file.name, thumbnail_file.name)
-                self.object_storage.store_thumbnail(thumbnail_file.name, thumbnail_path)
-
-            self.db_context.mark_start_transcribe(media["Id"], file_type, thumbnail_path)
+            self.db_context.mark_start_transcribe(media["Id"])
             self.db_context.commit()
 
             data = self.transcriber.transcribe(media, media_file.name)

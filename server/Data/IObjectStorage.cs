@@ -2,6 +2,7 @@ namespace Transcribey.Data;
 
 public interface IObjectStorage
 {
-    Task StoreMedia(Stream fileStream, string storePath, long fileSize, string contentType);
+    Task StoreMedia(string filePath, string storePath, long fileSize, string contentType);
+    Task StoreThumbnail(string filePath, string storePath);
     Task<Stream> GetThumbnail(string thumbnailPath);
 }

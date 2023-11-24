@@ -29,6 +29,7 @@ public class MediaFileType
 {
     public const string Audio = "audio";
     public const string Video = "video";
+    public const string Error = "error";
     public const string Detecting = "detecting";
 }
 

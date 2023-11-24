@@ -17,7 +17,8 @@ export default function MediaCard({media, lng, className}: MediaCardProps) {
       className
     )}>
       <div className={"h-52 flex-none relative"}>
-        <Image className={"object-cover"} fill src={`/api/thumbnail/${media.id}`} alt={media.fileName}/>
+        <Image sizes={"26rem, 32rem"} priority className={"object-cover"} fill src={`/api/thumbnail/${media.id}`}
+               alt={media.fileName}/>
       </div>
       <div className={"bg-white/10 flex-auto p-2 space-y-2"}>
         <div className={"text-gray-500 text-sm"}>
