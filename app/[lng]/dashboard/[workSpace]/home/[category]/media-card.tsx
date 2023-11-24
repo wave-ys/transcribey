@@ -12,8 +12,9 @@ export interface MediaCardProps {
 export default function MediaCard({media, lng, className}: MediaCardProps) {
   return (
     <div className={cn(
-      "h-80 w-64 shadow-md rounded-2xl overflow-hidden",
+      "h-80 w-64 shadow rounded-2xl overflow-hidden",
       "flex flex-col cursor-pointer",
+      "hover:-translate-y-1 hover:shadow-md transition",
       className
     )}>
       <div className={"h-52 flex-none relative"}>
