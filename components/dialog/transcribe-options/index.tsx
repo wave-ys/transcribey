@@ -30,7 +30,7 @@ export default function TranscribeOptionsDialog(props: TranscribeOptionsDialogPr
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      model: "small",
+      model: "tiny",
       language: "auto",
     },
   })
