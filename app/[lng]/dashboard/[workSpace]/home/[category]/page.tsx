@@ -23,7 +23,8 @@ export default async function Home({params: {lng, category, workspace}}: HomePro
   if (category !== 'all' && category !== 'video' && category !== 'audio')
     return redirect(`/${lng}/dashboard/${workspace}/media/all`);
 
-  const {data: medias} = await getMediaListApi(+workspace, category, false)
+  const {data: medias} =
+    workspace === '_' ? {data: []} : await getMediaListApi(+workspace, category, false)
 
   return (
     <div className={"p-12"}>
