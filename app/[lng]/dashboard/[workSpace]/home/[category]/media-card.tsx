@@ -29,7 +29,7 @@ export default function MediaCard({media, lng, className}: MediaCardProps) {
           {media.fileName}
         </div>
         <div className={"line-clamp-2 text-gray-500 text-xs"}>
-          This is the micro machine representing the most miniature motorcade of Michael Scheme.
+          {media.preface}
         </div>
       </div>
     </div>

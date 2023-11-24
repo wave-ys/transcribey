@@ -1,5 +1,3 @@
-import json
-
 from whisper import whisper
 
 from message_producer import MessageProducer
@@ -20,7 +18,8 @@ class Transcriber:
             'end': segment['end'],
             'text': segment['text']
         } for segment in result['segments']]
-        return json.dumps(data)
+        preface = result['text'][0:101]
+        return dict(data=data, preface=preface)
 
     def do_transcribe(self, media, file_path):
         def __on_progress(all_segments, current_segments, total_progress, current_progress):

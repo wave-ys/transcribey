@@ -33,7 +33,7 @@ export default async function MediaListItem({media, lng, active}: MediaListItemP
         </span>
         </div>
         <div className={"text-sm text-muted-foreground line-clamp-2"}>
-          This is the micro machine representing the most miniature motorcade of Michael Scheme.
+          {media.preface}
         </div>
       </div>
 

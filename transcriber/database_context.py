@@ -19,15 +19,16 @@ class DatabaseContext:
                 "status": MEDIA_STATUS_TRANSCRIBING,
             })
 
-    def mark_complete_transcribe(self, media_id: str, result_path: str):
+    def mark_complete_transcribe(self, media_id: str, result_path: str, preface: str):
         self.db_connection.execute(
             text("update Medias set "
-                 "Status = :status, ResultPath = :result_path "
+                 "Status = :status, ResultPath = :result_path, Preface = :preface "
                  "where Id = :id"),
             {
                 "id": media_id,
                 "status": MEDIA_STATUS_COMPLETED,
-                "result_path": result_path
+                "result_path": result_path,
+                "preface": preface
             })
 
     def mark_failed(self, media_id: str, reason: str):

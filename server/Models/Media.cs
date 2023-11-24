@@ -3,6 +3,7 @@ namespace Transcribey.Models;
 public class Media
 {
     public long Id { get; set; }
+    public string Preface { get; set; } = "";
 
     public string FileName { get; set; } = "";
     public string StorePath { get; set; } = "";
@@ -12,7 +13,6 @@ public class Media
     public string Model { get; set; } = "";
     public string Language { get; set; } = "";
     public string FileType { get; set; } = MediaFileType.Detecting;
-
 
     public string Status { get; set; } = MediaStatus.Created;
     public bool Failed { get; set; }

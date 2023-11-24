@@ -125,6 +125,7 @@ public record TranscribeOptionsDto
 public class MediaDto(Media media)
 {
     public long Id { get; set; } = media.Id;
+    public string Preface { get; set; } = media.Preface;
 
     public string FileName { get; set; } = media.FileName;
 

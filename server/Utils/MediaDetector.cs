@@ -22,7 +22,7 @@ public class MediaDetector
             var videoExist = streams.Any(stream => stream!["codec_type"]!.GetValue<string>() == "video");
             var audioExist = streams.Any(stream => stream!["codec_type"]!.GetValue<string>() == "audio");
 
-            if (!videoExist || !audioExist)
+            if (!videoExist && !audioExist)
                 return MediaFileType.Error;
             if (videoExist)
                 return MediaFileType.Video;

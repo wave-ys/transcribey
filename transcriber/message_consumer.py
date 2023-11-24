@@ -61,11 +61,11 @@ class MessageConsumer:
             self.db_context.mark_start_transcribe(media["Id"])
             self.db_context.commit()
 
-            data = self.transcriber.transcribe(media, media_file.name)
+            result = self.transcriber.transcribe(media, media_file.name)
             result_path = '/transcription/' + str(uuid.uuid4()) + '.json'
-            self.object_storage.store_result(json.dumps(data), result_path)
+            self.object_storage.store_result(json.dumps(result["data"]), result_path)
 
-            self.db_context.mark_complete_transcribe(media["Id"], result_path)
+            self.db_context.mark_complete_transcribe(media["Id"], result_path, result["preface"])
             self.db_context.commit()
             ch.basic_ack(delivery_tag=method.delivery_tag)
         finally:
