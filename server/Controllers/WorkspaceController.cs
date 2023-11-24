@@ -11,9 +11,12 @@ public class WorkspaceController : ControllerBase
 {
     private readonly DataContext _context;
 
-    public WorkspaceController(DataContext context)
+    private readonly IObjectStorage _objectStorage;
+
+    public WorkspaceController(DataContext context, IObjectStorage objectStorage)
     {
         _context = context;
+        _objectStorage = objectStorage;
     }
 
     // GET: api/Workspace
@@ -75,9 +78,12 @@ public class WorkspaceController : ControllerBase
         var workspace = await _context.Workspaces.FindAsync(id);
         if (workspace == null) return NotFound();
 
-        _context.Workspaces.Remove(workspace);
-        await _context.SaveChangesAsync();
+        var medias = await _context.Medias.Where(m => m.WorkspaceId == id).AsNoTracking().ToListAsync();
+        await _objectStorage.RemoveFiles(medias
+            .SelectMany(m => new List<string> { m.ResultPath, m.StorePath, m.ThumbnailPath })
+            .Where(s => !string.IsNullOrEmpty(s)).ToList());
 
+        await _context.Workspaces.Where(m => m.Id == id).ExecuteDeleteAsync();
         return NoContent();
     }
 

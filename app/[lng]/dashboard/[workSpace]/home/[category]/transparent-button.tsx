@@ -7,7 +7,7 @@ export interface TransparentButtonProps extends React.HTMLAttributes<HTMLDivElem
 
 export default function TransparentButton({icon, className, onClick}: TransparentButtonProps) {
   return (
-    <div className={cn("inline-block bg-black/30 p-2 rounded-xl", className)} onClick={onClick}>
+    <div className={cn("inline-block bg-black/30 p-2 rounded-xl text-white", className)} onClick={onClick}>
       {icon}
     </div>
   )

@@ -28,7 +28,7 @@ export default async function MediaLayout({children, params}: MediaLayoutProps) 
   if (params.category === 'details')
     return <>detail</>
 
-  const {data: medias} = await getMediaListApi(+params.workspace, params.category, false)
+  const {data: medias} = params.workspace === '_' ? {data: []} : await getMediaListApi(+params.workspace, params.category, false)
 
   return (
     <div className={"flex flex-col space-y-3 h-full"}>

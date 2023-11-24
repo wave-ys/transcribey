@@ -41,12 +41,21 @@ public class MediaController
     public async Task<ActionResult> DeleteMedia(long id, [FromQuery] bool permanent)
     {
         if (!permanent)
+        {
             await dataContext.Medias.Where(m => m.Id == id)
                 .ExecuteUpdateAsync(setter => setter
                     .SetProperty(m => m.Deleted, true));
+        }
         else
+        {
+            var media = await dataContext.Medias.AsNoTracking().SingleOrDefaultAsync(m => m.Id == id);
+            if (media == null)
+                return NotFound();
             await dataContext.Medias.Where(m => m.Id == id)
                 .ExecuteDeleteAsync();
+            await objectStorage.RemoveFiles(new List<string>
+                { media.ThumbnailPath, media.ResultPath, media.StorePath });
+        }
 
         return NoContent();
     }
