@@ -105,5 +105,12 @@
         "description": "Are you sure you want to delete this record?"
       }
     }
+  },
+  "trash": {
+    "columns": {
+      "thumbnail": "Thumbnail",
+      "fileName": "Original Filename",
+      "createdAt": "Created At"
+    }
   }
 }

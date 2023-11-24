@@ -104,5 +104,12 @@
         "description": "确定要删除本条记录吗？"
       }
     }
+  },
+  "trash": {
+    "columns": {
+      "thumbnail": "缩略图",
+      "fileName": "原始文件名",
+      "createdAt": "创建时间"
+    }
   }
 }

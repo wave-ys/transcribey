@@ -1,7 +1,7 @@
 'use client';
 
 import {formatDistance} from "date-fns";
-import {utcToZonedTime} from "date-fns-tz";
+import {format, utcToZonedTime} from "date-fns-tz";
 import getDateFnsLocale from "@/app/i18n/date";
 
 // TODO: Test whether this really works in docker with different timezones
@@ -15,6 +15,17 @@ export function TimeDistance(props: { lng: string, date: string }) {
           addSuffix: true,
           locale: getDateFnsLocale(props.lng)
         })}
+    </span>
+  )
+}
+
+export function TimeFormat(props: { lng: string, date: string }) {
+  return (
+    <span suppressHydrationWarning>
+      {format(
+        utcToZonedTime(props.date, Intl.DateTimeFormat().resolvedOptions().timeZone),
+        'yyyy-MM-dd HH:mm:ss'
+      )}
     </span>
   )
 }
