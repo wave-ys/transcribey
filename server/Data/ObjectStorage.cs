@@ -61,4 +61,34 @@ public class ObjectStorage(IConfiguration configuration, IMinioClient minioClien
                 .WithObjects(paths)
         );
     }
+
+    public async Task<long> GetFileSize(string filePath)
+    {
+        var stat = await minioClient.StatObjectAsync(
+            new StatObjectArgs()
+                .WithBucket(_bucketName)
+                .WithObject(filePath)
+        );
+        return stat.Size;
+    }
+
+    public async Task GetPartialFile(string filePath, long from, long to, Stream writer)
+    {
+        var task = new TaskCompletionSource<Stream>();
+        await minioClient.GetObjectAsync(
+            new GetObjectArgs()
+                .WithBucket(_bucketName)
+                .WithObject(filePath)
+                .WithOffsetAndLength(from, to - from + 1)
+                .WithCallbackStream(stream =>
+                {
+                    var memoryStream = new MemoryStream();
+                    stream.CopyTo(memoryStream);
+                    memoryStream.Seek(0, SeekOrigin.Begin);
+                    task.SetResult(memoryStream);
+                })
+        );
+        var stream = await task.Task;
+        await stream.CopyToAsync(writer);
+    }
 }
