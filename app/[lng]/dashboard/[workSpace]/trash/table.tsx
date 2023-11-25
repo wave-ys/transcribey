@@ -86,7 +86,7 @@ export default function TrashTable({data, lng, sidebarOpen}: {
                 <TableCell>
                   <div className={"h-12 w-28 relative"}>
                     <Image priority className={"object-cover"} fill sizes={"6rem, 14rem"}
-                           src={media.fileType === 'video' ? `/api/thumbnail/${media.id}` : musicCover}
+                           src={media.fileType === 'video' ? `/api/resource/thumbnail/${media.id}` : musicCover}
                            alt={media.fileName}/>
                   </div>
                 </TableCell>

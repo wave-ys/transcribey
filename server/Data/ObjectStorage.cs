@@ -35,13 +35,13 @@ public class ObjectStorage(IConfiguration configuration, IMinioClient minioClien
         );
     }
 
-    public async Task<Stream> GetThumbnail(string thumbnailPath)
+    public async Task<Stream> GetFile(string filePath)
     {
         var task = new TaskCompletionSource<Stream>();
         await minioClient.GetObjectAsync(
             new GetObjectArgs()
                 .WithBucket(_bucketName)
-                .WithObject(thumbnailPath)
+                .WithObject(filePath)
                 .WithCallbackStream(stream =>
                 {
                     Stream memoryStream = new MemoryStream();

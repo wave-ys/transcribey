@@ -87,6 +87,7 @@ public class MediaController
     public async Task<ActionResult<MediaDto>> StartTranscribeUploadFile([FromForm] TranscribeOptionsDto options)
     {
         var filePath = Path.GetTempFileName();
+        var processedFilePath = "";
         var tempThumbnailFilePath = "";
 
         try
@@ -105,7 +106,10 @@ public class MediaController
             await options.File.CopyToAsync(fileStream);
             fileStream.Close();
 
-            var fileType = await MediaDetector.DetectFileType(filePath);
+            processedFilePath = Path.GetTempFileName() + "." + extension;
+            await MediaProcessor.MoveMetadataBlock(filePath, processedFilePath);
+
+            var fileType = await MediaProcessor.DetectFileType(processedFilePath);
             if (fileType == MediaFileType.Error)
                 return BadRequest();
 
@@ -113,7 +117,7 @@ public class MediaController
             if (fileType == MediaFileType.Video)
             {
                 tempThumbnailFilePath = Path.GetTempFileName() + ".png";
-                await MediaDetector.GenerateThumbnail(filePath, tempThumbnailFilePath);
+                await MediaProcessor.GenerateThumbnail(processedFilePath, tempThumbnailFilePath);
                 await objectStorage.StoreThumbnail(tempThumbnailFilePath, thumbnailPath);
             }
 
@@ -129,7 +133,7 @@ public class MediaController
                 CreatedTime = DateTime.UtcNow,
                 WorkspaceId = options.WorkspaceId
             };
-            await objectStorage.StoreMedia(filePath, storePath, options.File.Length, contentType);
+            await objectStorage.StoreMedia(processedFilePath, storePath, options.File.Length, contentType);
             dataContext.Medias.Add(media);
             await dataContext.SaveChangesAsync();
 
@@ -140,6 +144,8 @@ public class MediaController
         {
             if (tempThumbnailFilePath != "")
                 System.IO.File.Delete(tempThumbnailFilePath);
+            if (processedFilePath != "")
+                System.IO.File.Delete(processedFilePath);
             System.IO.File.Delete(filePath);
         }
     }

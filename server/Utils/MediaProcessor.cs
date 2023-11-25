@@ -4,7 +4,7 @@ using Transcribey.Models;
 
 namespace Transcribey.Utils;
 
-public class MediaDetector
+public class MediaProcessor
 {
     public static async Task<string> DetectFileType(string path)
     {
@@ -40,6 +40,16 @@ public class MediaDetector
         process.StartInfo.FileName = "ffmpeg";
         process.StartInfo.Arguments =
             $"-loglevel quiet -i \"{mediaPath}\" -vf thumbnail=300 -frames:v 1 -y \"{outputPath}\"";
+        process.Start();
+        await process.WaitForExitAsync();
+    }
+
+    public static async Task MoveMetadataBlock(string mediaPath, string outputPath)
+    {
+        using var process = new Process();
+        process.StartInfo.FileName = "ffmpeg";
+        process.StartInfo.Arguments =
+            $"-i \"{mediaPath}\" -codec copy -movflags faststart \"{outputPath}\"";
         process.Start();
         await process.WaitForExitAsync();
     }

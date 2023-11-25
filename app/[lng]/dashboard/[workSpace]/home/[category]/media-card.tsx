@@ -28,7 +28,7 @@ export default function MediaCard({media, lng, className}: MediaCardProps) {
           <RemoveMediaButton id={media.id}/>
         </div>
         <Image sizes={"26rem, 32rem"} priority className={"object-cover"} fill
-               src={media.fileType === 'video' ? `/api/thumbnail/${media.id}` : musicCover}
+               src={media.fileType === 'video' ? `/api/resource/thumbnail/${media.id}` : musicCover}
                alt={media.fileName}/>
       </div>
       <div className={"bg-white/10 flex-auto p-2 space-y-2"}>

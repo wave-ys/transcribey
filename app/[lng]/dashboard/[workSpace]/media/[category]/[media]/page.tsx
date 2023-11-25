@@ -1,4 +1,6 @@
 import React from "react";
+import {getMediaApi, MediaModel} from "@/request/media";
+import {redirect} from "next/navigation";
 
 interface MediaPageProps {
   params: {
@@ -9,6 +11,18 @@ interface MediaPageProps {
   }
 }
 
-export default function MediaPage({params}: MediaPageProps) {
-  return <>{params.media}</>
+export default async function MediaPage({params}: MediaPageProps) {
+  if (params.media === '_')
+    return <></>
+  let media: MediaModel;
+  try {
+    const {data} = await getMediaApi(+params.media);
+    media = data;
+  } catch (e) {
+    return redirect(`/${params.lng}/dashboard/${params.workspace}/media/${params.category}/_`);
+  }
+
+  return (
+    <video controls src={`/api/resource/media/${media.id}`}></video>
+  )
 }

@@ -78,3 +78,10 @@ export async function putBackMediaApi(id: number) {
     method: 'put'
   })
 }
+
+export async function getMediaApi(id: number) {
+  return request<MediaModel>({
+    url: '/api/media/' + id,
+    method: 'get'
+  })
+}
