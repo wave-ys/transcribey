@@ -71,3 +71,10 @@ export async function deleteMediaApi(id: number, permanent: boolean) {
     }
   })
 }
+
+export async function putBackMediaApi(id: number) {
+  return request({
+    url: '/api/media/put_back/' + id,
+    method: 'put'
+  })
+}

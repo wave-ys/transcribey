@@ -54,9 +54,19 @@ public class MediaController
             await dataContext.Medias.Where(m => m.Id == id)
                 .ExecuteDeleteAsync();
             await objectStorage.RemoveFiles(new List<string>
-                { media.ThumbnailPath, media.ResultPath, media.StorePath });
+                    { media.ThumbnailPath, media.ResultPath, media.StorePath }
+                .Where(s => !string.IsNullOrEmpty(s)).ToList());
         }
 
+        return NoContent();
+    }
+
+    [HttpPut("put_back/{id}")]
+    public async Task<ActionResult> PutBackMedia(long id)
+    {
+        await dataContext.Medias.Where(m => m.Id == id)
+            .ExecuteUpdateAsync(setter => setter
+                .SetProperty(m => m.Deleted, false));
         return NoContent();
     }
 

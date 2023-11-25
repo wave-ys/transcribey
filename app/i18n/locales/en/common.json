@@ -111,6 +111,10 @@
       "thumbnail": "Thumbnail",
       "fileName": "Original Filename",
       "createdAt": "Created At"
+    },
+    "operations": {
+      "revoke": "Put Back",
+      "permanentlyDelete": "Permanently Delete"
     }
   }
 }

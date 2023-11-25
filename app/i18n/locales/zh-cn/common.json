@@ -110,6 +110,10 @@
       "thumbnail": "缩略图",
       "fileName": "原始文件名",
       "createdAt": "创建时间"
+    },
+    "operations": {
+      "revoke": "撤回",
+      "permanentlyDelete": "永久删除"
     }
   }
 }
