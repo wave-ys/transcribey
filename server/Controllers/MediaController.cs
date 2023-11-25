@@ -1,3 +1,4 @@
+using System.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
@@ -48,14 +49,25 @@ public class MediaController
         }
         else
         {
-            var media = await dataContext.Medias.AsNoTracking().SingleOrDefaultAsync(m => m.Id == id);
-            if (media == null)
-                return NotFound();
-            await dataContext.Medias.Where(m => m.Id == id)
-                .ExecuteDeleteAsync();
-            await objectStorage.RemoveFiles(new List<string>
-                    { media.ThumbnailPath, media.ResultPath, media.StorePath }
-                .Where(s => !string.IsNullOrEmpty(s)).ToList());
+            // https://stackoverflow.com/a/18134569
+            await using var transaction =
+                await dataContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
+            try
+            {
+                var media = await dataContext.Medias.AsNoTracking().SingleOrDefaultAsync(m => m.Id == id);
+                if (media == null)
+                    return NotFound();
+                await dataContext.Medias.Where(m => m.Id == id)
+                    .ExecuteDeleteAsync();
+                await objectStorage.RemoveFiles(new List<string>
+                        { media.ThumbnailPath, media.ResultPath, media.StorePath }
+                    .Where(s => !string.IsNullOrEmpty(s)).ToList());
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+            }
         }
 
         return NoContent();

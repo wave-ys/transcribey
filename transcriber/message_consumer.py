@@ -74,9 +74,16 @@ class MessageConsumer:
             self.object_storage.store_result(json.dumps(result["data"]), result_path)
             logging.info("Result saved.")
 
-            self.db_context.mark_complete_transcribe(media["Id"], result_path, result["preface"])
-            self.db_context.commit()
-            logging.info("Save result path to database.")
+            current_record = self.db_context.fetch_media(media["Id"])
+            if current_record is not None:
+                self.db_context.mark_complete_transcribe(media["Id"], result_path, result["preface"])
+                self.db_context.commit()
+                logging.info("Save result path to database.")
+            else:
+                self.db_context.commit()
+                logging.info("The database record has been deleted. Deleting result file in Minio.")
+                self.object_storage.delete_file(result_path)
+                logging.info("Result deleted.")
             ch.basic_ack(delivery_tag=method.delivery_tag)
             logging.info("Message consumed successfully.")
         finally:

@@ -2,12 +2,14 @@ import sqlalchemy
 from sqlalchemy import text
 
 MEDIA_STATUS_TRANSCRIBING = 'transcribing'
+MEDIA_STATUS_RESULT_SAVED = 'resultSaved'
 MEDIA_STATUS_COMPLETED = 'completed'
 
 
 class DatabaseContext:
-    def __init__(self, db_connection: sqlalchemy.Connection):
+    def __init__(self, db_engine: sqlalchemy.Engine, db_connection: sqlalchemy.Connection):
         self.db_connection = db_connection
+        self.db_engine = db_engine
 
     def mark_start_transcribe(self, media_id: str):
         self.db_connection.execute(
@@ -17,6 +19,16 @@ class DatabaseContext:
             {
                 "id": media_id,
                 "status": MEDIA_STATUS_TRANSCRIBING,
+            })
+
+    def mark_result_saved_transcribe(self, media_id: str):
+        self.db_connection.execute(
+            text("update Medias "
+                 "set Status = :status "
+                 "where Id = :id"),
+            {
+                "id": media_id,
+                "status": MEDIA_STATUS_RESULT_SAVED,
             })
 
     def mark_complete_transcribe(self, media_id: str, result_path: str, preface: str):
@@ -38,6 +50,14 @@ class DatabaseContext:
                 "id": media_id,
                 "reason": reason
             })
+
+    def fetch_media(self, media_id: str):
+        return self.db_connection.execute(
+            text("select Id from Medias with (rowlock, xlock, holdlock) where Id = :id"),
+            {
+                "id": media_id
+            }
+        ).fetchone()
 
     def commit(self):
         self.db_connection.commit()

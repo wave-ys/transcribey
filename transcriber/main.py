@@ -32,7 +32,7 @@ def main():
     db_engine = sqlalchemy.create_engine(env['DATABASE_URI'], echo=False)
     with db_engine.connect() as db_connection:
         logging.info("Database connected.")
-        db_context = database_context.DatabaseContext(db_connection)
+        db_context = database_context.DatabaseContext(db_engine, db_connection)
 
         mq_connection = pika.BlockingConnection(pika.URLParameters(env['RABBITMQ_URI']))
         logging.info("RabbitMQ connected.")

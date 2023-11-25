@@ -24,3 +24,6 @@ class ObjectStorage:
 
     def store_thumbnail(self, file_path: str, upload_path: str):
         self.client.fput_object(self.bucket_name, upload_path, file_path, content_type='image/png')
+
+    def delete_file(self, result_path: str):
+        self.client.remove_object(self.bucket_name, result_path)
