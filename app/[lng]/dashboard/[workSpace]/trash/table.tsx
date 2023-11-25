@@ -11,7 +11,11 @@ import {AiOutlineEllipsis} from "react-icons/ai";
 import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger} from "@/components/ui/dropdown-menu";
 import {HiOutlineTrash} from "react-icons/hi";
 import {LuUndo2} from "react-icons/lu";
-import {permanentlyDeleteMediaAction, putBackMediaAction} from "@/app/[lng]/dashboard/[workspace]/trash/actions";
+import {
+  deleteMediasAction,
+  permanentlyDeleteMediaAction,
+  putBackMediaAction
+} from "@/app/[lng]/dashboard/[workspace]/trash/actions";
 import {useRouter} from "next/navigation";
 import {Checkbox} from "@/components/ui/checkbox";
 import {useEffect, useMemo, useState} from "react";
@@ -35,12 +39,23 @@ export default function TrashTable({data, lng, sidebarOpen}: {
   }, [filteredData]);
 
   const allChecked = useMemo(() => checkStates.length > 0 && checkStates.every(s => s), [checkStates])
+  const anyChecked = useMemo(() => checkStates.length > 0 && checkStates.some(s => s), [checkStates])
 
   return (
     <div className={"space-y-4"}>
-      <div className={cn("pl-12", sidebarOpen && "lg:pl-0")}>
+      <div className={cn("pl-12 flex space-x-2", sidebarOpen && "lg:pl-0")}>
         <Input className={"w-64"} placeholder={t("trash.toolbar.searchPlaceholder")} value={searchText}
                onChange={e => setSearchText(e.target.value)}/>
+        <Button className={cn(!anyChecked && "hidden")} variant={"destructive"}
+                onClick={async () => {
+                  await deleteMediasAction(
+                    checkStates.map((value, index) => value ? filteredData[index] : null)
+                      .filter(m => m)
+                      .map(m => m!.id));
+                  router.refresh();
+                }}>
+          {t("trash.toolbar.delete")}
+        </Button>
       </div>
       <div className="rounded-md border">
         <Table>

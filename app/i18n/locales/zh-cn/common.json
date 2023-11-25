@@ -114,6 +114,10 @@
     "operations": {
       "revoke": "撤回",
       "permanentlyDelete": "永久删除"
+    },
+    "toolbar": {
+      "searchPlaceholder": "搜索文件名...",
+      "delete": "删除"
     }
   }
 }

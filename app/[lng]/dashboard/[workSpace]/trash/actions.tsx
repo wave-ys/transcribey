@@ -9,3 +9,7 @@ export async function permanentlyDeleteMediaAction(id: number) {
 export async function putBackMediaAction(id: number) {
   await putBackMediaApi(id);
 }
+
+export async function deleteMediasAction(ids: number[]) {
+  await Promise.all(ids.map(id => deleteMediaApi(id, true)));
+}

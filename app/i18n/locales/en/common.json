@@ -117,7 +117,8 @@
       "permanentlyDelete": "Permanently Delete"
     },
     "toolbar": {
-      "searchPlaceholder": "Search filenames..."
+      "searchPlaceholder": "Search filenames...",
+      "delete": "Delete"
     }
   }
 }
