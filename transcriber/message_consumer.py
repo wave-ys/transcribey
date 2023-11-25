@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 import tempfile
 import uuid
@@ -41,6 +42,7 @@ class MessageConsumer:
                                   auto_ack=False,
                                   on_message_callback=self.__callback)
 
+        logging.info("Message consumer starting consuming.")
         channel.start_consuming()
 
     def __callback(self,
@@ -49,6 +51,7 @@ class MessageConsumer:
                    properties: pika.spec.BasicProperties,
                    body: bytes):
         media = json.loads(body)
+        logging.info(f"Received message: Id = {media['Id']}, FileName = {media['FileName']}")
 
         media_file = tempfile.NamedTemporaryFile(delete=False)
         media_file.close()
@@ -58,16 +61,24 @@ class MessageConsumer:
 
         try:
             self.object_storage.download_media(media, media_file.name)
+            logging.info("Downloaded media from minio.")
             self.db_context.mark_start_transcribe(media["Id"])
             self.db_context.commit()
+            logging.info("Updated media status to 'transcribing'.")
 
+            logging.info("Starting transcribing.")
             result = self.transcriber.transcribe(media, media_file.name)
+
+            logging.info("Transcribing completed. Saving result.")
             result_path = '/transcription/' + str(uuid.uuid4()) + '.json'
             self.object_storage.store_result(json.dumps(result["data"]), result_path)
+            logging.info("Result saved.")
 
             self.db_context.mark_complete_transcribe(media["Id"], result_path, result["preface"])
             self.db_context.commit()
+            logging.info("Save result path to database.")
             ch.basic_ack(delivery_tag=method.delivery_tag)
+            logging.info("Message consumed successfully.")
         finally:
             os.unlink(media_file.name)
             os.unlink(thumbnail_file.name)

@@ -1,3 +1,5 @@
+import logging
+
 from whisper import whisper
 
 from message_producer import MessageProducer
@@ -9,7 +11,9 @@ class Transcriber:
         self.models = dict()
         self.message_producer = message_producer
         for model in supported_models:
+            logging.info(f"Start loading whisper model {model}.")
             self.models[model] = whisper.load_model(model, device=('cuda' if use_gpu else 'cpu'))
+        logging.info("All whisper models loaded.")
 
     def transcribe(self, media, file_path):
         result = self.do_transcribe(media, file_path)
@@ -23,7 +27,7 @@ class Transcriber:
 
     def do_transcribe(self, media, file_path):
         def __on_progress(all_segments, current_segments, total_progress, current_progress):
-            print(current_progress * 1.0 / total_progress)
+            logging.info("Transcribing progress: " + "{:.2%}".format(current_progress / total_progress))
             self.message_producer.publish_progress(media, total_progress, current_progress, all_segments)
 
         return self.models[media['Model']].transcribe(file_path, fp16=False, language=(

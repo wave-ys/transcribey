@@ -1,4 +1,5 @@
 import json
+import logging
 
 import pika
 
@@ -14,6 +15,7 @@ class MessageProducer:
         self.mq_connection = mq_connection
         self.channel = mq_connection.channel()
         self.channel.exchange_declare(TRANSCRIBE_PROGRESS_EXCHANGE, auto_delete=True)
+        logging.info("Message producer initialized.")
 
     def publish_progress(self, media, total_progress, current_progress, all_segments):
         message_body = {
