@@ -78,7 +78,7 @@ class MessageConsumer:
             if current_record is not None:
                 self.db_context.mark_complete_transcribe(media["Id"], result_path, result["preface"])
                 self.db_context.commit()
-                logging.info("Save result path to database.")
+                logging.info("Saved result path to database.")
             else:
                 self.db_context.commit()
                 logging.info("The database record has been deleted. Deleting result file in Minio.")
