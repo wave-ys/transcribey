@@ -5,7 +5,7 @@
     "trash": "Trash",
     "settings": "Settings",
     "workspaceSelect": {
-      "placeholder": "Select workspace...",
+      "placeholder": "Select workspaces...",
       "notFound": "No workspace found.",
       "createButton": "Create Workspace",
       "manageButton": "Management"
@@ -115,6 +115,9 @@
     "operations": {
       "revoke": "Put Back",
       "permanentlyDelete": "Permanently Delete"
+    },
+    "toolbar": {
+      "searchPlaceholder": "Search filenames..."
     }
   }
 }

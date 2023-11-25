@@ -58,7 +58,8 @@ export function WorkspaceSelect({value, workspaces}: WorkspaceSelectProps) {
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
         <Command shouldFilter={false}>
-          <CommandInput value={filterText} onValueChange={setFilterText} placeholder="Search framework..."/>
+          <CommandInput value={filterText} onValueChange={setFilterText}
+                        placeholder={t("sidebar.workspaceSelect.placeholder")}/>
           <CommandGroup>
             {filteredWorkspaces.length === 0 &&
                 <div className={"py-6 text-center text-sm"}>{t("sidebar.workspaceSelect.notFound")}</div>}
