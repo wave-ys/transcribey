@@ -56,6 +56,9 @@ dependencies:
   '@uiw/react-color':
     specifier: ^2.0.2
     version: registry.npmjs.org/@uiw/react-color@2.0.2(@babel/runtime@7.23.2)(react-dom@18.2.0)(react@18.2.0)
+  '@vidstack/react':
+    specifier: ^1.6.1
+    version: registry.npmjs.org/@vidstack/react@1.6.1(@types/react@18.2.37)(react@18.2.0)
   accept-language:
     specifier: ^3.0.18
     version: registry.npmjs.org/accept-language@3.0.18
@@ -2201,6 +2204,21 @@ packages:
     version: 1.2.0
     dev: true
 
+  registry.npmjs.org/@vidstack/react@1.6.1(@types/react@18.2.37)(react@18.2.0):
+    resolution: { integrity: sha512-ABWEBxrgl6NaA0F5nXmbMgydnhNL1Wx1ta6b748guHqcjW+vjNgjI4mRGxUKoglBaVNnkswxe8icctDpSZ7GmQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@vidstack/react/-/react-1.6.1.tgz }
+    id: registry.npmjs.org/@vidstack/react/1.6.1
+    name: '@vidstack/react'
+    version: 1.6.1
+    engines: { node: '>=18' }
+    peerDependencies:
+      '@types/react': ^18.0.0
+      react: ^18.0.0
+    dependencies:
+      '@types/react': registry.npmjs.org/@types/react@18.2.37
+      media-captions: registry.npmjs.org/media-captions@1.0.2
+      react: registry.npmjs.org/react@18.2.0
+    dev: false
+
   registry.npmjs.org/accept-language@3.0.18:
     resolution: { integrity: sha512-sUofgqBPzgfcF20sPoBYGQ1IhQLt2LSkxTnlQSuLF3n5gPEqd5AimbvOvHEi0T1kLMiGVqPWzI5a9OteBRth3A==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/accept-language/-/accept-language-3.0.18.tgz }
     name: accept-language
@@ -4085,6 +4103,13 @@ packages:
     dependencies:
       yallist: registry.npmjs.org/yallist@4.0.0
     dev: true
+
+  registry.npmjs.org/media-captions@1.0.2:
+    resolution: { integrity: sha512-QxAFc+XTGZeMx+ZvLtMxEDgAjd0kr1LJ2NekLr1cw/UKENOxK7B9g6HwtuTQzCXxmb4Dknd4T8M7FOqqCK9buA==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/media-captions/-/media-captions-1.0.2.tgz }
+    name: media-captions
+    version: 1.0.2
+    engines: { node: '>=16' }
+    dev: false
 
   registry.npmjs.org/merge2@1.4.1:
     resolution: { integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/merge2/-/merge2-1.4.1.tgz }

@@ -25,6 +25,22 @@ public class ResourceController(IObjectStorage objectStorage, DataContext dataCo
         return File(stream, MediaTypeNames.Image.Png);
     }
 
+    [HttpHead("media/{mediaId}")]
+    public async Task<ActionResult> GetMediaHead(long mediaId)
+    {
+        var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == mediaId);
+        if (media == null || string.IsNullOrEmpty(media.StorePath))
+            return NotFound();
+
+        new FileExtensionContentTypeProvider().TryGetContentType(media.StorePath, out var contentType);
+        var size = await objectStorage.GetFileSize(media.StorePath);
+        Response.Headers.AcceptRanges = "bytes";
+        Response.Headers.ContentLength = size;
+        Response.Headers.ContentType = contentType;
+
+        return Ok();
+    }
+
     [HttpGet("media/{mediaId}")]
     public async Task GetMedia(long mediaId)
     {

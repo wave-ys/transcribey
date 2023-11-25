@@ -10,6 +10,9 @@ import {SettingsDialogProvider} from "@/components/provider/settings-dialog-prov
 import {AlertProvider} from "@/components/provider/alert-provider";
 import {Toaster} from "@/components/ui/toaster";
 
+import '@vidstack/react/player/styles/default/theme.css';
+import '@vidstack/react/player/styles/default/layouts/video.css';
+
 export async function generateStaticParams() {
   return languages.map((lng) => ({lng}))
 }

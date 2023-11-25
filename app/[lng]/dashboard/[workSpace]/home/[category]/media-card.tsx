@@ -7,6 +7,7 @@ import TransparentButton from "@/app/[lng]/dashboard/[workspace]/home/[category]
 import {RiScissors2Line} from "react-icons/ri";
 import RemoveMediaButton from "@/app/[lng]/dashboard/[workspace]/home/[category]/remove-media-button";
 
+
 export interface MediaCardProps {
   media: MediaModel;
   lng: string;

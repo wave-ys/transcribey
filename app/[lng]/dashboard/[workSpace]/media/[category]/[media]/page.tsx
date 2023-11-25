@@ -2,6 +2,8 @@ import React from "react";
 import {getMediaApi, MediaModel} from "@/request/media";
 import {redirect} from "next/navigation";
 
+import Player from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/player";
+
 interface MediaPageProps {
   params: {
     lng: string,
@@ -23,6 +25,6 @@ export default async function MediaPage({params}: MediaPageProps) {
   }
 
   return (
-    <video controls src={`/api/resource/media/${media.id}`}></video>
+    <Player media={media}/>
   )
 }
