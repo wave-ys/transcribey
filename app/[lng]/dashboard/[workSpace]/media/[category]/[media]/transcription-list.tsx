@@ -2,7 +2,7 @@ import {TranscriptionItem, TranscriptionModel} from "@/request/transcription";
 import {cn, secondsToString} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {LuCopy, LuCopyCheck} from "react-icons/lu";
-import {RefObject, useCallback, useState} from "react";
+import {RefObject, useCallback, useEffect, useRef, useState} from "react";
 import {MediaPlayerInstance} from "@vidstack/react";
 import {TbTrash, TbTrashOff} from "react-icons/tb";
 
@@ -20,6 +20,7 @@ export interface TranscriptionItemProps {
   item: TranscriptionState;
   playerRef?: RefObject<MediaPlayerInstance>;
   onDeleteClick: (value: boolean) => void;
+  onChange: (value: string) => void;
 }
 
 export function CopyButton({item}: { item: TranscriptionItem }) {
@@ -44,7 +45,18 @@ export function CopyButton({item}: { item: TranscriptionItem }) {
   )
 }
 
-export function TranscriptionItem({item, playerRef, onDeleteClick}: TranscriptionItemProps) {
+export function TranscriptionItem({item, playerRef, onDeleteClick, onChange}: TranscriptionItemProps) {
+  const [editing, setEditing] = useState(false);
+  const [currentText, setCurrentText] = useState(item.current);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!editing)
+      return;
+    inputRef.current?.focus();
+    inputRef.current?.setSelectionRange(currentText.length, currentText.length)
+  }, [currentText.length, editing]);
+
   return (
     <div className={"flex items-center space-x-4 group relative"}>
       <div className={"text-muted-foreground text-xs hover:text-blue-600 cursor-pointer"} onClick={() => {
@@ -56,10 +68,29 @@ export function TranscriptionItem({item, playerRef, onDeleteClick}: Transcriptio
       </div>
       <div className={cn(
         "p-2 border border-transparent rounded-xl group-hover:border-blue-600 cursor-pointer flex-auto",
-        item.deleted && "text-muted-foreground line-through"
-      )}>
-        {item.text}
+        item.deleted && "text-muted-foreground line-through",
+        editing && "hidden"
+      )} onClick={() => {
+        setEditing(true);
+      }}>
+        {item.current}
       </div>
+      <input ref={inputRef}
+             onBlur={() => {
+               setEditing(false);
+               onChange(currentText);
+             }}
+             onKeyUp={e => {
+               if (e.key === 'Enter') {
+                 setEditing(false);
+                 onChange(currentText);
+               }
+             }}
+             className={cn(
+               "p-2 border rounded-xl border-blue-600 flex-auto focus-visible:outline-blue-800 dark:focus-visible:outline-blue-300",
+               !editing && "hidden"
+             )}
+             value={currentText} onChange={e => setCurrentText(e.target.value)}/>
       <div className={"hidden group-hover:block absolute right-1"}>
         <CopyButton item={item}/>
         <Button variant={"ghost"} size={"icon"} onClick={() => onDeleteClick(!item.deleted)}>
@@ -73,7 +104,7 @@ export function TranscriptionItem({item, playerRef, onDeleteClick}: Transcriptio
 export default function TranscriptionList({list, playerRef}: TranscriptionListProps) {
   const [transcriptionStates, setTranscriptionStates] = useState<TranscriptionState[]>(list.map(item => ({
     ...item,
-    current: "",
+    current: item.text,
     deleted: false
   })));
 
@@ -86,11 +117,21 @@ export default function TranscriptionList({list, playerRef}: TranscriptionListPr
     setTranscriptionStates(newStates);
   }, [transcriptionStates])
 
+  const handleChangeItem = useCallback((index: number, value: string) => {
+    const newStates = [...transcriptionStates];
+    newStates[index] = {
+      ...newStates[index],
+      current: value
+    };
+    setTranscriptionStates(newStates);
+  }, [transcriptionStates])
+
   return (
     <div className={"space-y-1"}>
       {transcriptionStates.map((item, index) => (
         <TranscriptionItem
           onDeleteClick={v => handleDeleteItemClick(index, v)}
+          onChange={v => handleChangeItem(index, v)}
           playerRef={playerRef} key={item.start}
           item={item}/>
       ))}
