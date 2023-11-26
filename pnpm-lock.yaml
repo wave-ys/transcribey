@@ -65,6 +65,9 @@ dependencies:
   accept-language:
     specifier: ^3.0.18
     version: registry.npmjs.org/accept-language@3.0.18
+  animated-scroll-to:
+    specifier: ^2.3.0
+    version: registry.npmjs.org/animated-scroll-to@2.3.0
   axios:
     specifier: ^1.6.2
     version: registry.npmjs.org/axios@1.6.2
@@ -2286,6 +2289,12 @@ packages:
       json-schema-traverse: registry.npmjs.org/json-schema-traverse@0.4.1
       uri-js: registry.npmjs.org/uri-js@4.4.1
     dev: true
+
+  registry.npmjs.org/animated-scroll-to@2.3.0:
+    resolution: { integrity: sha512-PT/5MSKCWQaK2kuOl2HT2KJMuJEvUS4/TgMhWy82c2EmF74/CIkvPBPKOvd8nMYP6Higo7xCn49/iSW9BccMoQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/animated-scroll-to/-/animated-scroll-to-2.3.0.tgz }
+    name: animated-scroll-to
+    version: 2.3.0
+    dev: false
 
   registry.npmjs.org/ansi-regex@5.0.1:
     resolution: { integrity: sha512-quJQXlTSUGL2LH9SUXo8VwsY4soanhgo6LNSm84E1LBcE8s3O0wpdiRzyR9z/ZZJMlMWv37qOOb9pdJlMUEKFQ==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/ansi-regex/-/ansi-regex-5.0.1.tgz }

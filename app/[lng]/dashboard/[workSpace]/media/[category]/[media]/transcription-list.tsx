@@ -6,6 +6,7 @@ import {RefObject, useCallback, useEffect, useMemo, useRef, useState} from "reac
 import {MediaPlayerInstance, useMediaState} from "@vidstack/react";
 import {TbArrowAutofitDown, TbTrash, TbTrashOff} from "react-icons/tb";
 import {Toggle} from "@/components/ui/toggle";
+import animateScrollTo from "animated-scroll-to";
 
 export interface TranscriptionState extends TranscriptionItem {
   current: string;
@@ -63,7 +64,7 @@ export function TranscriptionItem(
   const inputRef = useRef<HTMLInputElement>(null);
   const currentTime = useMediaState("currentTime", playerRef);
   const playing = useMediaState("playing", playerRef);
-  const isCurrent = useMemo(() => playing && item.start <= currentTime && item.end >= currentTime, [currentTime, item.end, item.start, playing])
+  const isCurrent = useMemo(() => playing && item.start <= currentTime && item.end > currentTime, [currentTime, item.end, item.start, playing])
   const currentRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
     if (!isCurrent || !parentRef?.current || !currentRef.current || !autoScroll)
@@ -71,9 +72,16 @@ export function TranscriptionItem(
 
     const visible = parentRef.current.offsetTop + parentRef.current.clientTop + parentRef.current.scrollTop <= currentRef.current.offsetTop
       && parentRef.current.offsetTop + parentRef.current.clientTop + parentRef.current.scrollTop + parentRef.current.clientHeight >= currentRef.current.offsetTop + currentRef.current.offsetHeight
-    if (!visible)
-      parentRef.current.scrollTop = currentRef.current.offsetTop - parentRef.current.offsetTop - parentRef.current.clientTop;
-
+    if (!visible) {
+      animateScrollTo(
+        currentRef.current.offsetTop - parentRef.current.offsetTop - parentRef.current.clientTop,
+        {
+          elementToScroll: parentRef.current,
+          speed: 20,
+          cancelOnUserAction: true
+        }
+      ).then()
+    }
 
   }, [autoScroll, isCurrent, parentRef]);
 

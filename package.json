@@ -29,6 +29,7 @@
     "@uiw/react-color": "^2.0.2",
     "@vidstack/react": "^1.6.1",
     "accept-language": "^3.0.18",
+    "animated-scroll-to": "^2.3.0",
     "axios": "^1.6.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
