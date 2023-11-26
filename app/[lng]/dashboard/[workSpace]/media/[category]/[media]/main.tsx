@@ -1,3 +1,5 @@
+'use client';
+
 import Player from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/player";
 import TranscriptionList from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/transcription-list";
 import React from "react";
