@@ -1,8 +1,8 @@
 import React from "react";
 import {getMediaApi, MediaModel} from "@/request/media";
 import {redirect} from "next/navigation";
-
-import Player from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/player";
+import getTranscriptionApi from "@/request/transcription";
+import MediaMain from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/main";
 
 interface MediaPageProps {
   params: {
@@ -24,12 +24,7 @@ export default async function MediaPage({params}: MediaPageProps) {
     return redirect(`/${params.lng}/dashboard/${params.workspace}/media/${params.category}/_`);
   }
 
-  return (
-    <>
-      <Player className={"h-2/3"} media={media} lng={params.lng}/>
-      <div className={"h-1/3"}>
-        hhh
-      </div>
-    </>
-  )
+  const {data: transcriptions} = await getTranscriptionApi(+params.media);
+
+  return <MediaMain media={media} lng={params.lng} transcriptions={transcriptions}/>
 }

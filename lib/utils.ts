@@ -16,3 +16,11 @@ export function toUpperCaseLng(lng: string) {
   items[1] = items[1].toUpperCase();
   return items.join('-');
 }
+
+export function secondsToString(totalSeconds: number) {
+  const hour = Math.floor(totalSeconds / 60 / 60).toString().padStart(2, '0');
+  const minutes = (Math.floor(totalSeconds / 60) % 60).toString().padStart(2, '0');
+  const seconds = (Math.floor(totalSeconds) % 60).toString().padStart(2, '0');
+
+  return `${hour}:${minutes}:${seconds}`
+}
