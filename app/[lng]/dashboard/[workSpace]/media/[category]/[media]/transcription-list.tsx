@@ -3,14 +3,17 @@ import {secondsToString} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {LuCopy, LuCopyCheck} from "react-icons/lu";
 import {HiOutlineTrash} from "react-icons/hi";
-import {useCallback, useState} from "react";
+import {RefObject, useCallback, useState} from "react";
+import {MediaPlayerInstance} from "@vidstack/react";
 
 export interface TranscriptionListProps {
-  list: TranscriptionModel
+  list: TranscriptionModel;
+  playerRef?: RefObject<MediaPlayerInstance>;
 }
 
 export interface TranscriptionItemProps {
-  item: TranscriptionItem
+  item: TranscriptionItem;
+  playerRef?: RefObject<MediaPlayerInstance>;
 }
 
 export function CopyButton({item}: { item: TranscriptionItem }) {
@@ -35,10 +38,14 @@ export function CopyButton({item}: { item: TranscriptionItem }) {
   )
 }
 
-export function TranscriptionItem({item}: TranscriptionItemProps) {
+export function TranscriptionItem({item, playerRef}: TranscriptionItemProps) {
   return (
     <div className={"flex items-center space-x-4 group relative"}>
-      <div className={"text-muted-foreground text-xs hover:text-blue-600 cursor-pointer"}>
+      <div className={"text-muted-foreground text-xs hover:text-blue-600 cursor-pointer"} onClick={() => {
+        if (!playerRef?.current)
+          return;
+        playerRef.current.currentTime = item.start;
+      }}>
         {secondsToString(item.start)}
       </div>
       <div className={"p-2 border border-transparent rounded-xl hover:border-blue-600 cursor-pointer flex-auto"}>
@@ -54,10 +61,10 @@ export function TranscriptionItem({item}: TranscriptionItemProps) {
   )
 }
 
-export default function TranscriptionList({list}: TranscriptionListProps) {
+export default function TranscriptionList({list, playerRef}: TranscriptionListProps) {
   return (
     <div className={"space-y-1"}>
-      {list.map(item => <TranscriptionItem key={item.start} item={item}/>)}
+      {list.map(item => <TranscriptionItem playerRef={playerRef} key={item.start} item={item}/>)}
     </div>
   )
 }

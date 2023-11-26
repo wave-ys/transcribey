@@ -1,8 +1,6 @@
-"use client";
-
-import {MediaPlayer, MediaProvider, Poster} from "@vidstack/react";
+import {MediaPlayer, MediaPlayerInstance, MediaProvider, Poster} from "@vidstack/react";
 import {defaultLayoutIcons, DefaultVideoLayout} from "@vidstack/react/player/layouts/default";
-import React from "react";
+import React, {RefObject, useEffect, useRef} from "react";
 import {MediaModel} from "@/request/media";
 
 import './style.css'
@@ -13,11 +11,17 @@ export interface PlayerProps {
   media: MediaModel;
   className?: string;
   lng: string;
+  refUpdate?: (ref: RefObject<MediaPlayerInstance>) => void;
 }
 
-export default function Player({media, className, lng}: PlayerProps) {
+export default function Player({media, className, lng, refUpdate}: PlayerProps) {
+  const ref = useRef<MediaPlayerInstance>(null);
+  useEffect(() => {
+    refUpdate?.(ref);
+  }, [refUpdate]);
+
   return (
-    <MediaPlayer className={cn("h-full", className)} title={media.fileName}>
+    <MediaPlayer ref={ref} className={cn("h-full", className)} title={media.fileName}>
       <DefaultVideoLayout icons={defaultLayoutIcons} translations={translations[lng as keyof typeof translations]}/>
       <MediaProvider>
         <Poster className="vds-poster object-contain h-full" alt={media.fileName}
