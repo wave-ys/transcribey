@@ -3,7 +3,7 @@ import {cn, secondsToString} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {LuCopy, LuCopyCheck} from "react-icons/lu";
 import {RefObject, useCallback, useEffect, useRef, useState} from "react";
-import {MediaPlayerInstance} from "@vidstack/react";
+import {MediaPlayerInstance, useMediaState} from "@vidstack/react";
 import {TbTrash, TbTrashOff} from "react-icons/tb";
 
 export interface TranscriptionState extends TranscriptionItem {
@@ -49,6 +49,7 @@ export function TranscriptionItem({item, playerRef, onDeleteClick, onChange}: Tr
   const [editing, setEditing] = useState(false);
   const [currentText, setCurrentText] = useState(item.current);
   const inputRef = useRef<HTMLInputElement>(null);
+  const currentTime = useMediaState("currentTime", playerRef);
 
   useEffect(() => {
     if (!editing)
@@ -70,7 +71,8 @@ export function TranscriptionItem({item, playerRef, onDeleteClick, onChange}: Tr
         "p-2 border border-transparent rounded-xl flex-auto",
         item.deleted && "text-muted-foreground line-through",
         editing && "hidden",
-        !item.deleted ? "cursor-pointer group-hover:border-blue-600" : "cursor-default"
+        !item.deleted ? "cursor-pointer group-hover:border-blue-600" : "cursor-default",
+        currentTime && item.start <= currentTime && item.end >= currentTime && "bg-blue-600 text-white"
       )} onClick={() => {
         if (item.deleted)
           return;
