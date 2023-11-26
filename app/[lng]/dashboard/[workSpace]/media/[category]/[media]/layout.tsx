@@ -35,13 +35,13 @@ export default async function MediaLayout({children, params}: MediaLayoutProps) 
       <div className={cn("flex-none pl-12", sidebarOpen && "lg:pl-0")}>
         <Tabs defaultValue={params.category}>
           <TabsList>
-            <Link href={`/${params.lng}/dashboard/${params.workspace}/media/all`}>
+            <Link href={`/${params.lng}/dashboard/${params.workspace}/media/all/_`}>
               <TabsTrigger value={'all'}>{t("media.tabs.all")}</TabsTrigger>
             </Link>
-            <Link href={`/${params.lng}/dashboard/${params.workspace}/media/video`}>
+            <Link href={`/${params.lng}/dashboard/${params.workspace}/media/video/_`}>
               <TabsTrigger value={'video'}>{t("media.tabs.video")}</TabsTrigger>
             </Link>
-            <Link href={`/${params.lng}/dashboard/${params.workspace}/media/audio`}>
+            <Link href={`/${params.lng}/dashboard/${params.workspace}/media/audio/_`}>
               <TabsTrigger value={'audio'}>{t("media.tabs.audio")}</TabsTrigger>
             </Link>
           </TabsList>

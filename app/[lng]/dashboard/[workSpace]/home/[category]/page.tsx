@@ -58,7 +58,11 @@ export default async function Home({params: {lng, category, workspace}}: HomePro
       </Tabs>
 
       <div className={"mt-8 flex-wrap flex"}>
-        {medias.map(media => <MediaCard className={"mr-2 mt-2"} lng={lng} media={media} key={media.id}/>)}
+        {medias.map(media => (
+          <Link key={media.id} href={`/${lng}/dashboard/${workspace}/media/${category}/${media.id}`}>
+            <MediaCard className={"mr-2 mt-2"} lng={lng} media={media}/>
+          </Link>
+        ))}
       </div>
     </div>
   )
