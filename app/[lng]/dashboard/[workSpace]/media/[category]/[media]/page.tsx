@@ -25,6 +25,11 @@ export default async function MediaPage({params}: MediaPageProps) {
   }
 
   return (
-    <Player media={media}/>
+    <>
+      <Player className={"h-2/3"} media={media}/>
+      <div className={"h-1/3"}>
+        hhh
+      </div>
+    </>
   )
 }

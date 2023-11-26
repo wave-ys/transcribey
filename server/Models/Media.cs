@@ -13,6 +13,7 @@ public class Media
     public string Model { get; set; } = "";
     public string Language { get; set; } = "";
     public string FileType { get; set; } = MediaFileType.Detecting;
+    public string ContentType { get; set; } = "";
 
     public string Status { get; set; } = MediaStatus.Created;
     public bool Failed { get; set; }

@@ -126,6 +126,7 @@ public class MediaController
                 StorePath = storePath,
                 FileName = options.File.FileName,
                 FileType = fileType,
+                ContentType = contentType,
                 ThumbnailPath = thumbnailPath,
                 Model = options.Model,
                 Language = options.Language,
@@ -169,6 +170,7 @@ public class MediaDto(Media media)
     public string Model { get; set; } = media.Model;
     public string Language { get; set; } = media.Language;
     public string FileType { get; set; } = media.FileType;
+    public string ContentType { get; set; } = media.ContentType;
 
     public string Status { get; set; } = media.Status;
     public bool Failed { get; set; } = media.Failed;

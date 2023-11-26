@@ -10,6 +10,7 @@ export interface MediaModel {
   id: number,
   preface: string,
   fileName: string,
+  contentType: string,
   model: string,
   language: string,
   fileType: string,

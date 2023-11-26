@@ -31,12 +31,11 @@ public class ResourceController(IObjectStorage objectStorage, DataContext dataCo
         var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == mediaId);
         if (media == null || string.IsNullOrEmpty(media.StorePath))
             return NotFound();
-
-        new FileExtensionContentTypeProvider().TryGetContentType(media.StorePath, out var contentType);
+        
         var size = await objectStorage.GetFileSize(media.StorePath);
         Response.Headers.AcceptRanges = "bytes";
         Response.Headers.ContentLength = size;
-        Response.Headers.ContentType = contentType;
+        Response.Headers.ContentType = media.ContentType;
 
         return Ok();
     }
@@ -57,7 +56,7 @@ public class ResourceController(IObjectStorage objectStorage, DataContext dataCo
             return;
         }
 
-        new FileExtensionContentTypeProvider().TryGetContentType(media.StorePath, out var contentType);
+        var contentType = media.ContentType;
 
         var size = await objectStorage.GetFileSize(media.StorePath);
 
