@@ -2,7 +2,7 @@ import {TranscriptionItem, TranscriptionModel} from "@/request/transcription";
 import {cn, secondsToString} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {LuCopy, LuCopyCheck} from "react-icons/lu";
-import {RefObject, useCallback, useEffect, useRef, useState} from "react";
+import {RefObject, useCallback, useEffect, useMemo, useRef, useState} from "react";
 import {MediaPlayerInstance, useMediaState} from "@vidstack/react";
 import {TbArrowAutofitDown, TbTrash, TbTrashOff} from "react-icons/tb";
 import {Toggle} from "@/components/ui/toggle";
@@ -15,6 +15,7 @@ export interface TranscriptionState extends TranscriptionItem {
 export interface TranscriptionListProps {
   list: TranscriptionModel;
   playerRef?: RefObject<MediaPlayerInstance>;
+  className?: string;
 }
 
 export interface TranscriptionItemProps {
@@ -22,6 +23,8 @@ export interface TranscriptionItemProps {
   playerRef?: RefObject<MediaPlayerInstance>;
   onDeleteClick: (value: boolean) => void;
   onChange: (value: string) => void;
+  parentRef?: RefObject<HTMLDivElement>;
+  autoScroll: boolean;
 }
 
 export function CopyButton({item}: { item: TranscriptionItem }) {
@@ -46,11 +49,33 @@ export function CopyButton({item}: { item: TranscriptionItem }) {
   )
 }
 
-export function TranscriptionItem({item, playerRef, onDeleteClick, onChange}: TranscriptionItemProps) {
+export function TranscriptionItem(
+  {
+    item,
+    playerRef,
+    onDeleteClick,
+    onChange,
+    parentRef,
+    autoScroll
+  }: TranscriptionItemProps) {
   const [editing, setEditing] = useState(false);
   const [currentText, setCurrentText] = useState(item.current);
   const inputRef = useRef<HTMLInputElement>(null);
   const currentTime = useMediaState("currentTime", playerRef);
+  const playing = useMediaState("playing", playerRef);
+  const isCurrent = useMemo(() => playing && item.start <= currentTime && item.end >= currentTime, [currentTime, item.end, item.start, playing])
+  const currentRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!isCurrent || !parentRef?.current || !currentRef.current || !autoScroll)
+      return;
+
+    const visible = parentRef.current.offsetTop + parentRef.current.clientTop + parentRef.current.scrollTop <= currentRef.current.offsetTop
+      && parentRef.current.offsetTop + parentRef.current.clientTop + parentRef.current.scrollTop + parentRef.current.clientHeight >= currentRef.current.offsetTop + currentRef.current.offsetHeight
+    if (!visible)
+      parentRef.current.scrollTop = currentRef.current.offsetTop - parentRef.current.offsetTop - parentRef.current.clientTop;
+
+
+  }, [autoScroll, isCurrent, parentRef]);
 
   useEffect(() => {
     if (!editing)
@@ -60,7 +85,7 @@ export function TranscriptionItem({item, playerRef, onDeleteClick, onChange}: Tr
   }, [currentText.length, editing]);
 
   return (
-    <div className={"flex items-center space-x-4 group relative"}>
+    <div className={"flex items-center space-x-4 group relative"} ref={currentRef}>
       <div className={"text-muted-foreground text-xs hover:text-blue-600 cursor-pointer"} onClick={() => {
         if (!playerRef?.current)
           return;
@@ -73,7 +98,7 @@ export function TranscriptionItem({item, playerRef, onDeleteClick, onChange}: Tr
         item.deleted && "text-muted-foreground line-through",
         editing && "hidden",
         !item.deleted ? "cursor-pointer group-hover:border-blue-600" : "cursor-default",
-        currentTime && item.start <= currentTime && item.end >= currentTime && "bg-blue-600 text-white"
+        isCurrent && "bg-blue-600 text-white"
       )} onClick={() => {
         if (item.deleted)
           return;
@@ -107,12 +132,14 @@ export function TranscriptionItem({item, playerRef, onDeleteClick, onChange}: Tr
   )
 }
 
-export default function TranscriptionList({list, playerRef}: TranscriptionListProps) {
+export default function TranscriptionList({list, playerRef, className}: TranscriptionListProps) {
   const [transcriptionStates, setTranscriptionStates] = useState<TranscriptionState[]>(list.map(item => ({
     ...item,
     current: item.text,
     deleted: false
   })));
+
+  const listRef = useRef<HTMLDivElement>(null);
 
   const handleDeleteItemClick = useCallback((index: number, value: boolean) => {
     const newStates = [...transcriptionStates];
@@ -132,25 +159,29 @@ export default function TranscriptionList({list, playerRef}: TranscriptionListPr
     setTranscriptionStates(newStates);
   }, [transcriptionStates])
 
+  const [autoScroll, setAutoScroll] = useState(false);
+
   if (!playerRef)
     return <></>
 
   return (
-    <>
+    <div className={cn(className)}>
       <div className={"mb-1 w-fit ml-auto flex-none"}>
-        <Toggle variant={"solid"}>
+        <Toggle variant={"solid"} pressed={autoScroll} onPressedChange={setAutoScroll}>
           <TbArrowAutofitDown/>
         </Toggle>
       </div>
-      <div className={"space-y-1 overflow-y-auto flex-grow"}>
+      <div className={"space-y-1 overflow-y-auto flex-grow"} ref={listRef}>
         {transcriptionStates.map((item, index) => (
           <TranscriptionItem
+            autoScroll={autoScroll}
+            parentRef={listRef}
             onDeleteClick={v => handleDeleteItemClick(index, v)}
             onChange={v => handleChangeItem(index, v)}
             playerRef={playerRef} key={item.start}
             item={item}/>
         ))}
       </div>
-    </>
+    </div>
   )
 }
