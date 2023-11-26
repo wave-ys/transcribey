@@ -50,6 +50,9 @@ dependencies:
   '@radix-ui/react-toast':
     specifier: ^1.1.5
     version: registry.npmjs.org/@radix-ui/react-toast@1.1.5(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+  '@radix-ui/react-toggle':
+    specifier: ^1.0.3
+    version: registry.npmjs.org/@radix-ui/react-toggle@1.0.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
   '@tanstack/react-table':
     specifier: ^8.10.7
     version: registry.npmjs.org/@tanstack/react-table@8.10.7(react-dom@18.2.0)(react@18.2.0)
@@ -1441,6 +1444,32 @@ packages:
       '@radix-ui/react-use-controllable-state': registry.npmjs.org/@radix-ui/react-use-controllable-state@1.0.1(@types/react@18.2.37)(react@18.2.0)
       '@radix-ui/react-use-layout-effect': registry.npmjs.org/@radix-ui/react-use-layout-effect@1.0.1(@types/react@18.2.37)(react@18.2.0)
       '@radix-ui/react-visually-hidden': registry.npmjs.org/@radix-ui/react-visually-hidden@1.0.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+      '@types/react': registry.npmjs.org/@types/react@18.2.37
+      '@types/react-dom': registry.npmjs.org/@types/react-dom@18.2.15
+      react: registry.npmjs.org/react@18.2.0
+      react-dom: registry.npmjs.org/react-dom@18.2.0(react@18.2.0)
+    dev: false
+
+  registry.npmjs.org/@radix-ui/react-toggle@1.0.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0):
+    resolution: { integrity: sha512-Pkqg3+Bc98ftZGsl60CLANXQBBQ4W3mTFS9EJvNxKMZ7magklKV69/id1mlAlOFDDfHvlCms0fx8fA4CMKDJHg==, registry: https://registry.yarnpkg.com/, tarball: https://registry.npmjs.org/@radix-ui/react-toggle/-/react-toggle-1.0.3.tgz }
+    id: registry.npmjs.org/@radix-ui/react-toggle/1.0.3
+    name: '@radix-ui/react-toggle'
+    version: 1.0.3
+    peerDependencies:
+      '@types/react': '*'
+      '@types/react-dom': '*'
+      react: ^16.8 || ^17.0 || ^18.0
+      react-dom: ^16.8 || ^17.0 || ^18.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      '@types/react-dom':
+        optional: true
+    dependencies:
+      '@babel/runtime': registry.npmjs.org/@babel/runtime@7.23.2
+      '@radix-ui/primitive': registry.npmjs.org/@radix-ui/primitive@1.0.1
+      '@radix-ui/react-primitive': registry.npmjs.org/@radix-ui/react-primitive@1.0.3(@types/react-dom@18.2.15)(@types/react@18.2.37)(react-dom@18.2.0)(react@18.2.0)
+      '@radix-ui/react-use-controllable-state': registry.npmjs.org/@radix-ui/react-use-controllable-state@1.0.1(@types/react@18.2.37)(react@18.2.0)
       '@types/react': registry.npmjs.org/@types/react@18.2.37
       '@types/react-dom': registry.npmjs.org/@types/react-dom@18.2.15
       react: registry.npmjs.org/react@18.2.0

@@ -4,7 +4,8 @@ import {Button} from "@/components/ui/button";
 import {LuCopy, LuCopyCheck} from "react-icons/lu";
 import {RefObject, useCallback, useEffect, useRef, useState} from "react";
 import {MediaPlayerInstance, useMediaState} from "@vidstack/react";
-import {TbTrash, TbTrashOff} from "react-icons/tb";
+import {TbArrowAutofitDown, TbTrash, TbTrashOff} from "react-icons/tb";
+import {Toggle} from "@/components/ui/toggle";
 
 export interface TranscriptionState extends TranscriptionItem {
   current: string;
@@ -131,15 +132,25 @@ export default function TranscriptionList({list, playerRef}: TranscriptionListPr
     setTranscriptionStates(newStates);
   }, [transcriptionStates])
 
+  if (!playerRef)
+    return <></>
+
   return (
-    <div className={"space-y-1"}>
-      {transcriptionStates.map((item, index) => (
-        <TranscriptionItem
-          onDeleteClick={v => handleDeleteItemClick(index, v)}
-          onChange={v => handleChangeItem(index, v)}
-          playerRef={playerRef} key={item.start}
-          item={item}/>
-      ))}
-    </div>
+    <>
+      <div className={"mb-1 w-fit ml-auto flex-none"}>
+        <Toggle variant={"solid"}>
+          <TbArrowAutofitDown/>
+        </Toggle>
+      </div>
+      <div className={"space-y-1 overflow-y-auto flex-grow"}>
+        {transcriptionStates.map((item, index) => (
+          <TranscriptionItem
+            onDeleteClick={v => handleDeleteItemClick(index, v)}
+            onChange={v => handleChangeItem(index, v)}
+            playerRef={playerRef} key={item.start}
+            item={item}/>
+        ))}
+      </div>
+    </>
   )
 }
