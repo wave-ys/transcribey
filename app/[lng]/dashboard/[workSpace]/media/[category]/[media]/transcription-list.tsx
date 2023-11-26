@@ -67,10 +67,13 @@ export function TranscriptionItem({item, playerRef, onDeleteClick, onChange}: Tr
         {secondsToString(item.start)}
       </div>
       <div className={cn(
-        "p-2 border border-transparent rounded-xl group-hover:border-blue-600 cursor-pointer flex-auto",
+        "p-2 border border-transparent rounded-xl flex-auto",
         item.deleted && "text-muted-foreground line-through",
-        editing && "hidden"
+        editing && "hidden",
+        !item.deleted ? "cursor-pointer group-hover:border-blue-600" : "cursor-default"
       )} onClick={() => {
+        if (item.deleted)
+          return;
         setEditing(true);
       }}>
         {item.current}
