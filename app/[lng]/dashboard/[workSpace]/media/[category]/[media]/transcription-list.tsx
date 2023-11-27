@@ -7,6 +7,8 @@ import {MediaPlayerInstance, useMediaState} from "@vidstack/react";
 import {TbArrowAutofitDown, TbTrash, TbTrashOff} from "react-icons/tb";
 import {Toggle} from "@/components/ui/toggle";
 import animateScrollTo from "animated-scroll-to";
+import {useTranslation} from "@/app/i18n/client";
+import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 
 export interface TranscriptionState extends TranscriptionItem {
   current: string;
@@ -141,6 +143,8 @@ export function TranscriptionItem(
 }
 
 export default function TranscriptionList({list, playerRef, className}: TranscriptionListProps) {
+  const {t} = useTranslation();
+
   const [transcriptionStates, setTranscriptionStates] = useState<TranscriptionState[]>(list.map(item => ({
     ...item,
     current: item.text,
@@ -175,9 +179,16 @@ export default function TranscriptionList({list, playerRef, className}: Transcri
   return (
     <div className={cn(className)}>
       <div className={"mb-1 w-fit ml-auto flex-none"}>
-        <Toggle variant={"solid"} pressed={autoScroll} onPressedChange={setAutoScroll}>
-          <TbArrowAutofitDown/>
-        </Toggle>
+        <Tooltip>
+          <TooltipTrigger>
+            <Toggle variant={"solid"} pressed={autoScroll} onPressedChange={setAutoScroll}>
+              <TbArrowAutofitDown/>
+            </Toggle>
+          </TooltipTrigger>
+          <TooltipContent side={"bottom"}>
+            {t("media.transcriptions.autoScroll")}
+          </TooltipContent>
+        </Tooltip>
       </div>
       <div className={"space-y-1 overflow-y-auto flex-grow"} ref={listRef}>
         {transcriptionStates.map((item, index) => (

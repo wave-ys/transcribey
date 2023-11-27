@@ -12,6 +12,7 @@ import {Toaster} from "@/components/ui/toaster";
 
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
+import {TooltipProvider} from "@/components/ui/tooltip";
 
 export async function generateStaticParams() {
   return languages.map((lng) => ({lng}))
@@ -49,11 +50,13 @@ export default function RootLayout(
       defaultTheme="system"
       enableSystem
     >
-      <AlertProvider>
-        <SettingsDialogProvider>
-          {children}
-        </SettingsDialogProvider>
-      </AlertProvider>
+      <TooltipProvider>
+        <AlertProvider>
+          <SettingsDialogProvider>
+            {children}
+          </SettingsDialogProvider>
+        </AlertProvider>
+      </TooltipProvider>
       <Toaster/>
     </ThemeProvider>
     </body>

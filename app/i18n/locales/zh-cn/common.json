@@ -103,6 +103,9 @@
         "title": "确认",
         "description": "确定要删除本条记录吗？"
       }
+    },
+    "transcriptions": {
+      "autoScroll": "跟随滚动"
     }
   },
   "trash": {
