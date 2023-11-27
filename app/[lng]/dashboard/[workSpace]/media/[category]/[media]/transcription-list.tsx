@@ -140,7 +140,7 @@ export function TranscriptionItem(
                onModified?.(true);
              }}
       />
-      <div className={"hidden group-hover:block absolute right-1"}>
+      <div className={cn("hidden group-hover:block absolute right-1 bg-background", editing && "group-hover:hidden")}>
         <CopyButton item={item}/>
         <Button variant={"ghost"} size={"icon"} onClick={() => onDeleteClick(!item.deleted)}>
           {item.deleted ? <TbTrashOff/> : <TbTrash/>}
