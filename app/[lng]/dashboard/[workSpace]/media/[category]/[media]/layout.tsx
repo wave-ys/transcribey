@@ -31,24 +31,24 @@ export default async function MediaLayout({children, params}: MediaLayoutProps) 
   const {data: medias} = params.workspace === '_' ? {data: []} : await getMediaListApi(+params.workspace, params.category, false)
 
   return (
-    <div className={"flex flex-col space-y-3 h-full"}>
-      <div className={cn("flex-none pl-12", sidebarOpen && "lg:pl-0")}>
-        <Tabs defaultValue={params.category}>
-          <TabsList>
-            <Link href={`/${params.lng}/dashboard/${params.workspace}/media/all/_`}>
-              <TabsTrigger value={'all'}>{t("media.tabs.all")}</TabsTrigger>
-            </Link>
-            <Link href={`/${params.lng}/dashboard/${params.workspace}/media/video/_`}>
-              <TabsTrigger value={'video'}>{t("media.tabs.video")}</TabsTrigger>
-            </Link>
-            <Link href={`/${params.lng}/dashboard/${params.workspace}/media/audio/_`}>
-              <TabsTrigger value={'audio'}>{t("media.tabs.audio")}</TabsTrigger>
-            </Link>
-          </TabsList>
-        </Tabs>
-      </div>
-      <div className={"flex-auto flex h-0"}>
-        <div className={"flex-none w-96 pr-3 space-y-2 pb-3 overflow-y-auto"}>
+    <div className={"flex h-full"}>
+      <div className={"flex-none flex flex-col space-y-3 h-full"}>
+        <div className={cn("flex-none pl-12", sidebarOpen && "lg:pl-0")}>
+          <Tabs defaultValue={params.category}>
+            <TabsList>
+              <Link href={`/${params.lng}/dashboard/${params.workspace}/media/all/_`}>
+                <TabsTrigger value={'all'}>{t("media.tabs.all")}</TabsTrigger>
+              </Link>
+              <Link href={`/${params.lng}/dashboard/${params.workspace}/media/video/_`}>
+                <TabsTrigger value={'video'}>{t("media.tabs.video")}</TabsTrigger>
+              </Link>
+              <Link href={`/${params.lng}/dashboard/${params.workspace}/media/audio/_`}>
+                <TabsTrigger value={'audio'}>{t("media.tabs.audio")}</TabsTrigger>
+              </Link>
+            </TabsList>
+          </Tabs>
+        </div>
+        <div className={"flex-auto w-96 pr-3 space-y-2 pb-3 overflow-y-auto border-r"}>
           {medias.map(media => (
             <Link className={"block"} key={media.id}
                   href={`/${params.lng}/dashboard/${params.workspace}/media/${params.category}/${media.id}`}>
@@ -56,7 +56,9 @@ export default async function MediaLayout({children, params}: MediaLayoutProps) 
             </Link>
           ))}
         </div>
-        <div className={"flex-auto border-l pl-3"}>{children}</div>
+      </div>
+      <div className={"flex-auto ml-3"}>
+        {children}
       </div>
     </div>
   )

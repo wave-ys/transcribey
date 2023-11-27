@@ -19,6 +19,7 @@ export interface TranscriptionListProps {
   list: TranscriptionModel;
   playerRef?: RefObject<MediaPlayerInstance>;
   className?: string;
+  onModified?: (v: boolean) => void
 }
 
 export interface TranscriptionItemProps {
@@ -28,6 +29,7 @@ export interface TranscriptionItemProps {
   onChange: (value: string) => void;
   parentRef?: RefObject<HTMLDivElement>;
   autoScroll: boolean;
+  onModified?: (value: boolean) => void;
 }
 
 export function CopyButton({item}: { item: TranscriptionItem }) {
@@ -59,7 +61,8 @@ export function TranscriptionItem(
     onDeleteClick,
     onChange,
     parentRef,
-    autoScroll
+    autoScroll,
+    onModified
   }: TranscriptionItemProps) {
   const [editing, setEditing] = useState(false);
   const [currentText, setCurrentText] = useState(item.current);
@@ -131,7 +134,12 @@ export function TranscriptionItem(
                "p-2 border rounded-xl border-blue-600 flex-auto focus-visible:outline-blue-800 dark:focus-visible:outline-blue-300",
                !editing && "hidden"
              )}
-             value={currentText} onChange={e => setCurrentText(e.target.value)}/>
+             value={currentText}
+             onChange={e => {
+               setCurrentText(e.target.value)
+               onModified?.(true);
+             }}
+      />
       <div className={"hidden group-hover:block absolute right-1"}>
         <CopyButton item={item}/>
         <Button variant={"ghost"} size={"icon"} onClick={() => onDeleteClick(!item.deleted)}>
@@ -142,7 +150,7 @@ export function TranscriptionItem(
   )
 }
 
-export default function TranscriptionList({list, playerRef, className}: TranscriptionListProps) {
+export default function TranscriptionList({list, playerRef, className, onModified}: TranscriptionListProps) {
   const {t} = useTranslation();
 
   const [transcriptionStates, setTranscriptionStates] = useState<TranscriptionState[]>(list.map(item => ({
@@ -163,13 +171,15 @@ export default function TranscriptionList({list, playerRef, className}: Transcri
   }, [transcriptionStates])
 
   const handleChangeItem = useCallback((index: number, value: string) => {
+    if (value === transcriptionStates[index].current)
+      return;
     const newStates = [...transcriptionStates];
     newStates[index] = {
       ...newStates[index],
       current: value
     };
     setTranscriptionStates(newStates);
-  }, [transcriptionStates])
+  }, [onModified, transcriptionStates])
 
   const [autoScroll, setAutoScroll] = useState(false);
 
@@ -193,6 +203,7 @@ export default function TranscriptionList({list, playerRef, className}: Transcri
       <div className={"space-y-1 overflow-y-auto flex-grow"} ref={listRef}>
         {transcriptionStates.map((item, index) => (
           <TranscriptionItem
+            onModified={onModified}
             autoScroll={autoScroll}
             parentRef={listRef}
             onDeleteClick={v => handleDeleteItemClick(index, v)}

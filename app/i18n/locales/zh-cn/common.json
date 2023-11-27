@@ -105,7 +105,9 @@
       }
     },
     "transcriptions": {
-      "autoScroll": "跟随滚动"
+      "autoScroll": "跟随滚动",
+      "save": "保存",
+      "export": "导出"
     }
   },
   "trash": {

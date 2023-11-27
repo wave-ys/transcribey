@@ -106,7 +106,9 @@
       }
     },
     "transcriptions": {
-      "autoScroll": "Auto Scroll"
+      "autoScroll": "Auto Scroll",
+      "save": "Save",
+      "export": "Export"
     }
   },
   "trash": {
