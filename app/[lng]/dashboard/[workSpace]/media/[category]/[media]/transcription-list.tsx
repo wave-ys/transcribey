@@ -190,10 +190,12 @@ export default function TranscriptionList({list, playerRef, className, onModifie
     <div className={cn(className)}>
       <div className={"mb-1 w-fit ml-auto flex-none"}>
         <Tooltip>
-          <TooltipTrigger>
-            <Toggle variant={"solid"} pressed={autoScroll} onPressedChange={setAutoScroll}>
-              <TbArrowAutofitDown/>
-            </Toggle>
+          <TooltipTrigger asChild>
+            <div>
+              <Toggle variant={"solid"} pressed={autoScroll} onPressedChange={setAutoScroll}>
+                <TbArrowAutofitDown/>
+              </Toggle>
+            </div>
           </TooltipTrigger>
           <TooltipContent side={"bottom"}>
             {t("media.transcriptions.autoScroll")}
