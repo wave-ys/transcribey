@@ -8,9 +8,17 @@ export interface TranscriptionItem {
 
 export type TranscriptionModel = TranscriptionItem[]
 
-export default function getTranscriptionApi(mediaId: number) {
+export function getTranscriptionApi(mediaId: number) {
   return request<TranscriptionModel>({
     url: '/api/transcription/' + mediaId,
     method: 'get'
+  })
+}
+
+export function saveTranscriptionApi(mediaId: number, data: TranscriptionModel) {
+  return request({
+    url: '/api/transcription/' + mediaId,
+    method: 'put',
+    data
   })
 }

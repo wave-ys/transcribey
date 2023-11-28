@@ -1,7 +1,7 @@
 import React from "react";
 import {getMediaApi, MediaModel} from "@/request/media";
 import {redirect} from "next/navigation";
-import getTranscriptionApi from "@/request/transcription";
+import {getTranscriptionApi} from "@/request/transcription";
 import MediaMain from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/main";
 
 interface MediaPageProps {

@@ -91,4 +91,15 @@ public class ObjectStorage(IConfiguration configuration, IMinioClient minioClien
         var stream = await task.Task;
         await stream.CopyToAsync(writer);
     }
+
+    public async Task SaveFile(string filePath, Stream reader, long length)
+    {
+        await minioClient.PutObjectAsync(
+            new PutObjectArgs()
+                .WithBucket(_bucketName)
+                .WithObject(filePath)
+                .WithStreamData(reader)
+                .WithObjectSize(length)
+        );
+    }
 }

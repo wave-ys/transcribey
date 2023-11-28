@@ -1,4 +1,4 @@
-import {TranscriptionItem, TranscriptionModel} from "@/request/transcription";
+import {TranscriptionItem} from "@/request/transcription";
 import {cn, secondsToString} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {LuCopy, LuCopyCheck} from "react-icons/lu";
@@ -16,7 +16,8 @@ export interface TranscriptionState extends TranscriptionItem {
 }
 
 export interface TranscriptionListProps {
-  list: TranscriptionModel;
+  list: TranscriptionState[];
+  onUpdateList?: (v: TranscriptionState[]) => void;
   playerRef?: RefObject<MediaPlayerInstance>;
   className?: string;
   onModified?: (v: boolean) => void
@@ -150,36 +151,36 @@ export function TranscriptionItem(
   )
 }
 
-export default function TranscriptionList({list, playerRef, className, onModified}: TranscriptionListProps) {
+export default function TranscriptionList({
+                                            list,
+                                            playerRef,
+                                            className,
+                                            onModified,
+                                            onUpdateList
+                                          }: TranscriptionListProps) {
   const {t} = useTranslation();
-
-  const [transcriptionStates, setTranscriptionStates] = useState<TranscriptionState[]>(list.map(item => ({
-    ...item,
-    current: item.text,
-    deleted: false
-  })));
 
   const listRef = useRef<HTMLDivElement>(null);
 
   const handleDeleteItemClick = useCallback((index: number, value: boolean) => {
-    const newStates = [...transcriptionStates];
+    const newStates = [...list];
     newStates[index] = {
       ...newStates[index],
       deleted: value
     };
-    setTranscriptionStates(newStates);
-  }, [transcriptionStates])
+    onUpdateList?.(newStates);
+  }, [list, onUpdateList])
 
   const handleChangeItem = useCallback((index: number, value: string) => {
-    if (value === transcriptionStates[index].current)
+    if (value === list[index].current)
       return;
-    const newStates = [...transcriptionStates];
+    const newStates = [...list];
     newStates[index] = {
       ...newStates[index],
       current: value
     };
-    setTranscriptionStates(newStates);
-  }, [onModified, transcriptionStates])
+    onUpdateList?.(newStates);
+  }, [list, onUpdateList])
 
   const [autoScroll, setAutoScroll] = useState(false);
 
@@ -203,7 +204,7 @@ export default function TranscriptionList({list, playerRef, className, onModifie
         </Tooltip>
       </div>
       <div className={"space-y-1 overflow-y-auto flex-grow"} ref={listRef}>
-        {transcriptionStates.map((item, index) => (
+        {list.map((item, index) => (
           <TranscriptionItem
             onModified={onModified}
             autoScroll={autoScroll}

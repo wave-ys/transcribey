@@ -17,8 +17,20 @@ public class TranscriptionController(IObjectStorage objectStorage, DataContext d
             return NotFound();
         if (string.IsNullOrEmpty(media.ResultPath))
             return NoContent();
-        
+
         var stream = await objectStorage.GetFile(media.ResultPath);
         return File(stream, MediaTypeNames.Application.Json);
+    }
+
+    [HttpPut("{mediaId}")]
+    public async Task<ActionResult> SaveTranscription(long mediaId)
+    {
+        if (Request.ContentLength == null)
+            return BadRequest();
+        var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == mediaId);
+        if (string.IsNullOrEmpty(media?.ResultPath))
+            return NotFound();
+        await objectStorage.SaveFile(media.ResultPath, Request.Body, Request.ContentLength.Value);
+        return Ok();
     }
 }
