@@ -22,3 +22,7 @@ export function saveTranscriptionApi(mediaId: number, data: TranscriptionModel) 
     data
   })
 }
+
+export function subscribeTranscribeUpdateApi(mediaId: number) {
+  return new WebSocket(`${process.env.NEXT_PUBLIC_WS_PATH}/api/transcription/${mediaId}/ws`);
+}
