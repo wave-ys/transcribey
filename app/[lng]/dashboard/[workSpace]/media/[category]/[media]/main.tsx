@@ -33,8 +33,10 @@ export default function MediaMain({media, lng, transcriptions}: MediaMainProps) 
 
     const s = subscribeTranscribeUpdateApi(media.id);
     const handleMessage = (e: WebSocketEventMap['message']) => console.log("message: " + e.data);
+    const handleOpen = (e: WebSocketEventMap['open']) => s.send('ping');
     const handleClose = (e: WebSocketEventMap['close']) => router.refresh();
 
+    s.addEventListener('open', handleOpen);
     s.addEventListener('message', handleMessage);
     s.addEventListener('close', handleClose);
 
@@ -44,6 +46,7 @@ export default function MediaMain({media, lng, transcriptions}: MediaMainProps) 
 
     return () => {
       clearInterval(interval);
+      s.removeEventListener('open', handleOpen);
       s.removeEventListener('message', handleMessage);
       s.removeEventListener('close', handleClose);
       s.close();

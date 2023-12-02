@@ -86,10 +86,7 @@ public class TranscriptionController
 
             if (message.Progress == 0 && message.Total == 0)
             {
-                await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
                 channel.BasicAck(e.DeliveryTag, true);
-                channel.BasicCancel(consumerTag);
-                channel.Close();
                 task.SetResult();
                 return;
             }
@@ -106,8 +103,34 @@ public class TranscriptionController
 
             channel.BasicAck(e.DeliveryTag, true);
         };
+
         consumerTag = channel.BasicConsume(queue.QueueName, false, consumer);
-        await task.Task;
+        await Task.WhenAny(task.Task, ReceiveHeartbeat(webSocket));
+        if (webSocket.State == WebSocketState.Open)
+            await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
+        channel.BasicCancel(consumerTag);
+        channel.Close();
+    }
+
+    private async Task ReceiveHeartbeat(WebSocket webSocket)
+    {
+        var buffer = new byte[1024];
+        while (webSocket.State == WebSocketState.Open)
+        {
+            var cts = new CancellationTokenSource();
+            cts.CancelAfter(TimeSpan.FromSeconds(30));
+            try
+            {
+                var result = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), cts.Token);
+                if (result.CloseStatus.HasValue)
+                    return;
+                await webSocket.SendAsync("pong"u8.ToArray(), WebSocketMessageType.Text, true, CancellationToken.None);
+            }
+            catch (OperationCanceledException e)
+            {
+                return;
+            }
+        }
     }
 }
 
