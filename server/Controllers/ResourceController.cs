@@ -2,7 +2,6 @@ using System.Net;
 using System.Net.Mime;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
 using Transcribey.Data;
 using Transcribey.Utils;
@@ -31,7 +30,7 @@ public class ResourceController(IObjectStorage objectStorage, DataContext dataCo
         var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == mediaId);
         if (media == null || string.IsNullOrEmpty(media.StorePath))
             return NotFound();
-        
+
         var size = await objectStorage.GetFileSize(media.StorePath);
         Response.Headers.AcceptRanges = "bytes";
         Response.Headers.ContentLength = size;
