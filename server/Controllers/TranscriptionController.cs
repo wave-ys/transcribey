@@ -15,7 +15,7 @@ namespace Transcribey.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class TranscriptionController
-    (IObjectStorage objectStorage, DataContext dataContext, IConnection connection) : ControllerBase
+    (IObjectStorage objectStorage, DataContext dataContext, IModel channel) : ControllerBase
 {
     public const string TranscribeProgressExchange = "transcribe-progresses";
 
@@ -68,8 +68,7 @@ public class TranscriptionController
 
         var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
         var task = new TaskCompletionSource();
-
-        var channel = connection.CreateModel();
+        
         var queue = channel.QueueDeclare();
         channel.QueueBind(queue.QueueName, TranscribeProgressExchange, mediaId.ToString());
 
