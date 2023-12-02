@@ -3,29 +3,42 @@
 import {formatDistance} from "date-fns";
 import {format, utcToZonedTime} from "date-fns-tz";
 import getDateFnsLocale from "@/app/i18n/date";
+import {useCallback, useState} from "react";
 
 // TODO: Test whether this really works in docker with different timezones
 export function TimeDistance(props: { lng: string, date: string }) {
+  const [str, setStr] = useState("")
+
+  useCallback(() => {
+    setStr(formatDistance(
+      utcToZonedTime(props.date, Intl.DateTimeFormat().resolvedOptions().timeZone),
+      new Date(),
+      {
+        addSuffix: true,
+        locale: getDateFnsLocale(props.lng)
+      }))
+  }, [props.date, props.lng])
+
   return (
-    <span suppressHydrationWarning>
-      {formatDistance(
-        utcToZonedTime(props.date, Intl.DateTimeFormat().resolvedOptions().timeZone),
-        new Date(),
-        {
-          addSuffix: true,
-          locale: getDateFnsLocale(props.lng)
-        })}
+    <span>
+      {str}
     </span>
   )
 }
 
 export function TimeFormat(props: { lng: string, date: string }) {
+  const [str, setStr] = useState("")
+
+  useCallback(() => {
+    setStr(format(
+      utcToZonedTime(props.date, Intl.DateTimeFormat().resolvedOptions().timeZone),
+      'yyyy-MM-dd HH:mm:ss'
+    ));
+  }, [props.date]);
+
   return (
-    <span suppressHydrationWarning>
-      {format(
-        utcToZonedTime(props.date, Intl.DateTimeFormat().resolvedOptions().timeZone),
-        'yyyy-MM-dd HH:mm:ss'
-      )}
+    <span>
+      {str}
     </span>
   )
 }

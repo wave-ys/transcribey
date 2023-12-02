@@ -3,7 +3,7 @@
 import {HiOutlineTrash} from "react-icons/hi";
 import TransparentButton from "@/app/[lng]/dashboard/[workspace]/home/[category]/transparent-button";
 import {useAlert} from "@/components/provider/alert-provider";
-import {useCallback} from "react";
+import {MouseEventHandler, useCallback} from "react";
 import {useTranslation} from "@/app/i18n/client";
 import {useRouter} from "next/navigation";
 import {deleteMediaAction} from "@/app/[lng]/dashboard/[workspace]/home/[category]/actions";
@@ -17,7 +17,8 @@ export default function RemoveMediaButton({id}: RemoveMediaButtonProps) {
   const router = useRouter();
   const {t} = useTranslation();
 
-  const handleClick = useCallback(async () => {
+  const handleClick: MouseEventHandler<HTMLDivElement> = useCallback(async (e) => {
+    e.preventDefault();
     if (!await alert({
       title: t('media.listItem.deleteConfirm.title'),
       description: t('media.listItem.deleteConfirm.description')

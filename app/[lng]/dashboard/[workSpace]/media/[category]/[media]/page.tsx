@@ -25,6 +25,8 @@ export default async function MediaPage({params}: MediaPageProps) {
   }
 
   const {data: transcriptions} = await getTranscriptionApi(+params.media);
+  if (!transcriptions)
+    return <></>
 
   return <MediaMain media={media} lng={params.lng} transcriptions={transcriptions}/>
 }
