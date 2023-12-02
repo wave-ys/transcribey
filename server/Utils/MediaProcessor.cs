@@ -49,7 +49,7 @@ public class MediaProcessor
         using var process = new Process();
         process.StartInfo.FileName = "ffmpeg";
         process.StartInfo.Arguments =
-            $"-i \"{mediaPath}\" -codec copy -movflags faststart \"{outputPath}\"";
+            $"-loglevel quiet -i \"{mediaPath}\" -codec copy -movflags faststart \"{outputPath}\"";
         process.Start();
         await process.WaitForExitAsync();
     }

@@ -9,6 +9,7 @@ import {MEDIA_STATUS_COMPLETED, MediaModel} from "@/request/media";
 import {subscribeTranscribeUpdateApi, TranscriptionModel} from "@/request/transcription";
 import {MediaPlayerInstance} from "@vidstack/react";
 import MediaTopBar from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/top-bar";
+import {useRouter} from "next/navigation";
 
 export interface MediaMainProps {
   media: MediaModel;
@@ -18,8 +19,8 @@ export interface MediaMainProps {
 
 export default function MediaMain({media, lng, transcriptions}: MediaMainProps) {
   const [ref, setRef] = useState<RefObject<MediaPlayerInstance>>()
+  const router = useRouter();
   const [modified, setModified] = useState(false);
-
   const [transcriptionStates, setTranscriptionStates] = useState<TranscriptionState[]>(transcriptions.map(item => ({
     ...item,
     current: item.text,
@@ -27,16 +28,27 @@ export default function MediaMain({media, lng, transcriptions}: MediaMainProps) 
   })));
 
   useEffect(() => {
-    if (media.status === MEDIA_STATUS_COMPLETED)
+    if (media.status === MEDIA_STATUS_COMPLETED || !router)
       return;
-    const socket = subscribeTranscribeUpdateApi(media.id);
+
+    const s = subscribeTranscribeUpdateApi(media.id);
     const handleMessage = (e: WebSocketEventMap['message']) => console.log("message: " + e.data);
-    socket.addEventListener('message', handleMessage);
+    const handleClose = (e: WebSocketEventMap['close']) => router.refresh();
+
+    s.addEventListener('message', handleMessage);
+    s.addEventListener('close', handleClose);
+
+    const interval = setInterval(() => {
+      s.send('ping');
+    }, 15 * 1000);
+
     return () => {
-      socket.removeEventListener('message', handleMessage);
-      socket.close();
+      clearInterval(interval);
+      s.removeEventListener('message', handleMessage);
+      s.removeEventListener('close', handleClose);
+      s.close();
     };
-  }, [media.id, media.status]);
+  }, [router, media.id, media.status]);
 
   return (
     <div className={"h-full flex flex-col"}>

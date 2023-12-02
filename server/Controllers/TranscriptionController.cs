@@ -68,13 +68,13 @@ public class TranscriptionController
 
         var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
         var task = new TaskCompletionSource();
-        
-        var queue = channel.QueueDeclare();
+
+        var queue = channel.QueueDeclare(exclusive: false);
         channel.QueueBind(queue.QueueName, TranscribeProgressExchange, mediaId.ToString());
 
         var consumer = new AsyncEventingBasicConsumer(channel);
-        var consumerTag = new List<string>();
-        var firstMessage = new List<bool>();
+        var consumerTag = "";
+        var firstMessage = true;
         consumer.Received += async (sender, e) =>
         {
             var body = Encoding.UTF8.GetString(e.Body.ToArray());
@@ -84,28 +84,29 @@ public class TranscriptionController
             if (message == null)
                 return;
 
+            if (message.Progress == 0 && message.Total == 0)
+            {
+                await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
+                channel.BasicAck(e.DeliveryTag, true);
+                channel.BasicCancel(consumerTag);
+                channel.Close();
+                task.SetResult();
+                return;
+            }
+
             var response = new TranscribeProgressResponseDto
             {
                 Total = message.Total,
                 Progress = message.Progress,
-                Segments = firstMessage.Count == 0 ? message.Segments : message.Current
+                Segments = firstMessage ? message.Segments : message.Current
             };
-            if (firstMessage.Count == 0) firstMessage.Add(false);
+            firstMessage = false;
             await webSocket.SendAsync(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(response)),
                 WebSocketMessageType.Text, true, CancellationToken.None);
 
             channel.BasicAck(e.DeliveryTag, true);
-            if (message.Progress == message.Total && consumerTag.Count == 1)
-            {
-                channel.BasicCancel(consumerTag[0]);
-                channel.Close();
-                await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
-                task.SetResult();
-            }
-
-            await Task.CompletedTask;
         };
-        consumerTag.Add(channel.BasicConsume(queue.QueueName, false, consumer));
+        consumerTag = channel.BasicConsume(queue.QueueName, false, consumer);
         await task.Task;
     }
 }

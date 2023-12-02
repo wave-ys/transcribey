@@ -27,9 +27,12 @@ class Transcriber:
 
     def do_transcribe(self, media, file_path):
         def __on_progress(all_segments, current_segments, total_progress, current_progress):
-            logging.info("Transcribing progress: " + "{:.2%}".format(current_progress / total_progress))
+            if total_progress != 0:
+                logging.info("Transcribing progress: " + "{:.2%}".format(current_progress / total_progress))
             self.message_producer.publish_progress(media, total_progress, current_progress, all_segments,
                                                    current_segments)
 
-        return self.models[media['Model']].transcribe(file_path, fp16=False, language=(
+        result = self.models[media['Model']].transcribe(file_path, fp16=False, language=(
             media['Language'] if media['Language'] != 'auto' else None), on_progress=__on_progress)
+        __on_progress([], [], 0, 0)
+        return result
