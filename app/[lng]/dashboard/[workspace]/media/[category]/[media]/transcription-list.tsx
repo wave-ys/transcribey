@@ -214,7 +214,8 @@ export default function TranscriptionList(
           <Tooltip>
             <TooltipTrigger asChild>
               <div>
-                <Toggle variant={"solid"} pressed={autoScroll} onPressedChange={setAutoScroll}>
+                <Toggle className={cn(list.length === 0 && "hidden")} variant={"solid"} pressed={autoScroll}
+                        onPressedChange={setAutoScroll}>
                   <TbArrowAutofitDown/>
                 </Toggle>
               </div>
