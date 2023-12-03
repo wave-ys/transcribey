@@ -152,7 +152,10 @@ export function TranscriptionItem(
         className={cn("hidden group-hover:block absolute right-1 bg-background rounded-md", editing && "group-hover:hidden")}>
         <CopyButton item={item}/>
         <Button className={cn(media.status !== MEDIA_STATUS_COMPLETED && "hidden")} variant={"ghost"} size={"icon"}
-                onClick={() => onDeleteClick(!item.deleted)}>
+                onClick={() => {
+                  onDeleteClick(!item.deleted);
+                  onModified?.(true);
+                }}>
           {item.deleted ? <TbTrashOff/> : <TbTrash/>}
         </Button>
       </div>

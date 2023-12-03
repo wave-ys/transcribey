@@ -6,7 +6,6 @@ import {BiExport} from "react-icons/bi";
 import {TranscriptionState} from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/transcription-list";
 import {saveTranscriptionApi} from "@/request/transcription";
 import {MediaModel} from "@/request/media";
-import {useRouter} from "next/navigation";
 
 export interface MediaTopBarProps extends React.HTMLProps<HTMLDivElement> {
   modified?: boolean;
@@ -16,16 +15,18 @@ export interface MediaTopBarProps extends React.HTMLProps<HTMLDivElement> {
 
 export default function MediaTopBar({className, modified, transcriptions, currentMedia}: MediaTopBarProps) {
   const {t} = useTranslation();
-  const router = useRouter();
 
   const handleSave = useCallback(async () => {
-    await saveTranscriptionApi(currentMedia.id, transcriptions.map(item => ({
-      start: item.start,
-      end: item.end,
-      text: item.current
-    })));
-    router.refresh();
-  }, [currentMedia.id, router, transcriptions])
+    await saveTranscriptionApi(currentMedia.id,
+      transcriptions
+        .filter(item => !item.deleted)
+        .map(item => ({
+          start: item.start,
+          end: item.end,
+          text: item.current
+        })));
+    location.reload();
+  }, [currentMedia.id, transcriptions])
 
   return (
     <div className={cn("w-fit ml-auto space-x-3 flex items-center", className)}>

@@ -8,7 +8,7 @@ import {useWorkspace} from "@/components/provider/workspace-provider";
 import AddWorkspaceDialog from "@/components/dialog/workspace/add-dialog";
 import {useToast} from "@/components/ui/use-toast";
 import {useTranslation} from "@/app/i18n/client";
-import {useParams, useRouter} from "next/navigation";
+import {useParams} from "next/navigation";
 
 export interface MediaUploaderProps {
   children: React.ReactNode
@@ -22,7 +22,6 @@ export default function MediaUploader({children}: MediaUploaderProps) {
   const [progress, setProgress] = useState<TransmitProgressState>();
   const {toast} = useToast();
   const {t} = useTranslation();
-  const router = useRouter();
   const params = useParams();
 
   const handleFileChange = useCallback((file?: File) => {
@@ -40,8 +39,8 @@ export default function MediaUploader({children}: MediaUploaderProps) {
     });
     setDialogOpen(false);
     setProgress(undefined);
-    router.push(`/${params['lng']}/dashboard/${params['workspace']}/media/all/${data.id}`);
-  }, [currentWorkspace?.id, file, params, router])
+    location.pathname = `/${params['lng']}/dashboard/${params['workspace']}/media/all/${data.id}`;
+  }, [currentWorkspace?.id, file, params])
 
   return (
     <AddWorkspaceDialog>

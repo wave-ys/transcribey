@@ -6,11 +6,9 @@ import {useTranslation} from "@/app/i18n/client";
 import {useAlert} from "@/components/provider/alert-provider";
 import {MouseEventHandler, useCallback} from "react";
 import {deleteMediaAction} from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/actions";
-import {useRouter} from "next/navigation";
 
 export default function MediaRemove(props: { id: number }) {
   const {t} = useTranslation();
-  const router = useRouter();
   const alert = useAlert()
   const handleClick: MouseEventHandler<HTMLDivElement> = useCallback(async (e) => {
     e.stopPropagation();
@@ -20,8 +18,8 @@ export default function MediaRemove(props: { id: number }) {
     }))
       return;
     await deleteMediaAction(props.id);
-    router.refresh();
-  }, [alert, props.id, router, t])
+    location.reload();
+  }, [alert, props.id, t])
 
   return (
     <DropdownMenuItem className={"text-destructive"} onClick={handleClick}>

@@ -1,5 +1,4 @@
 import {getMediaListApi} from "@/request/media";
-import {useTranslation} from "@/app/i18n";
 import TrashTable from "@/app/[lng]/dashboard/[workspace]/trash/table";
 import {isSidebarOpen} from "@/app/[lng]/dashboard/[workspace]/toggle-sidebar-button";
 
@@ -11,7 +10,6 @@ interface TrashPageProps {
 }
 
 export default async function TrashPage({params}: TrashPageProps) {
-  const {t} = await useTranslation(params.lng)
   const {data} = await getMediaListApi(+params.workspace, "all", true);
   const sidebarOpen = isSidebarOpen();
 
