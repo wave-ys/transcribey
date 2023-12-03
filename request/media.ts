@@ -39,7 +39,7 @@ export async function startTranscribeLocalFileApi(
   const formData = convertToFormData(options);
   formData.append('file', file);
   formData.append('workspaceId', workspaceId + "");
-  return request<void>({
+  return request<MediaModel>({
     url: '/api/media/upload',
     method: 'post',
     data: formData,
