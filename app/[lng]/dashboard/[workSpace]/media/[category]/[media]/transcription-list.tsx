@@ -9,6 +9,10 @@ import {Toggle} from "@/components/ui/toggle";
 import animateScrollTo from "animated-scroll-to";
 import {useTranslation} from "@/app/i18n/client";
 import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
+import {MEDIA_STATUS_COMPLETED, MediaModel} from "@/request/media";
+import {TranscribeProgress} from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/main";
+import TranscribeProgressBar from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/transcribe-progress-bar";
+import {useToast} from "@/components/ui/use-toast";
 
 export interface TranscriptionState extends TranscriptionItem {
   current: string;
@@ -20,7 +24,9 @@ export interface TranscriptionListProps {
   onUpdateList?: (v: TranscriptionState[]) => void;
   playerRef?: RefObject<MediaPlayerInstance>;
   className?: string;
-  onModified?: (v: boolean) => void
+  onModified?: (v: boolean) => void;
+  media: MediaModel;
+  progress?: TranscribeProgress;
 }
 
 export interface TranscriptionItemProps {
@@ -31,6 +37,7 @@ export interface TranscriptionItemProps {
   parentRef?: RefObject<HTMLDivElement>;
   autoScroll: boolean;
   onModified?: (value: boolean) => void;
+  media: MediaModel;
 }
 
 export function CopyButton({item}: { item: TranscriptionItem }) {
@@ -63,8 +70,10 @@ export function TranscriptionItem(
     onChange,
     parentRef,
     autoScroll,
-    onModified
+    onModified,
+    media
   }: TranscriptionItemProps) {
+  const {t} = useTranslation();
   const [editing, setEditing] = useState(false);
   const [currentText, setCurrentText] = useState(item.current);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -72,6 +81,7 @@ export function TranscriptionItem(
   const playing = useMediaState("playing", playerRef);
   const isCurrent = useMemo(() => playing && item.start <= currentTime && item.end > currentTime, [currentTime, item.end, item.start, playing])
   const currentRef = useRef<HTMLDivElement>(null);
+  const toast = useToast();
   useEffect(() => {
     if (!isCurrent || !parentRef?.current || !currentRef.current || !autoScroll)
       return;
@@ -111,10 +121,10 @@ export function TranscriptionItem(
         "p-2 border border-transparent rounded-xl flex-auto",
         item.deleted && "text-muted-foreground line-through",
         editing && "hidden",
-        !item.deleted ? "cursor-pointer group-hover:border-blue-600" : "cursor-default",
+        !item.deleted && media.status === MEDIA_STATUS_COMPLETED ? "cursor-pointer group-hover:border-blue-600" : "cursor-default",
         isCurrent && "bg-blue-600 text-white"
       )} onClick={() => {
-        if (item.deleted)
+        if (media.status !== MEDIA_STATUS_COMPLETED || item.deleted)
           return;
         setEditing(true);
       }}>
@@ -143,7 +153,8 @@ export function TranscriptionItem(
       />
       <div className={cn("hidden group-hover:block absolute right-1 bg-background", editing && "group-hover:hidden")}>
         <CopyButton item={item}/>
-        <Button variant={"ghost"} size={"icon"} onClick={() => onDeleteClick(!item.deleted)}>
+        <Button className={cn(media.status !== MEDIA_STATUS_COMPLETED && "hidden")} variant={"ghost"} size={"icon"}
+                onClick={() => onDeleteClick(!item.deleted)}>
           {item.deleted ? <TbTrashOff/> : <TbTrash/>}
         </Button>
       </div>
@@ -151,13 +162,16 @@ export function TranscriptionItem(
   )
 }
 
-export default function TranscriptionList({
-                                            list,
-                                            playerRef,
-                                            className,
-                                            onModified,
-                                            onUpdateList
-                                          }: TranscriptionListProps) {
+export default function TranscriptionList(
+  {
+    list,
+    playerRef,
+    className,
+    onModified,
+    onUpdateList,
+    media,
+    progress
+  }: TranscriptionListProps) {
   const {t} = useTranslation();
 
   const listRef = useRef<HTMLDivElement>(null);
@@ -189,19 +203,24 @@ export default function TranscriptionList({
 
   return (
     <div className={cn(className)}>
-      <div className={"mb-1 w-fit ml-auto flex-none"}>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <div>
-              <Toggle variant={"solid"} pressed={autoScroll} onPressedChange={setAutoScroll}>
-                <TbArrowAutofitDown/>
-              </Toggle>
-            </div>
-          </TooltipTrigger>
-          <TooltipContent side={"bottom"}>
-            {t("media.transcriptions.autoScroll")}
-          </TooltipContent>
-        </Tooltip>
+      <div className={"mb-1 flex justify-between flex-none"}>
+        <div className={"flex-none w-3/5"}>
+          {progress && <TranscribeProgressBar state={progress}/>}
+        </div>
+        <div className={"flex-none"}>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div>
+                <Toggle variant={"solid"} pressed={autoScroll} onPressedChange={setAutoScroll}>
+                  <TbArrowAutofitDown/>
+                </Toggle>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side={"bottom"}>
+              {t("media.transcriptions.autoScroll")}
+            </TooltipContent>
+          </Tooltip>
+        </div>
       </div>
       <div className={"space-y-1 overflow-y-auto flex-grow"} ref={listRef}>
         {list.map((item, index) => (
@@ -212,7 +231,9 @@ export default function TranscriptionList({
             onDeleteClick={v => handleDeleteItemClick(index, v)}
             onChange={v => handleChangeItem(index, v)}
             playerRef={playerRef} key={item.start}
-            item={item}/>
+            item={item}
+            media={media}
+          />
         ))}
       </div>
     </div>

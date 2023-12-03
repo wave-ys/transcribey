@@ -109,6 +109,12 @@
       "autoScroll": "Auto Scroll",
       "save": "Save",
       "export": "Export"
+    },
+    "transcribing": {
+      "progressBar": {
+        "transcribing": "Transcribing...",
+        "processing": "Processing..."
+      }
     }
   },
   "trash": {

@@ -108,6 +108,12 @@
       "autoScroll": "跟随滚动",
       "save": "保存",
       "export": "导出"
+    },
+    "transcribing": {
+      "progressBar": {
+        "transcribing": "转写中...",
+        "processing": "处理中..."
+      }
     }
   },
   "trash": {
