@@ -87,6 +87,13 @@ pyodbc.OperationalError: ('HYT00', u'[HYT00] [unixODBC][Microsoft][ODBC Driver 1
 
 Changing `localhost` to `127.0.0.1` may solve it, though the reason is not certain.
 
+### `libodbc.2.dylib` no such file
+
+Clear the `pip` cache and reinstall `pyodbc` can solve this problem. The cache directory can be found using this command:
+```shell
+pip cache dir
+```
+
 ### References
 
 - [Microsoft SQL Server - SQLAlchemy 2.0 Documentation](https://docs.sqlalchemy.org/en/20/dialects/mssql.html)
@@ -94,3 +101,4 @@ Changing `localhost` to `127.0.0.1` may solve it, though the reason is not certa
 - [Install · mkleehammer/pyodbc Wiki](https://github.com/mkleehammer/pyodbc/wiki/Install)
 - [Install the Microsoft ODBC driver for SQL Server (macOS) - ODBC Driver for SQL Server | Microsoft Learn](https://learn.microsoft.com/en-us/sql/connect/odbc/linux-mac/install-microsoft-odbc-driver-sql-server-macos)
 - [Cannot import pyodbc with latest version on Apple Silicon · Issue #1124 · mkleehammer/pyodbc](https://github.com/mkleehammer/pyodbc/issues/1124)
+- [python - pip uses incorrect cached package version, instead of the user-specified version - Stack Overflow](https://stackoverflow.com/a/31807659)
