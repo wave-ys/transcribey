@@ -51,7 +51,7 @@ export default function MediaMain({media, lng, transcriptions}: MediaMainProps) 
       if (e.data === 'pong')
         return;
       if (e.data === 'complete') {
-        router.refresh();
+        location.reload()
         return;
       }
       const received = JSON.parse(e.data) as TranscribeProgressMessage;
