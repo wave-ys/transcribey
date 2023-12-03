@@ -113,6 +113,10 @@
       "progressBar": {
         "transcribing": "转写中...",
         "processing": "处理中..."
+      },
+      "hint": {
+        "created": "排队中...",
+        "transcribing": "转写中..."
       }
     }
   },

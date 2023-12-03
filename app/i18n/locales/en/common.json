@@ -114,6 +114,10 @@
       "progressBar": {
         "transcribing": "Transcribing...",
         "processing": "Processing..."
+      },
+      "hint": {
+        "created": "Pending...",
+        "transcribing": "Transcribing..."
       }
     }
   },

@@ -1,6 +1,8 @@
 import {request} from "@/request/index";
 import {AxiosProgressEvent} from "axios";
 
+export const MEDIA_STATUS_CREATED = 'created';
+export const MEDIA_STATUS_TRANSCRIBING = 'transcribing';
 export const MEDIA_STATUS_COMPLETED = 'completed';
 
 export interface TranscribeOptionsDto {
