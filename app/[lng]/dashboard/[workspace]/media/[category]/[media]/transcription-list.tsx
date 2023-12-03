@@ -205,7 +205,7 @@ export default function TranscriptionList(
   return (
     <div className={cn(className)}>
       <div className={"mb-1 flex justify-between flex-none"}>
-        <div className={"flex-none w-3/5"}>
+        <div className={"flex-none w-3/5 max-w-xs"}>
           {!progress && media.status !== MEDIA_STATUS_COMPLETED &&
               <span className={"text-sm text-gray-500"}>{t(`media.transcribing.hint.${media.status}`)}</span>}
           {progress && <TranscribeProgressBar state={progress}/>}
