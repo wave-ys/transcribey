@@ -53,7 +53,7 @@ export default async function DashboardLayout(
   return (
     <WorkspaceProvider list={workspaces} id={workspace}>
       <div className={"h-screen flex"}>
-        <Sidebar className={cn("hidden", sidebarOpen && "lg:border-r lg:block lg:w-64")} header={
+        <Sidebar className={cn("hidden", sidebarOpen && "lg:border-r lg:block lg:w-64 flex-none")} header={
           <div className={"text-right"}>
             <ToggleSidebarButton/>
           </div>

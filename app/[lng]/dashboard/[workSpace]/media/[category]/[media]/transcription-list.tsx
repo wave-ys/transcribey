@@ -12,7 +12,6 @@ import {Tooltip, TooltipContent, TooltipTrigger} from "@/components/ui/tooltip";
 import {MEDIA_STATUS_COMPLETED, MediaModel} from "@/request/media";
 import {TranscribeProgress} from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/main";
 import TranscribeProgressBar from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/transcribe-progress-bar";
-import {useToast} from "@/components/ui/use-toast";
 
 export interface TranscriptionState extends TranscriptionItem {
   current: string;
@@ -73,7 +72,6 @@ export function TranscriptionItem(
     onModified,
     media
   }: TranscriptionItemProps) {
-  const {t} = useTranslation();
   const [editing, setEditing] = useState(false);
   const [currentText, setCurrentText] = useState(item.current);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -81,7 +79,6 @@ export function TranscriptionItem(
   const playing = useMediaState("playing", playerRef);
   const isCurrent = useMemo(() => playing && item.start <= currentTime && item.end > currentTime, [currentTime, item.end, item.start, playing])
   const currentRef = useRef<HTMLDivElement>(null);
-  const toast = useToast();
   useEffect(() => {
     if (!isCurrent || !parentRef?.current || !currentRef.current || !autoScroll)
       return;
@@ -151,7 +148,8 @@ export function TranscriptionItem(
                onModified?.(true);
              }}
       />
-      <div className={cn("hidden group-hover:block absolute right-1 bg-background", editing && "group-hover:hidden")}>
+      <div
+        className={cn("hidden group-hover:block absolute right-1 bg-background rounded-md", editing && "group-hover:hidden")}>
         <CopyButton item={item}/>
         <Button className={cn(media.status !== MEDIA_STATUS_COMPLETED && "hidden")} variant={"ghost"} size={"icon"}
                 onClick={() => onDeleteClick(!item.deleted)}>

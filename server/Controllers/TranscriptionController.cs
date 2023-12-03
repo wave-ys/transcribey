@@ -98,7 +98,9 @@ public class TranscriptionController
                 Segments = firstMessage ? message.Segments : message.Current
             };
             firstMessage = false;
-            await webSocket.SendAsync(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(response, new JsonSerializerOptions(JsonSerializerDefaults.Web))),
+            await webSocket.SendAsync(
+                Encoding.UTF8.GetBytes(JsonSerializer.Serialize(response,
+                    new JsonSerializerOptions(JsonSerializerDefaults.Web))),
                 WebSocketMessageType.Text, true, CancellationToken.None);
 
             channel.BasicAck(e.DeliveryTag, true);
