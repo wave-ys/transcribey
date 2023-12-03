@@ -4,7 +4,6 @@ services:
     environment:
       SA_PASSWORD: Pass0word
       ACCEPT_EULA: Y
-      TZ: UTC
     ports:
       - "1433:1433"
 

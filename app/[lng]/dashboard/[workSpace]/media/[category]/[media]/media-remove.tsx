@@ -12,7 +12,7 @@ export default function MediaRemove(props: { id: number }) {
   const {t} = useTranslation();
   const router = useRouter();
   const alert = useAlert()
-  const handleClick : MouseEventHandler<HTMLDivElement> = useCallback(async (e) => {
+  const handleClick: MouseEventHandler<HTMLDivElement> = useCallback(async (e) => {
     e.stopPropagation();
     if (!await alert({
       title: t('media.listItem.deleteConfirm.title'),

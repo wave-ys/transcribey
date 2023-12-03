@@ -60,11 +60,11 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-using (var scope = app.Services.CreateScope())
-{
-    var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
-    dataContext.Database.Migrate();
-}
+// using (var scope = app.Services.CreateScope())
+// {
+//     var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();
+//     dataContext.Database.Migrate();
+// }
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
