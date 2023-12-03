@@ -41,13 +41,19 @@ export default function MediaMain({media, lng, transcriptions}: MediaMainProps) 
   const [progress, setProgress] = useState<TranscribeProgress>();
 
   useEffect(() => {
-    if (media.status === MEDIA_STATUS_COMPLETED || !router)
+    if (media.status === MEDIA_STATUS_COMPLETED) {
+      setProgress(undefined);
       return;
+    }
 
     const s = subscribeTranscribeUpdateApi(media.id);
     const handleMessage = (e: WebSocketEventMap['message']) => {
       if (e.data === 'pong')
         return;
+      if (e.data === 'complete') {
+        router.refresh();
+        return;
+      }
       const received = JSON.parse(e.data) as TranscribeProgressMessage;
       setTranscriptionStates(prev => ([
         ...prev,
@@ -56,21 +62,19 @@ export default function MediaMain({media, lng, transcriptions}: MediaMainProps) 
       setProgress(received);
     }
     const handleOpen = (e: WebSocketEventMap['open']) => s.send('ping');
-    const handleClose = (e: WebSocketEventMap['close']) => router.refresh();
 
     s.addEventListener('open', handleOpen);
     s.addEventListener('message', handleMessage);
-    s.addEventListener('close', handleClose);
 
     const interval = setInterval(() => {
-      s.send('ping');
+      if (s.readyState === 1)
+        s.send('ping');
     }, 15 * 1000);
 
     return () => {
       clearInterval(interval);
       s.removeEventListener('open', handleOpen);
       s.removeEventListener('message', handleMessage);
-      s.removeEventListener('close', handleClose);
       s.close();
     };
   }, [router, media.id, media.status]);
@@ -81,7 +85,7 @@ export default function MediaMain({media, lng, transcriptions}: MediaMainProps) 
                    className={cn("flex-none mb-3", media.status !== MEDIA_STATUS_COMPLETED && "invisible")}
                    transcriptions={transcriptionStates}
                    currentMedia={media}/>
-      <Player refUpdate={setRef} className={"h-auto flex-shrink max-h-[66%;]"} media={media} lng={lng}/>
+      <Player refUpdate={setRef} className={"h-auto flex-shrink max-h-[66%]"} media={media} lng={lng}/>
       <TranscriptionList className={"my-2 flex flex-col flex-grow h-0"} playerRef={ref} list={transcriptionStates}
                          onUpdateList={setTranscriptionStates}
                          onModified={setModified} media={media} progress={progress}/>

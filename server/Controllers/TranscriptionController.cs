@@ -86,6 +86,8 @@ public class TranscriptionController
 
             if (message.Progress == 0 && message.Total == 0)
             {
+                await webSocket.SendAsync("complete"u8.ToArray(), WebSocketMessageType.Text, true,
+                    CancellationToken.None);
                 channel.BasicAck(e.DeliveryTag, true);
                 task.SetResult();
                 return;
