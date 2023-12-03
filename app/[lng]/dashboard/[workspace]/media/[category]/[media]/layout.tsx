@@ -2,7 +2,6 @@ import React from "react";
 import {redirect} from "next/navigation";
 import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs";
 import {useTranslation} from "@/app/i18n";
-import Link from "next/link";
 import {getMediaListApi} from "@/request/media";
 import MediaListItem from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/media-list-item";
 import {isSidebarOpen} from "@/app/[lng]/dashboard/[workspace]/toggle-sidebar-button";
@@ -36,24 +35,24 @@ export default async function MediaLayout({children, params}: MediaLayoutProps) 
         <div className={cn("flex-none pl-12", sidebarOpen && "lg:pl-0")}>
           <Tabs defaultValue={params.category}>
             <TabsList>
-              <Link href={`/${params.lng}/dashboard/${params.workspace}/media/all/_`}>
+              <a href={`/${params.lng}/dashboard/${params.workspace}/media/all/_`}>
                 <TabsTrigger value={'all'}>{t("media.tabs.all")}</TabsTrigger>
-              </Link>
-              <Link href={`/${params.lng}/dashboard/${params.workspace}/media/video/_`}>
+              </a>
+              <a href={`/${params.lng}/dashboard/${params.workspace}/media/video/_`}>
                 <TabsTrigger value={'video'}>{t("media.tabs.video")}</TabsTrigger>
-              </Link>
-              <Link href={`/${params.lng}/dashboard/${params.workspace}/media/audio/_`}>
+              </a>
+              <a href={`/${params.lng}/dashboard/${params.workspace}/media/audio/_`}>
                 <TabsTrigger value={'audio'}>{t("media.tabs.audio")}</TabsTrigger>
-              </Link>
+              </a>
             </TabsList>
           </Tabs>
         </div>
         <div className={"flex-auto w-96 pr-3 space-y-2 pb-3 overflow-y-auto border-r"}>
           {medias.map(media => (
-            <Link className={"block"} key={media.id}
-                  href={`/${params.lng}/dashboard/${params.workspace}/media/${params.category}/${media.id}`}>
+            <a className={"block"} key={media.id}
+               href={`/${params.lng}/dashboard/${params.workspace}/media/${params.category}/${media.id}`}>
               <MediaListItem active={media.id + "" === params.media} media={media} lng={params.lng}/>
-            </Link>
+            </a>
           ))}
         </div>
       </div>

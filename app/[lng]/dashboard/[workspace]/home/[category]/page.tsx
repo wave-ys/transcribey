@@ -5,7 +5,6 @@ import {LuUpload} from "react-icons/lu";
 import MediaUploader from "@/app/[lng]/dashboard/[workspace]/home/[category]/media-uploader";
 import {redirect} from "next/navigation";
 import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs";
-import Link from "next/link";
 import {getMediaListApi} from "@/request/media";
 import MediaCard from "@/app/[lng]/dashboard/[workspace]/home/[category]/media-card";
 
@@ -45,15 +44,15 @@ export default async function Home({params: {lng, category, workspace}}: HomePro
 
       <Tabs defaultValue={category}>
         <TabsList>
-          <Link href={`/${lng}/dashboard/${workspace}/home/all`}>
+          <a href={`/${lng}/dashboard/${workspace}/home/all`}>
             <TabsTrigger value={'all'}>{t("media.tabs.all")}</TabsTrigger>
-          </Link>
-          <Link href={`/${lng}/dashboard/${workspace}/home/video`}>
+          </a>
+          <a href={`/${lng}/dashboard/${workspace}/home/video`}>
             <TabsTrigger value={'video'}>{t("media.tabs.video")}</TabsTrigger>
-          </Link>
-          <Link href={`/${lng}/dashboard/${workspace}/home/audio`}>
+          </a>
+          <a href={`/${lng}/dashboard/${workspace}/home/audio`}>
             <TabsTrigger value={'audio'}>{t("media.tabs.audio")}</TabsTrigger>
-          </Link>
+          </a>
         </TabsList>
       </Tabs>
 

@@ -1,6 +1,5 @@
 "use client";
 
-import Link from "next/link";
 import React from "react";
 import {SidebarItem, SidebarItemProps} from "@/components/ui/sidebar";
 import {usePathname} from "next/navigation";
@@ -15,9 +14,9 @@ export function SidebarLinkItem({href, ...other}: SidebarLinkItemProps) {
   const pathname = usePathname();
 
   return (
-    <Link href={href} className={"block"}>
+    <a href={href} className={"block"}>
       <SidebarItem {...other} active={pathname.startsWith(href)}/>
-    </Link>
+    </a>
   )
 }
 
