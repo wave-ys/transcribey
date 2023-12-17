@@ -14,8 +14,8 @@ namespace Transcribey.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class TranscriptionController
-    (IObjectStorage objectStorage, DataContext dataContext, IModel channel) : ControllerBase
+public class TranscriptionController(IObjectStorage objectStorage, DataContext dataContext, IModel channel)
+    : ControllerBase
 {
     public const string TranscribeProgressExchange = "transcribe-progresses";
 

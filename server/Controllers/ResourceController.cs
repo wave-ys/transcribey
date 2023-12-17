@@ -61,7 +61,7 @@ public class ResourceController(IObjectStorage objectStorage, DataContext dataCo
 
         Response.Headers.AcceptRanges = "bytes";
 
-        var ranges = RangeRequestUtils.ParseRangeHeader(Request.Headers.Range, size);
+        var ranges = RangeRequestUtils.ParseRangeHeader(Request.Headers.Range, size, 32 * 1024 * 1024);
         if (ranges == null || ranges.Count == 0)
         {
             Response.Headers.ContentType = contentType;

@@ -4,7 +4,7 @@ public class RangeRequestUtils
 {
     public const string PartialBoundary = "IWISHDOTNETWILLENHANCERANGEREQUESTSUPPORT";
 
-    public static List<RangeRequestItem>? ParseRangeHeader(string? rangeHeaderValue, long size)
+    public static List<RangeRequestItem>? ParseRangeHeader(string? rangeHeaderValue, long size, long? sizeLimit)
     {
         if (string.IsNullOrEmpty(rangeHeaderValue))
             return null;
@@ -22,6 +22,8 @@ public class RangeRequestUtils
 
             var startByte = long.TryParse(points[0], out var parsed1) ? parsed1 : 0;
             var endByte = long.TryParse(points[1], out var parsed2) ? parsed2 : size - 1;
+            if (sizeLimit != null)
+                endByte = long.Min(endByte, startByte + sizeLimit.Value - 1);
             result.Add(new RangeRequestItem(startByte, endByte, range));
         }
 

@@ -10,8 +10,8 @@ namespace Transcribey.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
-public class MediaController
-    (IObjectStorage objectStorage, DataContext dataContext, IMessageProducer messageProducer) : ControllerBase
+public class MediaController(IObjectStorage objectStorage, DataContext dataContext, IMessageProducer messageProducer)
+    : ControllerBase
 {
     [HttpGet("{id}")]
     public async Task<ActionResult<MediaDto>> GetMedia(long id)
