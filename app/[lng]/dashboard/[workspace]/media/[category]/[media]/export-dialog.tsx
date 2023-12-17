@@ -4,6 +4,7 @@ import {useTranslation} from "@/app/i18n/client";
 import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
 import {TranscriptionModel} from "@/request/transcription";
 import {Textarea} from "@/components/ui/textarea";
+import {Button} from "@/components/ui/button";
 
 // https://deepgram.com/learn/generate-webvtt-srt-captions-nodejs
 const textFormatItems: {
@@ -91,19 +92,22 @@ export default function ExportTranscriptionDialog({children, transcriptions}: Ex
       <DialogContent className={"max-w-4xl"}>
         <DialogHeader>
           <DialogTitle>{t("media.transcriptions.export")}</DialogTitle>
-          <div className={"grid grid-cols-4 h-[32rem]"}>
-            <Sidebar className={"border-r pl-0 pr-4 col-span-1 pt-4"}>
-              <SidebarSection>
-                {
-                  textFormatItems.map(item => (
-                    <SidebarItem key={item.title} active={currentFormat === item.title}
-                                 onClick={() => setCurrentFormat(item.title)} icon={item.icon}>
-                      {item.title}
-                    </SidebarItem>
-                  ))
-                }
-              </SidebarSection>
-            </Sidebar>
+          <div className={"grid grid-cols-4"}>
+            <div className={"border-r pl-0 pr-4 col-span-1 pt-4 "}>
+              <Sidebar className={"h-[28rem]"}>
+                <SidebarSection>
+                  {
+                    textFormatItems.map(item => (
+                      <SidebarItem key={item.title} active={currentFormat === item.title}
+                                   onClick={() => setCurrentFormat(item.title)} icon={item.icon}>
+                        {item.title}
+                      </SidebarItem>
+                    ))
+                  }
+                </SidebarSection>
+              </Sidebar>
+              <Button className={"w-full"}>{t("media.transcriptions.export")}</Button>
+            </div>
             <div className={"col-span-3 pl-4"}>
               <Textarea readOnly className={"w-full h-full resize-none text-base"}
                         value={textFormatItems.find(item => item.title === currentFormat)?.formatter(transcriptions)}/>
