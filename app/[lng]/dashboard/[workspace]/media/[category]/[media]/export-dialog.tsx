@@ -105,7 +105,7 @@ export default function ExportTranscriptionDialog({children, transcriptions}: Ex
               </SidebarSection>
             </Sidebar>
             <div className={"col-span-3 pl-4"}>
-              <Textarea readOnly className={"w-full h-full resize-none"}
+              <Textarea readOnly className={"w-full h-full resize-none text-base"}
                         value={textFormatItems.find(item => item.title === currentFormat)?.formatter(transcriptions)}/>
             </div>
           </div>
