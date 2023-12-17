@@ -2,38 +2,83 @@ import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,} from "
 import React, {useState} from "react";
 import {useTranslation} from "@/app/i18n/client";
 import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
-import {TranscriptionState} from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/transcription-list";
+import {TranscriptionModel} from "@/request/transcription";
+import {Textarea} from "@/components/ui/textarea";
 
+// https://deepgram.com/learn/generate-webvtt-srt-captions-nodejs
 const textFormatItems: {
   title: string,
-  formatter: (transcriptions: TranscriptionState[]) => string,
+  formatter: (transcriptions: TranscriptionModel) => string,
   icon?: React.ReactNode
 }[] = [
   {
     title: ".srt",
-    formatter: () => "srt"
+    formatter: (transcriptions) => {
+      let result = "";
+      for (let i = 0; i < transcriptions.length; i++) {
+        const item = transcriptions[i];
+        const start = new Date(item.start * 1000).toISOString().substring(11, 23).replace('.', ',');
+        const end = new Date(item.end * 1000).toISOString().substring(11, 23).replace('.', ',');
+        result += `${i + 1}\n${start} --> ${end}\n${item.text}\n\n`;
+      }
+      return result;
+    }
   },
   {
     title: ".vtt",
-    formatter: () => "vtt"
+    formatter: (transcriptions) => {
+      let result = "WEBVTT\n\n";
+      for (let i = 0; i < transcriptions.length; i++) {
+        const item = transcriptions[i];
+        const start = new Date(item.start * 1000).toISOString().substring(11, 23);
+        const end = new Date(item.end * 1000).toISOString().substring(11, 23);
+        result += `${start} --> ${end}\n${item.text}\n\n`;
+      }
+      return result;
+    }
   },
   {
     title: ".lrc",
-    formatter: () => "lrc"
+    formatter: (transcriptions) => {
+      let result = "";
+      for (let i = 0; i < transcriptions.length; i++) {
+        const {start, text} = transcriptions[i];
+        const xx = (Math.floor(start * 100) % 100).toString().padStart(2, '0');
+        const ss = (Math.floor(start) % 60).toString().padStart(2, '0');
+        const mm = (Math.floor(start / 60) % 60).toString().padStart(2, '0');
+        result += `[${xx}:${ss}.${mm}]${text}\n`;
+      }
+      return result;
+    }
   },
   {
     title: ".md",
-    formatter: () => "md"
+    formatter: (transcriptions) => {
+      let result = "";
+      for (let i = 0; i < transcriptions.length; i++) {
+        const {text} = transcriptions[i];
+        result += `${i + 1}. ${text}\n`;
+      }
+      return result;
+    }
   },
   {
     title: ".txt",
-    formatter: () => "txt"
+    formatter: (transcriptions) => {
+      let result = "";
+      for (let i = 0; i < transcriptions.length; i++) {
+        if (i) result += "\n";
+        const {text} = transcriptions[i];
+        result += `${text}`;
+      }
+      return result;
+    }
   }
 ]
 
 export interface ExportTranscriptionDialogProps {
   children: React.ReactNode,
-  transcriptions: TranscriptionState[];
+  transcriptions: TranscriptionModel;
 }
 
 export default function ExportTranscriptionDialog({children, transcriptions}: ExportTranscriptionDialogProps) {
@@ -60,7 +105,8 @@ export default function ExportTranscriptionDialog({children, transcriptions}: Ex
               </SidebarSection>
             </Sidebar>
             <div className={"col-span-3 pl-4"}>
-              {textFormatItems.find(item => item.title === currentFormat)?.formatter(transcriptions)}
+              <Textarea readOnly className={"w-full h-full resize-none"}
+                        value={textFormatItems.find(item => item.title === currentFormat)?.formatter(transcriptions)}/>
             </div>
           </div>
         </DialogHeader>

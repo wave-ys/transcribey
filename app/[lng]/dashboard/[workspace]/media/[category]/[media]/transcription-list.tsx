@@ -50,7 +50,7 @@ export function CopyButton({item}: { item: TranscriptionItem }) {
     setTimeoutState(
       setTimeout(() => {
         setCopied(false);
-      }, 800)
+      }, 500)
     );
   }, [item.text, timeoutState])
 
