@@ -46,7 +46,7 @@ const textFormatItems: {
         const xx = (Math.floor(start * 100) % 100).toString().padStart(2, '0');
         const ss = (Math.floor(start) % 60).toString().padStart(2, '0');
         const mm = (Math.floor(start / 60) % 60).toString().padStart(2, '0');
-        result += `[${xx}:${ss}.${mm}]${text}\n`;
+        result += `[${mm}:${ss}.${xx}]${text}\n`;
       }
       return result;
     }
@@ -67,7 +67,7 @@ const textFormatItems: {
     formatter: (transcriptions) => {
       let result = "";
       for (let i = 0; i < transcriptions.length; i++) {
-        if (i) result += "\n";
+        if (i) result += "\n\n";
         const {text} = transcriptions[i];
         result += `${text}`;
       }
