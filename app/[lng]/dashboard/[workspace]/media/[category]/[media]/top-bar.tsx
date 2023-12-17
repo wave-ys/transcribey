@@ -31,7 +31,7 @@ export default function MediaTopBar({className, modified, transcriptions, curren
 
   return (
     <div className={cn("w-fit ml-auto space-x-3 flex items-center", className)}>
-      <ExportTranscriptionDialog>
+      <ExportTranscriptionDialog transcriptions={transcriptions}>
         <Button variant={"outline"}>
           <BiExport className={"w-4 h-4 mr-2"}/>
           {t("media.transcriptions.export")}
