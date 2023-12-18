@@ -3,9 +3,8 @@ import {cn} from "@/lib/utils";
 import {Button} from "@/components/ui/button";
 import {AiOutlineEllipsis} from "react-icons/ai";
 import {useTranslation} from "@/app/i18n";
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
+import {DropdownMenu, DropdownMenuContent, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
 import {TimeDistance} from "@/components/date-display";
-import {RiScissors2Line} from "react-icons/ri";
 import MediaRemove from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/media-remove";
 
 

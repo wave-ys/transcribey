@@ -3,8 +3,6 @@ import {TimeDistance} from "@/components/date-display";
 import {cn} from "@/lib/utils";
 import Image from "next/image";
 import musicCover from '@/public/music-cover.jpeg'
-import TransparentButton from "@/app/[lng]/dashboard/[workspace]/home/[category]/transparent-button";
-import {RiScissors2Line} from "react-icons/ri";
 import RemoveMediaButton from "@/app/[lng]/dashboard/[workspace]/home/[category]/remove-media-button";
 
 

@@ -22,7 +22,7 @@ export default function MediaTopBar({className, modified, transcriptions, curren
       start: item.start,
       end: item.end,
       text: item.current
-    })), [])
+    })), [transcriptions])
 
   const handleSave = useCallback(async () => {
     await saveTranscriptionApi(currentMedia.id, state);

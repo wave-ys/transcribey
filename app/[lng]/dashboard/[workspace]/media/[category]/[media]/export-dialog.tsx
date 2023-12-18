@@ -1,5 +1,5 @@
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,} from "@/components/ui/dialog"
-import React, {useState} from "react";
+import React, {useCallback, useState} from "react";
 import {useTranslation} from "@/app/i18n/client";
 import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
 import {TranscriptionModel} from "@/request/transcription";
@@ -86,6 +86,19 @@ export default function ExportTranscriptionDialog({children, transcriptions}: Ex
   const {t} = useTranslation();
   const [currentFormat, setCurrentFormat] = useState(textFormatItems[0].title);
 
+  const handleExport = useCallback(() => {
+    const current = textFormatItems.find(item => item.title === currentFormat);
+    if (current === undefined)
+      return;
+    const text = current.formatter(transcriptions);
+    const url = window.URL.createObjectURL(new Blob([text]));
+    const link = document.createElement('a');
+    link.download = "export" + current.title;
+    link.href = url;
+    link.click();
+    link.remove();
+  }, [currentFormat, transcriptions])
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -106,7 +119,7 @@ export default function ExportTranscriptionDialog({children, transcriptions}: Ex
                   }
                 </SidebarSection>
               </Sidebar>
-              <Button className={"w-full"}>{t("media.transcriptions.export")}</Button>
+              <Button className={"w-full"} onClick={handleExport}>{t("media.transcriptions.export")}</Button>
             </div>
             <div className={"col-span-3 pl-4"}>
               <Textarea readOnly className={"w-full h-full resize-none text-base"}
