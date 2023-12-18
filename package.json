@@ -29,7 +29,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@tanstack/react-table": "^8.10.7",
     "@uiw/react-color": "^2.0.3",
-    "@vidstack/react": "^1.6.1",
+    "@vidstack/react": "^1.9.8",
     "accept-language": "^3.0.18",
     "animated-scroll-to": "^2.3.0",
     "axios": "^1.6.2",

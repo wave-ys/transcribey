@@ -21,12 +21,12 @@ export default function Player({media, className, lng, refUpdate}: PlayerProps) 
   }, [refUpdate]);
 
   return (
-    <MediaPlayer ref={ref} className={cn("h-full", className)} title={media.fileName}>
+    <MediaPlayer ref={ref} className={cn("h-full", className)} title={media.fileName}
+                 src={`/api/resource/media/${media.id}`}>
       <DefaultVideoLayout icons={defaultLayoutIcons} translations={translations[lng as keyof typeof translations]}/>
       <MediaProvider>
         <Poster className="vds-poster object-contain h-full" alt={media.fileName}
                 src={`/api/resource/thumbnail/${media.id}`}/>
-        <source src={`/api/resource/media/${media.id}`} type={media.contentType}/>
       </MediaProvider>
     </MediaPlayer>
   )
