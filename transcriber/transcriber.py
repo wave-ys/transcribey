@@ -22,7 +22,7 @@ class Transcriber:
             'end': segment['end'],
             'text': segment['text']
         } for segment in result['segments']]
-        preface = result['text'][0:101]
+        preface = result['text'][0:100]
         return dict(data=data, preface=preface)
 
     def do_transcribe(self, media, file_path):

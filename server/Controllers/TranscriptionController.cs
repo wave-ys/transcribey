@@ -40,7 +40,27 @@ public class TranscriptionController(IObjectStorage objectStorage, DataContext d
         var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == mediaId);
         if (string.IsNullOrEmpty(media?.ResultPath))
             return NotFound();
-        await objectStorage.SaveFile(media.ResultPath, Request.Body, Request.ContentLength.Value);
+
+        using var stream = new MemoryStream();
+        await Request.Body.CopyToAsync(stream);
+
+        var transcriptions = JsonSerializer.Deserialize<TranscribeProgressSegmentDto[]>(
+            Encoding.UTF8.GetString(stream.ToArray()),
+            new JsonSerializerOptions(JsonSerializerDefaults.Web));
+        if (transcriptions == null)
+            return BadRequest();
+
+        var text = string.Join("", transcriptions.Select(item => item.Text));
+        var preface = text[..int.Min(text.Length, 100)];
+        if (preface != media.Preface)
+        {
+            media.Preface = preface;
+            dataContext.Medias.Update(media);
+            await dataContext.SaveChangesAsync();
+        }
+
+        stream.Seek(0, SeekOrigin.Begin);
+        await objectStorage.SaveFile(media.ResultPath, stream, Request.ContentLength.Value);
         return Ok();
     }
 
