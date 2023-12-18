@@ -34,7 +34,7 @@ export default function MediaTopBar({className, modified, transcriptions, curren
       <ExportTranscriptionDialog transcriptions={state}>
         <Button variant={"outline"}>
           <BiExport className={"w-4 h-4 mr-2"}/>
-          {t("media.transcriptions.export")}
+          {t("media.transcriptions.export.title")}
         </Button>
       </ExportTranscriptionDialog>
       {modified && <Button onClick={handleSave}>{t("media.transcriptions.save")}</Button>}

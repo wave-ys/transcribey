@@ -108,7 +108,11 @@
     "transcriptions": {
       "autoScroll": "Auto Scroll",
       "save": "Save",
-      "export": "Export"
+      "export": {
+        "title": "Export",
+        "text": "Text",
+        "media": "Media"
+      }
     },
     "transcribing": {
       "progressBar": {

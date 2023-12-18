@@ -1,10 +1,12 @@
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,} from "@/components/ui/dialog"
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useMemo, useState} from "react";
 import {useTranslation} from "@/app/i18n/client";
 import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
 import {TranscriptionModel} from "@/request/transcription";
 import {Textarea} from "@/components/ui/textarea";
 import {Button} from "@/components/ui/button";
+import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs"
+
 
 // https://deepgram.com/learn/generate-webvtt-srt-captions-nodejs
 const textFormatItems: {
@@ -85,8 +87,9 @@ export interface ExportTranscriptionDialogProps {
 export default function ExportTranscriptionDialog({children, transcriptions}: ExportTranscriptionDialogProps) {
   const {t} = useTranslation();
   const [currentFormat, setCurrentFormat] = useState(textFormatItems[0].title);
+  const [currentTab, setCurrentTab] = useState('text');
 
-  const handleExport = useCallback(() => {
+  const handleExportText = useCallback(() => {
     const current = textFormatItems.find(item => item.title === currentFormat);
     if (current === undefined)
       return;
@@ -99,34 +102,46 @@ export default function ExportTranscriptionDialog({children, transcriptions}: Ex
     link.remove();
   }, [currentFormat, transcriptions])
 
+  const exportTextTab = useMemo(() => (
+    <div className={"grid grid-cols-4"}>
+      <div className={"border-r pl-0 pr-4 col-span-1 pt-4 "}>
+        <Sidebar className={"h-[28rem]"}>
+          <SidebarSection>
+            {
+              textFormatItems.map(item => (
+                <SidebarItem key={item.title} active={currentFormat === item.title}
+                             onClick={() => setCurrentFormat(item.title)} icon={item.icon}>
+                  {item.title}
+                </SidebarItem>
+              ))
+            }
+          </SidebarSection>
+        </Sidebar>
+        <Button className={"w-full"} onClick={handleExportText}>{t("media.transcriptions.export.title")}</Button>
+      </div>
+      <div className={"col-span-3 pl-4"}>
+        <Textarea readOnly className={"w-full h-full resize-none text-base"}
+                  value={textFormatItems.find(item => item.title === currentFormat)?.formatter(transcriptions)}/>
+      </div>
+    </div>
+  ), [currentFormat, handleExportText, t, transcriptions])
+
   return (
     <Dialog>
       <DialogTrigger asChild>{children}</DialogTrigger>
       <DialogContent className={"max-w-4xl"}>
         <DialogHeader>
-          <DialogTitle>{t("media.transcriptions.export")}</DialogTitle>
-          <div className={"grid grid-cols-4"}>
-            <div className={"border-r pl-0 pr-4 col-span-1 pt-4 "}>
-              <Sidebar className={"h-[28rem]"}>
-                <SidebarSection>
-                  {
-                    textFormatItems.map(item => (
-                      <SidebarItem key={item.title} active={currentFormat === item.title}
-                                   onClick={() => setCurrentFormat(item.title)} icon={item.icon}>
-                        {item.title}
-                      </SidebarItem>
-                    ))
-                  }
-                </SidebarSection>
-              </Sidebar>
-              <Button className={"w-full"} onClick={handleExport}>{t("media.transcriptions.export")}</Button>
-            </div>
-            <div className={"col-span-3 pl-4"}>
-              <Textarea readOnly className={"w-full h-full resize-none text-base"}
-                        value={textFormatItems.find(item => item.title === currentFormat)?.formatter(transcriptions)}/>
-            </div>
-          </div>
+          <DialogTitle>{t("media.transcriptions.export.title")}</DialogTitle>
         </DialogHeader>
+        <div className={"w-fit ml-auto"}>
+          <Tabs value={currentTab} onValueChange={setCurrentTab}>
+            <TabsList>
+              <TabsTrigger value="text">{t("media.transcriptions.export.title")}</TabsTrigger>
+              <TabsTrigger value="media">{t("media.transcriptions.export.media")}</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
+        {currentTab === 'text' && exportTextTab}
       </DialogContent>
     </Dialog>
   )

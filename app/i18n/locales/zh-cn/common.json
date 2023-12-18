@@ -107,7 +107,11 @@
     "transcriptions": {
       "autoScroll": "跟随滚动",
       "save": "保存",
-      "export": "导出"
+      "export": {
+        "title": "导出",
+        "text": "文本",
+        "media": "音频/视频"
+      }
     },
     "transcribing": {
       "progressBar": {
