@@ -111,7 +111,10 @@
       "export": {
         "title": "Export",
         "text": "Text",
-        "media": "Media"
+        "media": "Media",
+        "mp4WithCaption": ".mp4 (Subtitled)",
+        "keepClipsWithoutSubtitles": "Keep Clips without Subtitles",
+        "removeClipsWithoutSubtitles": "Remove Clips without Subtitles"
       }
     },
     "transcribing": {
