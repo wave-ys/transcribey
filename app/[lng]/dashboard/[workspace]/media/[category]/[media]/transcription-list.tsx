@@ -102,8 +102,7 @@ export function TranscriptionItem(
     if (!editing)
       return;
     inputRef.current?.focus();
-    inputRef.current?.setSelectionRange(currentText.length, currentText.length)
-  }, [currentText.length, editing]);
+  }, [editing]);
 
   return (
     <div className={"flex items-center space-x-4 group relative"} ref={currentRef}>
