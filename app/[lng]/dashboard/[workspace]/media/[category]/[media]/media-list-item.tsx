@@ -48,10 +48,6 @@ export default async function MediaListItem({media, lng, active}: MediaListItemP
             <Button variant={'outline'} size={'icon'}><AiOutlineEllipsis/></Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuItem>
-              <RiScissors2Line className={"w-4 h-4 mr-2"}/>
-              {t("media.listItem.dropDownMenu.subtitleEditing")}
-            </DropdownMenuItem>
             <MediaRemove id={media.id}/>
           </DropdownMenuContent>
         </DropdownMenu>

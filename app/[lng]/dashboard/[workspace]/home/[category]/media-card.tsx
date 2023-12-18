@@ -25,7 +25,6 @@ export default function MediaCard({media, lng, className}: MediaCardProps) {
     )}>
       <div className={"h-52 flex-none relative"}>
         <div className={"absolute right-1.5 top-1.5 z-10 space-x-1 hidden group-hover:block"}>
-          <TransparentButton className={"hover:bg-blue-600"} icon={<RiScissors2Line className={"w-5 h-5"}/>}/>
           <RemoveMediaButton id={media.id}/>
         </div>
         <Image sizes={"26rem, 32rem"} priority className={"object-cover"} fill
