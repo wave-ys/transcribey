@@ -4,7 +4,7 @@ using Transcribey.Models;
 
 namespace Transcribey.Utils;
 
-public class MediaProcessor
+public static class MediaProcessor
 {
     public static async Task<string> DetectFileType(string path)
     {
@@ -31,6 +31,26 @@ public class MediaProcessor
         catch (Exception e)
         {
             return MediaFileType.Error;
+        }
+    }
+
+    public static async Task<double> GetDuration(string path)
+    {
+        try
+        {
+            using var process = new Process();
+            process.StartInfo.FileName = "ffprobe";
+            process.StartInfo.Arguments = $"-i \"{path}\" -show_entries format=duration -v quiet -of csv=\"p=0\"";
+            process.StartInfo.RedirectStandardOutput = true;
+            process.Start();
+            await process.WaitForExitAsync();
+
+            var output = await process.StandardOutput.ReadToEndAsync();
+            return double.Parse(output);
+        }
+        catch (Exception e)
+        {
+            return 0;
         }
     }
 

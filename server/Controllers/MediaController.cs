@@ -113,6 +113,8 @@ public class MediaController(IObjectStorage objectStorage, DataContext dataConte
             if (fileType == MediaFileType.Error)
                 return BadRequest();
 
+            var duration = await MediaProcessor.GetDuration(processedFilePath);
+
             var thumbnailPath = fileType == MediaFileType.Video ? "/thumbnail/" + Guid.NewGuid() + ".png" : "";
             if (fileType == MediaFileType.Video)
             {
@@ -125,6 +127,7 @@ public class MediaController(IObjectStorage objectStorage, DataContext dataConte
             {
                 StorePath = storePath,
                 FileName = options.File.FileName,
+                Duration = duration,
                 FileType = fileType,
                 ContentType = contentType,
                 ThumbnailPath = thumbnailPath,
@@ -164,6 +167,7 @@ public class MediaDto(Media media)
 {
     public long Id { get; set; } = media.Id;
     public string Preface { get; set; } = media.Preface;
+    public double Duration { get; set; } = media.Duration;
 
     public string FileName { get; set; } = media.FileName;
 

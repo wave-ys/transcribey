@@ -4,6 +4,7 @@ public class Media
 {
     public long Id { get; set; }
     public string Preface { get; set; } = "";
+    public double Duration { get; set; } = 0.0;
 
     public string FileName { get; set; } = "";
     public string StorePath { get; set; } = "";

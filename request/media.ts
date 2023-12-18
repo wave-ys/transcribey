@@ -13,6 +13,7 @@ export interface TranscribeOptionsDto {
 export interface MediaModel {
   id: number,
   preface: string,
+  duration: number;
   fileName: string,
   contentType: string,
   model: string,

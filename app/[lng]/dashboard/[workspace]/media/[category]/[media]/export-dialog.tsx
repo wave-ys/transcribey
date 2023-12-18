@@ -8,6 +8,7 @@ import {Button} from "@/components/ui/button";
 import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs"
 import {FaCircleCheck} from "react-icons/fa6";
 import {cn} from "@/lib/utils";
+import {MediaModel} from "@/request/media";
 
 
 // https://deepgram.com/learn/generate-webvtt-srt-captions-nodejs
@@ -84,9 +85,10 @@ const textFormatItems: {
 export interface ExportTranscriptionDialogProps {
   children: React.ReactNode,
   transcriptions: TranscriptionModel;
+  media: MediaModel;
 }
 
-export default function ExportTranscriptionDialog({children, transcriptions}: ExportTranscriptionDialogProps) {
+export default function ExportTranscriptionDialog({children, transcriptions, media}: ExportTranscriptionDialogProps) {
   const {t} = useTranslation();
   const [currentTextFormat, setCurrentTextFormat] = useState(textFormatItems[0].title);
   const [currentMediaFormat, setCurrentMediaFormat] = useState('.mp3');
@@ -162,11 +164,25 @@ export default function ExportTranscriptionDialog({children, transcriptions}: Ex
           className={cn("rounded-lg p-2 border-2 border-muted cursor-pointer relative", onlyWithSubtitle && "border-muted-foreground")}>
           <div className={cn("absolute top-2 right-2", !onlyWithSubtitle && "hidden")}><FaCircleCheck/></div>
           <div className={"mb-2"}>{t("media.transcriptions.export.removeClipsWithoutSubtitles")}</div>
-          <div className={"rounded-lg h-7 bg-primary"}></div>
+          {
+            media.duration === 0 ? <div className={"rounded-lg h-7 bg-primary"}></div> : (
+              <div className={"rounded-lg h-7 bg-muted flex overflow-hidden"}>
+                {transcriptions.map((item, index) => ({
+                  left: index === 0 ? 0 : (item.start - transcriptions[index - 1].end),
+                  length: item.end - item.start
+                })).map((item, index) => (
+                  <div key={index} style={{
+                    marginLeft: item.left / media.duration * 100 + "%",
+                    width: item.length / media.duration * 100 + "%"
+                  }} className={"bg-primary h-full"}></div>
+                ))}
+              </div>
+            )
+          }
         </div>
       </div>
     </div>
-  ), [currentMediaFormat, t, onlyWithSubtitle]);
+  ), [currentMediaFormat, t, onlyWithSubtitle, media.duration, transcriptions]);
 
   return (
     <Dialog>
