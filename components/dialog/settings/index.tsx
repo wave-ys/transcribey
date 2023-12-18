@@ -3,9 +3,8 @@
 import {Dialog, DialogContent, DialogHeader, DialogTitle} from "@/components/ui/dialog";
 import React, {useMemo, useState} from "react";
 import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
-import {FiFolder, FiSettings} from "react-icons/fi";
+import {FiSettings} from "react-icons/fi";
 import {GeneralSettings} from "@/components/dialog/settings/general";
-import {ModelsSettings} from "@/components/dialog/settings/models";
 import {useTranslation} from "@/app/i18n/client";
 import {useSettingsDialog} from "@/components/provider/settings-dialog-provider";
 
@@ -27,12 +26,6 @@ export default function SettingsDialog() {
       title: t("settings.sidebar.general"),
       icon: <FiSettings className={"w-4 h-4 sm:mr-2"}/>,
       page: <GeneralSettings/>
-    },
-    {
-      key: 'models',
-      title: t("settings.sidebar.models"),
-      icon: <FiFolder className={"w-4 h-4 sm:mr-2"}/>,
-      page: <ModelsSettings/>
     }
   ], [t])
 
