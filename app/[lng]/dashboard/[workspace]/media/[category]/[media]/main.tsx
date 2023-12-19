@@ -10,7 +10,6 @@ import {subscribeTranscribeUpdateApi, TranscriptionModel} from "@/request/transc
 import {MediaPlayerInstance} from "@vidstack/react";
 import MediaTopBar from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/top-bar";
 import {useRouter} from "next/navigation";
-import {cn} from "@/lib/utils";
 
 export interface MediaMainProps {
   media: MediaModel;
@@ -82,7 +81,7 @@ export default function MediaMain({media, lng, transcriptions}: MediaMainProps) 
   return (
     <div className={"h-full flex flex-col"}>
       <MediaTopBar modified={modified}
-                   className={cn("flex-none mb-3", media.status !== MEDIA_STATUS_COMPLETED && "invisible")}
+                   className={"flex-none mb-3"}
                    transcriptions={transcriptionStates}
                    currentMedia={media}/>
       <Player refUpdate={setRef} className={"h-auto flex-shrink max-h-[66%]"} media={media} lng={lng}/>

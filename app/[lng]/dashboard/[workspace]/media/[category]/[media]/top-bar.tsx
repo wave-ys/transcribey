@@ -5,7 +5,7 @@ import {useTranslation} from "@/app/i18n/client";
 import {BiExport} from "react-icons/bi";
 import {TranscriptionState} from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/transcription-list";
 import {saveTranscriptionApi, TranscriptionModel} from "@/request/transcription";
-import {MediaModel} from "@/request/media";
+import {MEDIA_STATUS_COMPLETED, MediaModel} from "@/request/media";
 import ExportTranscriptionDialog from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/export-dialog";
 import {LuDownloadCloud} from "react-icons/lu";
 
@@ -38,12 +38,15 @@ export default function MediaTopBar({className, modified, transcriptions, curren
           {t("media.transcriptions.download")}
         </Button>
       </a>
-      <ExportTranscriptionDialog transcriptions={state} media={currentMedia}>
-        <Button variant={"outline"}>
-          <BiExport className={"w-4 h-4 mr-2"}/>
-          {t("media.transcriptions.export.title")}
-        </Button>
-      </ExportTranscriptionDialog>
+      {
+        currentMedia.status === MEDIA_STATUS_COMPLETED &&
+          <ExportTranscriptionDialog transcriptions={state} media={currentMedia}>
+              <Button variant={"outline"}>
+                  <BiExport className={"w-4 h-4 mr-2"}/>
+                {t("media.transcriptions.export.title")}
+              </Button>
+          </ExportTranscriptionDialog>
+      }
       {modified && <Button onClick={handleSave}>{t("media.transcriptions.save")}</Button>}
     </div>
   )
