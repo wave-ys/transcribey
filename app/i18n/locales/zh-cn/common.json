@@ -109,12 +109,7 @@
       "save": "保存",
       "download": "下载",
       "export": {
-        "title": "导出",
-        "text": "文本",
-        "media": "音频/视频",
-        "mp4WithCaption": ".mp4（包含内嵌字幕）",
-        "keepClipsWithoutSubtitles": "保留无字幕的片段",
-        "removeClipsWithoutSubtitles": "移除无字幕的片段"
+        "title": "导出字幕"
       }
     },
     "transcribing": {

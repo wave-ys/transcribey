@@ -1,13 +1,10 @@
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger,} from "@/components/ui/dialog"
-import React, {useCallback, useMemo, useState} from "react";
+import React, {useCallback, useState} from "react";
 import {useTranslation} from "@/app/i18n/client";
 import {Sidebar, SidebarItem, SidebarSection} from "@/components/ui/sidebar";
 import {TranscriptionModel} from "@/request/transcription";
 import {Textarea} from "@/components/ui/textarea";
 import {Button} from "@/components/ui/button";
-import {Tabs, TabsList, TabsTrigger} from "@/components/ui/tabs"
-import {FaCircleCheck} from "react-icons/fa6";
-import {cn} from "@/lib/utils";
 import {MediaModel} from "@/request/media";
 
 
@@ -91,9 +88,6 @@ export interface ExportTranscriptionDialogProps {
 export default function ExportTranscriptionDialog({children, transcriptions, media}: ExportTranscriptionDialogProps) {
   const {t} = useTranslation();
   const [currentTextFormat, setCurrentTextFormat] = useState(textFormatItems[0].title);
-  const [currentMediaFormat, setCurrentMediaFormat] = useState('.mp3');
-  const [currentTab, setCurrentTab] = useState('text');
-  const [onlyWithSubtitle, setOnlyWithSubtitle] = useState(false);
 
   const handleExportText = useCallback(() => {
     const current = textFormatItems.find(item => item.title === currentTextFormat);
@@ -107,83 +101,8 @@ export default function ExportTranscriptionDialog({children, transcriptions, med
     link.href = url;
     link.click();
     link.remove();
-  }, [currentTextFormat, transcriptions])
+  }, [currentTextFormat, transcriptions, media.fileName])
 
-  const exportTextTab = useMemo(() => (
-    <div className={"grid grid-cols-4"}>
-      <div className={"border-r pl-0 pr-4 col-span-1 pt-4 "}>
-        <Sidebar className={"h-[28rem]"}>
-          <SidebarSection>
-            {
-              textFormatItems.map(item => (
-                <SidebarItem key={item.title} active={currentTextFormat === item.title}
-                             onClick={() => setCurrentTextFormat(item.title)} icon={item.icon}>
-                  {item.title}
-                </SidebarItem>
-              ))
-            }
-          </SidebarSection>
-        </Sidebar>
-        <Button className={"w-full"} onClick={handleExportText}>{t("media.transcriptions.export.title")}</Button>
-      </div>
-      <div className={"col-span-3 pl-4"}>
-        <Textarea readOnly className={"w-full h-full resize-none text-base"}
-                  value={textFormatItems.find(item => item.title === currentTextFormat)?.formatter(transcriptions)}/>
-      </div>
-    </div>
-  ), [currentTextFormat, handleExportText, t, transcriptions])
-
-  const exportMediaTab = useMemo(() => (
-    <div className={"grid grid-cols-4"}>
-      <div className={"border-r pl-0 pr-4 col-span-1 pt-4 "}>
-        <Sidebar className={"h-[28rem]"}>
-          <SidebarSection>
-            <SidebarItem active={currentMediaFormat === '.mp3'}
-                         onClick={() => setCurrentMediaFormat('.mp3')}>.mp3</SidebarItem>
-            <SidebarItem active={currentMediaFormat === '.wav'}
-                         onClick={() => setCurrentMediaFormat('.wav')}>.wav</SidebarItem>
-            <SidebarItem active={currentMediaFormat === '.mp4'}
-                         onClick={() => setCurrentMediaFormat('.mp4')}>.mp4</SidebarItem>
-            <SidebarItem active={currentMediaFormat === '.mp4 subtitled'}
-                         onClick={() => setCurrentMediaFormat('.mp4 subtitled')}>
-              {t("media.transcriptions.export.mp4WithCaption")}
-            </SidebarItem>
-          </SidebarSection>
-        </Sidebar>
-        <Button className={"w-full"}>{t("media.transcriptions.export.title")}</Button>
-      </div>
-      <div className={"col-span-3 pl-4 space-y-2"}>
-        <div
-          onClick={() => setOnlyWithSubtitle(false)}
-          className={cn("rounded-lg p-2 border-2 border-muted cursor-pointer relative", !onlyWithSubtitle && "border-muted-foreground")}>
-          <div className={cn("absolute top-2 right-2", onlyWithSubtitle && "hidden")}><FaCircleCheck/></div>
-          <div className={"mb-2"}>{t("media.transcriptions.export.keepClipsWithoutSubtitles")}</div>
-          <div className={"rounded-lg h-7 bg-primary"}></div>
-        </div>
-        <div
-          onClick={() => setOnlyWithSubtitle(true)}
-          className={cn("rounded-lg p-2 border-2 border-muted cursor-pointer relative", onlyWithSubtitle && "border-muted-foreground")}>
-          <div className={cn("absolute top-2 right-2", !onlyWithSubtitle && "hidden")}><FaCircleCheck/></div>
-          <div className={"mb-2"}>{t("media.transcriptions.export.removeClipsWithoutSubtitles")}</div>
-          {
-            media.duration === 0 ? <div className={"rounded-lg h-7 bg-primary"}></div> : (
-              <div className={"rounded-lg h-7 bg-muted flex overflow-hidden"}>
-                {transcriptions.map((item, index) => ({
-                  left: index === 0 ? 0 : (item.start - transcriptions[index - 1].end),
-                  length: item.end - item.start
-                })).map((item, index) => (
-                  <div key={index} style={{
-                    marginLeft: item.left / media.duration * 100 + "%",
-                    width: item.length / media.duration * 100 + "%"
-                  }} className={"bg-primary h-full"}></div>
-                ))}
-              </div>
-            )
-          }
-        </div>
-      </div>
-    </div>
-  ), [currentMediaFormat, t, onlyWithSubtitle, media.duration, transcriptions]);
 
   return (
     <Dialog>
@@ -192,15 +111,27 @@ export default function ExportTranscriptionDialog({children, transcriptions, med
         <DialogHeader>
           <DialogTitle>{t("media.transcriptions.export.title")}</DialogTitle>
         </DialogHeader>
-        <div className={"w-fit ml-auto"}>
-          <Tabs value={currentTab} onValueChange={setCurrentTab}>
-            <TabsList>
-              <TabsTrigger value="text">{t("media.transcriptions.export.title")}</TabsTrigger>
-              <TabsTrigger value="media">{t("media.transcriptions.export.media")}</TabsTrigger>
-            </TabsList>
-          </Tabs>
+        <div className={"grid grid-cols-4"}>
+          <div className={"border-r pl-0 pr-4 col-span-1 pt-4 "}>
+            <Sidebar className={"h-[28rem]"}>
+              <SidebarSection>
+                {
+                  textFormatItems.map(item => (
+                    <SidebarItem key={item.title} active={currentTextFormat === item.title}
+                                 onClick={() => setCurrentTextFormat(item.title)} icon={item.icon}>
+                      {item.title}
+                    </SidebarItem>
+                  ))
+                }
+              </SidebarSection>
+            </Sidebar>
+            <Button className={"w-full"} onClick={handleExportText}>{t("media.transcriptions.export.title")}</Button>
+          </div>
+          <div className={"col-span-3 pl-4"}>
+            <Textarea readOnly className={"w-full h-full resize-none text-base"}
+                      value={textFormatItems.find(item => item.title === currentTextFormat)?.formatter(transcriptions)}/>
+          </div>
         </div>
-        {currentTab === 'text' ? exportTextTab : exportMediaTab}
       </DialogContent>
     </Dialog>
   )

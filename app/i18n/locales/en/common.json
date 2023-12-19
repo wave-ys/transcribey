@@ -110,12 +110,7 @@
       "save": "Save",
       "download": "Download",
       "export": {
-        "title": "Export",
-        "text": "Text",
-        "media": "Media",
-        "mp4WithCaption": ".mp4 (Subtitled)",
-        "keepClipsWithoutSubtitles": "Keep Clips without Subtitles",
-        "removeClipsWithoutSubtitles": "Remove Clips without Subtitles"
+        "title": "Export Subtitles"
       }
     },
     "transcribing": {
