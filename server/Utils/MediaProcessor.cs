@@ -63,4 +63,14 @@ public static class MediaProcessor
         process.Start();
         await process.WaitForExitAsync();
     }
+
+    public static async Task EmbedSoftSubtitles(string mediaPath, string subtitlesPath, string outputPath)
+    {
+        using var process = new Process();
+        process.StartInfo.FileName = "ffmpeg";
+        process.StartInfo.Arguments =
+            $"-loglevel quiet -i \"{mediaPath}\" -i \"{subtitlesPath}\" -c copy -c:s mov_text \"{outputPath}\"";
+        process.Start();
+        await process.WaitForExitAsync();
+    }
 }

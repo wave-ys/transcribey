@@ -53,6 +53,16 @@ public class ObjectStorage(IConfiguration configuration, IMinioClient minioClien
         return await task.Task;
     }
 
+    public async Task GetFile(string filePath, string outputPath)
+    {
+        await minioClient.GetObjectAsync(
+            new GetObjectArgs()
+                .WithBucket(_bucketName)
+                .WithObject(filePath)
+                .WithFile(outputPath)
+        );
+    }
+
     public async Task RemoveFiles(List<string> paths)
     {
         await minioClient.RemoveObjectsAsync(

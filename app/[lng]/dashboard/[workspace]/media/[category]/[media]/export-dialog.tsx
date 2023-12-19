@@ -6,6 +6,7 @@ import {TranscriptionModel} from "@/request/transcription";
 import {Textarea} from "@/components/ui/textarea";
 import {Button} from "@/components/ui/button";
 import {MediaModel} from "@/request/media";
+import {ExportWithSoftSubtitlesApi} from "@/request/export";
 
 
 // https://deepgram.com/learn/generate-webvtt-srt-captions-nodejs
@@ -103,6 +104,18 @@ export default function ExportTranscriptionDialog({children, transcriptions, med
     link.remove();
   }, [currentTextFormat, transcriptions, media.fileName])
 
+  const handleExportVideo = useCallback(async () => {
+    const subtitles = textFormatItems[0].formatter(transcriptions);
+    const {data} = await ExportWithSoftSubtitlesApi(media.id, subtitles);
+    const url = window.URL.createObjectURL(data);
+    const link = document.createElement('a');
+    link.hidden = true;
+    link.download = media.fileName;
+    link.href = url;
+    link.click();
+    link.remove();
+  }, [media.id, media.fileName, transcriptions])
+
 
   return (
     <Dialog>
@@ -129,7 +142,8 @@ export default function ExportTranscriptionDialog({children, transcriptions, med
               <Button className={"w-full"} variant={'outline'}
                       onClick={handleExportText}>{t("media.transcriptions.export.transcriptions")}</Button>
               {media.fileType === 'video' &&
-                  <Button variant={'outline'} className={"w-full"}>{t("media.transcriptions.export.video")}</Button>}
+                  <Button onClick={handleExportVideo} variant={'outline'}
+                          className={"w-full"}>{t("media.transcriptions.export.video")}</Button>}
             </div>
           </div>
           <div className={"col-span-3 pl-4"}>
