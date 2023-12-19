@@ -87,7 +87,6 @@ public class MediaController(IObjectStorage objectStorage, DataContext dataConte
     public async Task<ActionResult<MediaDto>> StartTranscribeUploadFile([FromForm] TranscribeOptionsDto options)
     {
         var filePath = Path.GetTempFileName();
-        var processedFilePath = "";
         var tempThumbnailFilePath = "";
 
         try
@@ -101,25 +100,27 @@ public class MediaController(IObjectStorage objectStorage, DataContext dataConte
             if (await dataContext.Workspaces.SingleOrDefaultAsync(w => w.Id == options.WorkspaceId) == null)
                 return BadRequest();
 
-
             var fileStream = new FileStream(filePath, FileMode.Create);
             await options.File.CopyToAsync(fileStream);
             fileStream.Close();
 
-            processedFilePath = Path.GetTempFileName() + "." + extension;
-            await MediaProcessor.MoveMetadataBlock(filePath, processedFilePath);
-
-            var fileType = await MediaProcessor.DetectFileType(processedFilePath);
+            var fileType = await MediaProcessor.DetectFileType(filePath);
             if (fileType == MediaFileType.Error)
                 return BadRequest();
+            if (!contentType.StartsWith(fileType))
+            {
+                var split = contentType.Split("/");
+                split[0] = fileType;
+                contentType = string.Join('/', split);
+            }
 
-            var duration = await MediaProcessor.GetDuration(processedFilePath);
+            var duration = await MediaProcessor.GetDuration(filePath);
 
             var thumbnailPath = fileType == MediaFileType.Video ? "/thumbnail/" + Guid.NewGuid() + ".png" : "";
             if (fileType == MediaFileType.Video)
             {
                 tempThumbnailFilePath = Path.GetTempFileName() + ".png";
-                await MediaProcessor.GenerateThumbnail(processedFilePath, tempThumbnailFilePath);
+                await MediaProcessor.GenerateThumbnail(filePath, tempThumbnailFilePath);
                 await objectStorage.StoreThumbnail(tempThumbnailFilePath, thumbnailPath);
             }
 
@@ -137,7 +138,7 @@ public class MediaController(IObjectStorage objectStorage, DataContext dataConte
                 CreatedTime = DateTime.UtcNow,
                 WorkspaceId = options.WorkspaceId
             };
-            await objectStorage.StoreMedia(processedFilePath, storePath, options.File.Length, contentType);
+            await objectStorage.StoreMedia(filePath, storePath, options.File.Length, contentType);
             dataContext.Medias.Add(media);
             await dataContext.SaveChangesAsync();
 
@@ -148,9 +149,8 @@ public class MediaController(IObjectStorage objectStorage, DataContext dataConte
         {
             if (tempThumbnailFilePath != "")
                 System.IO.File.Delete(tempThumbnailFilePath);
-            if (processedFilePath != "")
-                System.IO.File.Delete(processedFilePath);
-            System.IO.File.Delete(filePath);
+            if (filePath != "")
+                System.IO.File.Delete(filePath);
         }
     }
 }

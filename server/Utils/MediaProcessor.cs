@@ -63,14 +63,4 @@ public static class MediaProcessor
         process.Start();
         await process.WaitForExitAsync();
     }
-
-    public static async Task MoveMetadataBlock(string mediaPath, string outputPath)
-    {
-        using var process = new Process();
-        process.StartInfo.FileName = "ffmpeg";
-        process.StartInfo.Arguments =
-            $"-loglevel quiet -i \"{mediaPath}\" -codec copy -movflags faststart \"{outputPath}\"";
-        process.Start();
-        await process.WaitForExitAsync();
-    }
 }

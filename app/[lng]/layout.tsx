@@ -12,6 +12,7 @@ import {Toaster} from "@/components/ui/toaster";
 
 import '@vidstack/react/player/styles/default/theme.css';
 import '@vidstack/react/player/styles/default/layouts/video.css';
+import '@vidstack/react/player/styles/default/layouts/audio.css';
 import {TooltipProvider} from "@/components/ui/tooltip";
 
 export async function generateStaticParams() {

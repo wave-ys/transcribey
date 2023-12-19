@@ -1,5 +1,5 @@
 import {MediaPlayer, MediaPlayerInstance, MediaProvider, Poster} from "@vidstack/react";
-import {defaultLayoutIcons, DefaultVideoLayout} from "@vidstack/react/player/layouts/default";
+import {DefaultAudioLayout, defaultLayoutIcons, DefaultVideoLayout} from "@vidstack/react/player/layouts/default";
 import React, {RefObject, useEffect, useRef} from "react";
 import {MediaModel} from "@/request/media";
 
@@ -22,12 +22,25 @@ export default function Player({media, className, lng, refUpdate}: PlayerProps) 
 
   return (
     <MediaPlayer ref={ref} className={cn("h-full", className)} title={media.fileName}
-                 src={`/api/resource/media/${media.id}`}>
-      <DefaultVideoLayout icons={defaultLayoutIcons} translations={translations[lng as keyof typeof translations]}/>
-      <MediaProvider>
-        <Poster className="vds-poster object-contain h-full" alt={media.fileName}
-                src={`/api/resource/thumbnail/${media.id}`}/>
-      </MediaProvider>
+                 src={{
+                   src: `/api/resource/media/${media.id}`,
+                   type: media.contentType
+                 }}>
+      {media.fileType === 'video' && (
+        <>
+          <DefaultVideoLayout icons={defaultLayoutIcons} translations={translations[lng as keyof typeof translations]}/>
+          <MediaProvider>
+            <Poster className="vds-poster object-contain h-full" alt={media.fileName}
+                    src={`/api/resource/thumbnail/${media.id}`}/>
+          </MediaProvider>
+        </>
+      )}
+      {media.fileType === 'audio' && (
+        <>
+          <DefaultAudioLayout icons={defaultLayoutIcons} translations={translations[lng as keyof typeof translations]}/>
+          <MediaProvider/>
+        </>
+      )}
     </MediaPlayer>
   )
 }
