@@ -113,7 +113,7 @@ export default function ExportTranscriptionDialog({children, transcriptions, med
         </DialogHeader>
         <div className={"grid grid-cols-4"}>
           <div className={"border-r pl-0 pr-4 col-span-1 pt-4 "}>
-            <Sidebar className={"h-[28rem]"}>
+            <Sidebar className={"h-[26rem]"}>
               <SidebarSection>
                 {
                   textFormatItems.map(item => (
@@ -125,7 +125,12 @@ export default function ExportTranscriptionDialog({children, transcriptions, med
                 }
               </SidebarSection>
             </Sidebar>
-            <Button className={"w-full"} onClick={handleExportText}>{t("media.transcriptions.export.title")}</Button>
+            <div className={"space-y-2"}>
+              <Button className={"w-full"} variant={'outline'}
+                      onClick={handleExportText}>{t("media.transcriptions.export.transcriptions")}</Button>
+              {media.fileType === 'video' &&
+                  <Button variant={'outline'} className={"w-full"}>{t("media.transcriptions.export.video")}</Button>}
+            </div>
           </div>
           <div className={"col-span-3 pl-4"}>
             <Textarea readOnly className={"w-full h-full resize-none text-base"}

@@ -110,7 +110,9 @@
       "save": "Save",
       "download": "Download",
       "export": {
-        "title": "Export Subtitles"
+        "title": "Export",
+        "transcriptions": "Export Subtitles",
+        "video": "Export Video"
       }
     },
     "transcribing": {
