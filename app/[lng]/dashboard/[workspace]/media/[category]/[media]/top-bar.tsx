@@ -7,6 +7,7 @@ import {TranscriptionState} from "@/app/[lng]/dashboard/[workspace]/media/[categ
 import {saveTranscriptionApi, TranscriptionModel} from "@/request/transcription";
 import {MediaModel} from "@/request/media";
 import ExportTranscriptionDialog from "@/app/[lng]/dashboard/[workspace]/media/[category]/[media]/export-dialog";
+import {LuDownloadCloud} from "react-icons/lu";
 
 export interface MediaTopBarProps extends React.HTMLProps<HTMLDivElement> {
   modified?: boolean;
@@ -31,6 +32,12 @@ export default function MediaTopBar({className, modified, transcriptions, curren
 
   return (
     <div className={cn("w-fit ml-auto space-x-3 flex items-center", className)}>
+      <a href={`/api/resource/media/${currentMedia.id}`} download={currentMedia.fileName}>
+        <Button variant={"outline"}>
+          <LuDownloadCloud className={"w-4 h-4 mr-2"}/>
+          {t("media.transcriptions.download")}
+        </Button>
+      </a>
       <ExportTranscriptionDialog transcriptions={state} media={currentMedia}>
         <Button variant={"outline"}>
           <BiExport className={"w-4 h-4 mr-2"}/>

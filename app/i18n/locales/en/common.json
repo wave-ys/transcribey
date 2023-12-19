@@ -108,6 +108,7 @@
     "transcriptions": {
       "autoScroll": "Auto Scroll",
       "save": "Save",
+      "download": "Download",
       "export": {
         "title": "Export",
         "text": "Text",

@@ -66,6 +66,7 @@ public class ResourceController(IObjectStorage objectStorage, DataContext dataCo
         {
             Response.Headers.ContentType = contentType;
             Response.Headers.ContentLength = size;
+            Response.Headers.ContentDisposition = "attachment";
             var stream = await objectStorage.GetFile(media.StorePath);
             Response.StatusCode = (int)HttpStatusCode.OK;
             await stream.CopyToAsync(Response.Body);
