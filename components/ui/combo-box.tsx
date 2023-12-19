@@ -4,7 +4,7 @@ import {CaretSortIcon, CheckIcon} from "@radix-ui/react-icons"
 
 import {cn} from "@/lib/utils"
 import {Button} from "@/components/ui/button"
-import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem,} from "@/components/ui/command"
+import {Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList,} from "@/components/ui/command"
 import {FormControl,} from "@/components/ui/form"
 import {Popover, PopoverContent, PopoverTrigger,} from "@/components/ui/popover"
 import {Key, useMemo, useState} from "react";
@@ -67,34 +67,41 @@ export function ComboBox({
         </FormControl>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0">
-        <Command>
+        <Command filter={(value, search) => {
+          const item = options.flatMap(group => group.children).find(o => o.value === value)
+          if (!item)
+            return 0;
+          return item.label.toLocaleLowerCase().indexOf(search.toLocaleLowerCase()) === -1 ? 0 : 1;
+        }}>
           <CommandInput
             placeholder={searchPlaceholder ?? t("comboBox.defaultSearchPlaceholder")}
             className="h-9"
           />
           <CommandEmpty>{noResultText ?? t("comboBox.defaultNoResultText")}</CommandEmpty>
-          {
-            options.map(group => (
-              <CommandGroup heading={group.label} key={group.key}>
-                {group.children.map(item => (
-                  <CommandItem value={item.value} key={item.value} onSelect={() => {
-                    onChange?.(item.value)
-                    setOpen(false);
-                  }}>
-                    {item.label}
-                    <CheckIcon
-                      className={cn(
-                        "ml-auto h-4 w-4",
-                        item.value === currentItem?.value
-                          ? "opacity-100"
-                          : "opacity-0"
-                      )}
-                    />
-                  </CommandItem>
-                ))}
-              </CommandGroup>
-            ))
-          }
+          <CommandList>
+            {
+              options.map(group => (
+                <CommandGroup heading={group.label} key={group.key}>
+                  {group.children.map(item => (
+                    <CommandItem value={item.value} key={item.value} onSelect={() => {
+                      onChange?.(item.value)
+                      setOpen(false);
+                    }}>
+                      {item.label}
+                      <CheckIcon
+                        className={cn(
+                          "ml-auto h-4 w-4",
+                          item.value === currentItem?.value
+                            ? "opacity-100"
+                            : "opacity-0"
+                        )}
+                      />
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              ))
+            }
+          </CommandList>
         </Command>
       </PopoverContent>
     </Popover>

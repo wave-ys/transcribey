@@ -7,12 +7,14 @@ import {zodResolver} from "@hookform/resolvers/zod";
 
 import {Button} from "@/components/ui/button"
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form"
-import {ComboBox, ComboBoxGroup} from "@/components/ui/combo-box";
+import {ComboBox} from "@/components/ui/combo-box";
 import {DialogProps} from "@radix-ui/react-dialog";
 import {useTranslation} from "@/app/i18n/client";
 import {useMemo} from "react";
 import {TranscribeOptionsDto} from "@/request/media";
 import TransmitProgressBar, {TransmitProgressState} from "@/components/ui/transmit-progress-bar";
+import modelOptions from "@/components/dialog/transcribe-options/models";
+import languageOptions from "@/components/dialog/transcribe-options/languages";
 
 const formSchema = z.object({
   model: z.string().min(1),
@@ -40,7 +42,7 @@ export default function TranscribeOptionsDialog(props: TranscribeOptionsDialogPr
   }
 
   const languages = useMemo(() => {
-    const value = fakeLanguages;
+    const value = languageOptions;
     value[0].children[0].label = t("home.transcribeOptions.autoLanguage");
     return value;
   }, [t])
@@ -75,7 +77,7 @@ export default function TranscribeOptionsDialog(props: TranscribeOptionsDialogPr
                   <div className={"flex justify-between items-center"}>
                     <FormLabel>{t("home.transcribeOptions.model")}</FormLabel>
                     <FormControl>
-                      <ComboBox className={"ml-auto"} options={fakeModals} value={field.value}
+                      <ComboBox className={"ml-auto"} options={modelOptions} value={field.value}
                                 onChange={field.onChange} disabled={!!props.progress}/>
                     </FormControl>
                   </div>
@@ -103,58 +105,3 @@ export default function TranscribeOptionsDialog(props: TranscribeOptionsDialogPr
     </Dialog>
   )
 }
-
-const fakeModals: ComboBoxGroup[] = [
-  {
-    label: "Multi Language",
-    key: 'multi',
-    children: [
-      {
-        label: "Tiny",
-        value: "tiny"
-      },
-      {
-        label: "Base",
-        value: "base"
-      },
-      {
-        label: "Small",
-        value: "small"
-      },
-      {
-        label: "Medium",
-        value: "medium"
-      }
-    ]
-  },
-  {
-    label: "Multi2 Language",
-    key: 'multi2',
-    children: [
-      {
-        label: "Small2",
-        value: "small2"
-      },
-      {
-        label: "Tiny2",
-        value: "tiny2"
-      }
-    ]
-  }
-]
-
-const fakeLanguages: ComboBoxGroup[] = [
-  {
-    key: 'lng',
-    children: [
-      {
-        label: 'Auto',
-        value: 'auto'
-      },
-      {
-        label: 'English',
-        value: 'en'
-      }
-    ]
-  }
-]
