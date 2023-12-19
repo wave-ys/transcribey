@@ -1,6 +1,6 @@
 import {request} from "@/request/index";
 
-export async function ExportWithSoftSubtitlesApi(id: number, srtSubtitles: string) {
+export async function ExportWithSoftSubtitlesApi(id: number, srtSubtitles: string, onProgress?: (progress: number) => void) {
   return request<Blob>({
     url: '/api/export/soft/' + id,
     method: 'post',
@@ -8,6 +8,11 @@ export async function ExportWithSoftSubtitlesApi(id: number, srtSubtitles: strin
     headers: {
       "Content-Type": "text/plain"
     },
-    responseType: 'blob'
+    responseType: 'blob',
+    onDownloadProgress(e) {
+      if (e.progress !== undefined)
+        onProgress?.(e.progress);
+      console.log(e.progress);
+    }
   });
 }

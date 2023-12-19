@@ -7,6 +7,7 @@ import {Textarea} from "@/components/ui/textarea";
 import {Button} from "@/components/ui/button";
 import {MediaModel} from "@/request/media";
 import {ExportWithSoftSubtitlesApi} from "@/request/export";
+import {cn} from "@/lib/utils";
 
 
 // https://deepgram.com/learn/generate-webvtt-srt-captions-nodejs
@@ -89,6 +90,7 @@ export interface ExportTranscriptionDialogProps {
 export default function ExportTranscriptionDialog({children, transcriptions, media}: ExportTranscriptionDialogProps) {
   const {t} = useTranslation();
   const [currentTextFormat, setCurrentTextFormat] = useState(textFormatItems[0].title);
+  const [exportVideoProgress, setExportVideoProgress] = useState(1);
 
   const handleExportText = useCallback(() => {
     const current = textFormatItems.find(item => item.title === currentTextFormat);
@@ -105,8 +107,9 @@ export default function ExportTranscriptionDialog({children, transcriptions, med
   }, [currentTextFormat, transcriptions, media.fileName])
 
   const handleExportVideo = useCallback(async () => {
+    setExportVideoProgress(0);
     const subtitles = textFormatItems[0].formatter(transcriptions);
-    const {data} = await ExportWithSoftSubtitlesApi(media.id, subtitles);
+    const {data} = await ExportWithSoftSubtitlesApi(media.id, subtitles, setExportVideoProgress);
     const url = window.URL.createObjectURL(data);
     const link = document.createElement('a');
     link.hidden = true;
@@ -142,8 +145,17 @@ export default function ExportTranscriptionDialog({children, transcriptions, med
               <Button className={"w-full"} variant={'outline'}
                       onClick={handleExportText}>{t("media.transcriptions.export.transcriptions")}</Button>
               {media.fileType === 'video' &&
-                  <Button onClick={handleExportVideo} variant={'outline'}
-                          className={"w-full"}>{t("media.transcriptions.export.video")}</Button>}
+                  <Button onClick={handleExportVideo} variant={'outline'} disabled={exportVideoProgress < 1}
+                          className={cn("w-full relative", exportVideoProgress < 1 && "p-0")}>
+                    {exportVideoProgress >= 1 ? t("media.transcriptions.export.video") :
+                      <>
+                        <span className={"absolute top-0 left-0 bottom-0 bg-muted"}
+                              style={{right: (1 - exportVideoProgress) * 100 + "%"}}></span>
+                        <span
+                          className={"mix-blend-difference"}>{new Intl.NumberFormat(undefined, {style: "percent"}).format(exportVideoProgress)}</span>
+                      </>
+                    }
+                  </Button>}
             </div>
           </div>
           <div className={"col-span-3 pl-4"}>
