@@ -102,7 +102,7 @@ export default function ExportTranscriptionDialog({children, transcriptions, med
     const text = current.formatter(transcriptions);
     const url = window.URL.createObjectURL(new Blob([text]));
     const link = document.createElement('a');
-    link.download = "export" + current.title;
+    link.download = media.fileName.split('.').slice(0,-1).join('.') + current.title;
     link.href = url;
     link.click();
     link.remove();
