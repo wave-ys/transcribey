@@ -28,7 +28,10 @@ public class TranscriptionController(IObjectStorage objectStorage, DataContext d
         if (string.IsNullOrEmpty(media.ResultPath))
             return NoContent();
 
-        var stream = await objectStorage.GetFile(media.ResultPath);
+        var outputPath = Path.GetTempFileName();
+        await objectStorage.GetFile(media.ResultPath, outputPath);
+        var stream = new FileStream(outputPath, FileMode.Open, FileAccess.Read, FileShare.None, 4096,
+            FileOptions.DeleteOnClose);
         return File(stream, MediaTypeNames.Application.Json);
     }
 

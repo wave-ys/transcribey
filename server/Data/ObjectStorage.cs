@@ -63,6 +63,16 @@ public class ObjectStorage(IConfiguration configuration, IMinioClient minioClien
         );
     }
 
+    public async Task GetFile(string filePath, Stream outputStream)
+    {
+        await minioClient.GetObjectAsync(
+            new GetObjectArgs()
+                .WithBucket(_bucketName)
+                .WithObject(filePath)
+                .WithCallbackStream((stream, token) => stream.CopyToAsync(outputStream, token))
+        );
+    }
+
     public async Task RemoveFiles(List<string> paths)
     {
         await minioClient.RemoveObjectsAsync(

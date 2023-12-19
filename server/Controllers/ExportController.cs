@@ -32,17 +32,14 @@ public class ExportController(DataContext dataContext, IObjectStorage objectStor
             await subtitlesStream.FlushAsync();
             await MediaProcessor.EmbedSoftSubtitles(videoPath, subtitlesPath, outputPath);
 
-            var memoryStream = new MemoryStream();
-            await using var videoStream = new FileStream(outputPath, FileMode.Open);
-            await videoStream.CopyToAsync(memoryStream);
-            memoryStream.Seek(0, SeekOrigin.Begin);
-            return File(memoryStream, media.ContentType, media.FileName);
+            var videoStream = new FileStream(outputPath, FileMode.Open, FileAccess.Read, FileShare.None, 4096,
+                FileOptions.DeleteOnClose);
+            return File(videoStream, media.ContentType, media.FileName);
         }
         finally
         {
             System.IO.File.Delete(videoPath);
             System.IO.File.Delete(subtitlesPath);
-            System.IO.File.Delete(outputPath);
         }
     }
 }

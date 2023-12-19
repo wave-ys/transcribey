@@ -68,9 +68,8 @@ public class ResourceController(IObjectStorage objectStorage, DataContext dataCo
             Response.Headers.ContentLength = size;
             Response.Headers.ContentDisposition =
                 "attachment; filename*=UTF-8''" + Uri.EscapeDataString(media.FileName);
-            var stream = await objectStorage.GetFile(media.StorePath);
             Response.StatusCode = (int)HttpStatusCode.OK;
-            await stream.CopyToAsync(Response.Body);
+            await objectStorage.GetFile(media.StorePath, Response.Body);
             return;
         }
 
