@@ -205,7 +205,7 @@ export default function TranscriptionList(
     <div className={cn(className)}>
       <div className={"mb-1 flex justify-between flex-none"}>
         <div className={"flex-none w-3/5 max-w-xs"}>
-          {!progress && media.status !== MEDIA_STATUS_COMPLETED &&
+          {!progress && media.status !== MEDIA_STATUS_COMPLETED && !media.failed &&
               <span className={"text-sm text-gray-500"}>{t(`media.transcribing.hint.${media.status}`)}</span>}
           {progress && <TranscribeProgressBar state={progress}/>}
         </div>
@@ -225,20 +225,24 @@ export default function TranscriptionList(
           </Tooltip>
         </div>
       </div>
-      <div className={"space-y-1 overflow-y-auto flex-grow"} ref={listRef}>
-        {list.map((item, index) => (
-          <TranscriptionItem
-            onModified={onModified}
-            autoScroll={autoScroll}
-            parentRef={listRef}
-            onDeleteClick={v => handleDeleteItemClick(index, v)}
-            onChange={v => handleChangeItem(index, v)}
-            playerRef={playerRef} key={item.start}
-            item={item}
-            media={media}
-          />
-        ))}
-      </div>
+      {media.failed ?
+        <span className={"text-sm text-red-500"}>{t(`media.transcribing.error.${media.failedReason}`)}</span> :
+        <div className={"space-y-1 overflow-y-auto flex-grow"} ref={listRef}>
+          {list.map((item, index) => (
+            <TranscriptionItem
+              onModified={onModified}
+              autoScroll={autoScroll}
+              parentRef={listRef}
+              onDeleteClick={v => handleDeleteItemClick(index, v)}
+              onChange={v => handleChangeItem(index, v)}
+              playerRef={playerRef} key={item.start}
+              item={item}
+              media={media}
+            />
+          ))}
+        </div>
+      }
+
     </div>
   )
 }

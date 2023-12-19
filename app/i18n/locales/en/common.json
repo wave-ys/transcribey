@@ -121,6 +121,9 @@
       "hint": {
         "created": "Pending...",
         "transcribing": "Transcribing..."
+      },
+      "error": {
+        "unroutable": "The model is currently not supported. Please select another model."
       }
     }
   },

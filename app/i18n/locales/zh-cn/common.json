@@ -120,6 +120,9 @@
       "hint": {
         "created": "排队中...",
         "transcribing": "转写中..."
+      },
+      "error": {
+        "unroutable": "暂不支持该模型，请选择其他模型。"
       }
     }
   },
