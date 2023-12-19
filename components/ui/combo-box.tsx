@@ -79,28 +79,26 @@ export function ComboBox({
           />
           <CommandEmpty>{noResultText ?? t("comboBox.defaultNoResultText")}</CommandEmpty>
           <CommandList>
-            {
-              options.map(group => (
-                <CommandGroup heading={group.label} key={group.key}>
-                  {group.children.map(item => (
-                    <CommandItem value={item.value} key={item.value} onSelect={() => {
-                      onChange?.(item.value)
-                      setOpen(false);
-                    }}>
-                      {item.label}
-                      <CheckIcon
-                        className={cn(
-                          "ml-auto h-4 w-4",
-                          item.value === currentItem?.value
-                            ? "opacity-100"
-                            : "opacity-0"
-                        )}
-                      />
-                    </CommandItem>
-                  ))}
-                </CommandGroup>
-              ))
-            }
+            {options.map(group => (
+              <CommandGroup heading={group.label} key={group.key}>
+                {group.children.map(item => (
+                  <CommandItem value={item.value} key={item.value} onSelect={() => {
+                    onChange?.(item.value)
+                    setOpen(false);
+                  }}>
+                    {item.label}
+                    <CheckIcon
+                      className={cn(
+                        "ml-auto h-4 w-4",
+                        item.value === currentItem?.value
+                          ? "opacity-100"
+                          : "opacity-0"
+                      )}
+                    />
+                  </CommandItem>
+                ))}
+              </CommandGroup>
+            ))}
           </CommandList>
         </Command>
       </PopoverContent>
