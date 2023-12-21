@@ -8,7 +8,6 @@ namespace Transcribey.Controllers;
 
 [Route("[controller]")]
 [ApiController]
-[Authorize]
 public class WorkspaceController : ControllerBase
 {
     private readonly DataContext _context;

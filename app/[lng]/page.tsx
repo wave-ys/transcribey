@@ -7,5 +7,5 @@ interface HomeProps {
 }
 
 export default function Home({params: {lng}}: HomeProps) {
-  redirect(`/${lng}/dashboard`);
+  redirect(`/${lng}/account/login`);
 }
