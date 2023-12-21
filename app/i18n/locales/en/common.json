@@ -143,5 +143,14 @@
       "searchPlaceholder": "Search filenames...",
       "delete": "Delete"
     }
+  },
+  "login": {
+    "title": "Sign in",
+    "description": "Enter your email below to sign in your account",
+    "signInButton": "Sign In with Email",
+    "orContinueWith": "Or continue with",
+    "autoRegisterDescription": "Unregistered account will be automatically registered.",
+    "email": "Email",
+    "password": "Password"
   }
 }

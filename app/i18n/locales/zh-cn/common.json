@@ -142,5 +142,14 @@
       "searchPlaceholder": "搜索文件名...",
       "delete": "删除"
     }
+  },
+  "login": {
+    "title": "登录",
+    "description": "请输入您的电子邮件以登录您的帐户",
+    "signInButton": "用电子邮件登录",
+    "orContinueWith": "或者使用",
+    "autoRegisterDescription": "未注册的帐户将自动注册。",
+    "email": "电子邮件",
+    "password": "密码"
   }
 }

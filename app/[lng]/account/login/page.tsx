@@ -1,9 +1,16 @@
 import Image from "next/image"
-import Link from "next/link"
 import {UserAuthForm} from "@/app/[lng]/account/login/user-auth-form";
 import {ThemeToggle} from "@/components/ui/theme-toggle";
+import {useTranslation} from "@/app/i18n";
 
-export default function LoginPage() {
+export interface LoginPageProps {
+  params: {
+    lng: string
+  }
+}
+
+export default async function LoginPage({params: {lng}}: LoginPageProps) {
+  const {t} = await useTranslation(lng);
   return (
     <>
       <div className="md:hidden">
@@ -48,29 +55,15 @@ export default function LoginPage() {
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
-                Create an account
+                {t("login.title")}
               </h1>
               <p className="text-sm text-muted-foreground">
-                Enter your email below to create your account
+                {t("login.description")}
               </p>
             </div>
             <UserAuthForm/>
-            <p className="px-8 text-center text-sm text-muted-foreground">
-              By clicking continue, you agree to our{" "}
-              <Link
-                href="/terms"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                Terms of Service
-              </Link>{" "}
-              and{" "}
-              <Link
-                href="/privacy"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                Privacy Policy
-              </Link>
-              .
+            <p className="text-sm text-muted-foreground text-center">
+              {t("login.autoRegisterDescription")}
             </p>
           </div>
         </div>

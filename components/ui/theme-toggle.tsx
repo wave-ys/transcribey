@@ -5,10 +5,18 @@ import {MoonIcon, SunIcon} from "@radix-ui/react-icons"
 import {useTheme} from "next-themes"
 
 import {Button} from "@/components/ui/button"
-import {DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,} from "@/components/ui/dropdown-menu"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuRadioGroup,
+  DropdownMenuRadioItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import {useTranslation} from "@/app/i18n/client";
 
 export function ThemeToggle() {
-  const {setTheme} = useTheme()
+  const {setTheme, theme} = useTheme()
+  const {t} = useTranslation()
 
   return (
     <DropdownMenu>
@@ -21,15 +29,17 @@ export function ThemeToggle() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
-        </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
-        </DropdownMenuItem>
+        <DropdownMenuRadioGroup value={theme}>
+          <DropdownMenuRadioItem value={"system"} onClick={() => setTheme("system")}>
+            {t("settings.appearance.theme.system")}
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value={"light"} onClick={() => setTheme("light")}>
+            {t("settings.appearance.theme.light")}
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value={"dark"} onClick={() => setTheme("dark")}>
+            {t("settings.appearance.theme.dark")}
+          </DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
       </DropdownMenuContent>
     </DropdownMenu>
   )
