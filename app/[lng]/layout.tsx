@@ -6,7 +6,6 @@ import {ThemeProvider} from "@/components/provider/theme-provider";
 import {cn} from "@/lib/utils";
 import {dir} from 'i18next'
 import {languages} from "@/app/i18n/settings";
-import {SettingsDialogProvider} from "@/components/provider/settings-dialog-provider";
 import {AlertProvider} from "@/components/provider/alert-provider";
 import {Toaster} from "@/components/ui/toaster";
 
@@ -53,9 +52,7 @@ export default function RootLayout(
     >
       <TooltipProvider>
         <AlertProvider>
-          <SettingsDialogProvider>
-            {children}
-          </SettingsDialogProvider>
+          {children}
         </AlertProvider>
       </TooltipProvider>
       <Toaster/>
