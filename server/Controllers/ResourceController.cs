@@ -8,7 +8,7 @@ using Transcribey.Utils;
 
 namespace Transcribey.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class ResourceController(IObjectStorage objectStorage, DataContext dataContext) : ControllerBase
 {

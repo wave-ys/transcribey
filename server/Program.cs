@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.EntityFrameworkCore;
 using Minio;
 using RabbitMQ.Client;
 using Transcribey.Data;
+using Transcribey.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -58,6 +60,10 @@ builder.Services.Configure<FormOptions>(x =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthorizationBuilder();
+builder.Services.AddIdentityCore<AppUser>().AddEntityFrameworkStores<DataContext>().AddApiEndpoints();
+
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -75,10 +81,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthorization();
-
+app.UsePathBase("/api");
 app.MapControllers();
+app.UseAuthorization();
 app.UseWebSockets();
+app.MapGroup("/auth").MapIdentityApi<AppUser>();
 
 app.UseMessagePublisher();
 app.UseUnroutableMessageConsumer();

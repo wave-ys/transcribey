@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Transcribey.Data;
@@ -5,8 +6,9 @@ using Transcribey.Models;
 
 namespace Transcribey.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
+[Authorize]
 public class WorkspaceController : ControllerBase
 {
     private readonly DataContext _context;

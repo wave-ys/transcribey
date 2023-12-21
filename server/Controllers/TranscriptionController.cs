@@ -12,7 +12,7 @@ using Transcribey.Models;
 
 namespace Transcribey.Controllers;
 
-[Route("api/[controller]")]
+[Route("[controller]")]
 [ApiController]
 public class TranscriptionController(IObjectStorage objectStorage, DataContext dataContext, IModel channel)
     : ControllerBase
