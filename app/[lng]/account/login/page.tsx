@@ -2,6 +2,7 @@ import Image from "next/image"
 import {UserAuthForm} from "@/app/[lng]/account/login/user-auth-form";
 import {ThemeToggle} from "@/components/ui/theme-toggle";
 import {useTranslation} from "@/app/i18n";
+import {LanguageToggle} from "@/components/ui/language-toggle";
 
 export interface LoginPageProps {
   params: {
@@ -33,6 +34,7 @@ export default async function LoginPage({params: {lng}}: LoginPageProps) {
         className="container relative hidden h-full flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
         <span className={"absolute right-4 top-4 md:right-8 md:top-8 flex items-center space-x-2"}>
           <ThemeToggle/>
+          <LanguageToggle/>
         </span>
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white dark:border-r lg:flex">
           <div className="absolute inset-0 bg-zinc-900"/>
