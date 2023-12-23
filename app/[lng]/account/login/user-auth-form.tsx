@@ -7,25 +7,30 @@ import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {useTranslation} from "@/app/i18n/client";
-import SpinnerIcon from "@/components/ui/spinner-icon";
 import {ImGithub} from "react-icons/im";
 import {Checkbox} from "@/components/ui/checkbox";
+import {useSearchParams} from "next/navigation";
+import {ExclamationTriangleIcon} from "@radix-ui/react-icons";
+import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function UserAuthForm({className, ...props}: UserAuthFormProps) {
-  const [isLoading, setIsLoading] = React.useState<boolean>(false)
-  const {t} = useTranslation()
-
-  async function onSubmit(event: React.SyntheticEvent) {
-    setIsLoading(true)
-  }
+  const {t} = useTranslation();
+  const search = useSearchParams();
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <form action={"/api/auth/log-in?useCookies=true"} method={"post"}>
         <div className="grid gap-2">
+          {search.get("failed") === 'true' &&
+              <Alert variant="destructive" className={"grid gap-1"}>
+                  <ExclamationTriangleIcon className="h-4 w-4"/>
+                  <AlertTitle>{t("alertBanner.error")}</AlertTitle>
+                  <AlertDescription>{t("login.failed")}</AlertDescription>
+              </Alert>
+          }
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
               {t("login.email")}
@@ -38,7 +43,6 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isLoading}
             />
           </div>
           <div className="grid gap-1">
@@ -50,7 +54,6 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
               name={"password"}
               placeholder={t("login.password")}
               type="password"
-              disabled={isLoading}
             />
           </div>
           <div className="grid gap-1">
@@ -58,17 +61,13 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
               <Checkbox
                 id="rememberMe"
                 name={"rememberMe"}
-                disabled={isLoading}
               />
               <Label htmlFor="rememberMe">
                 {t("login.rememberMe")}
               </Label>
             </div>
           </div>
-          <Button disabled={isLoading}>
-            {isLoading && (
-              <SpinnerIcon className="mr-2"/>
-            )}
+          <Button>
             {t("login.signInButton")}
           </Button>
         </div>
@@ -84,7 +83,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
         </div>
       </div>
       <a href={"/api/auth/external-login?provider=github"}>
-        <Button className={"w-full"} variant="outline" type="button" disabled={isLoading}>
+        <Button className={"w-full"} variant="outline" type="button">
           <ImGithub className="mr-2 h-4 w-4"/>
           Github
         </Button>

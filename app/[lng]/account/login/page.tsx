@@ -37,9 +37,6 @@ export default async function LoginPage({params: {lng}}: LoginPageProps) {
             </p>
           </div>
           <UserAuthForm/>
-          <p className="text-sm text-muted-foreground text-center">
-            {t("login.autoRegisterDescription")}
-          </p>
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 using System.Security.Claims;
 using System.Text.Encodings.Web;
 using System.Text.Json.Nodes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Transcribey.Models;
@@ -88,5 +89,29 @@ public class AuthController(
 
         await signInManager.SignInAsync(appUser, false, info.LoginProvider);
         return Ok();
+    }
+
+    [HttpPost("log-in")]
+    public async Task<ActionResult> LogIn(
+        [FromForm] string email,
+        [FromForm] string password,
+        [FromForm] string? rememberMe)
+    {
+        var frontEndUrl = $"{_frontEndScheme}://{_frontEndHost}";
+        var result =
+            await signInManager.PasswordSignInAsync(email, password, rememberMe == "on", lockoutOnFailure: false);
+        if (result.Succeeded)
+            return Redirect(frontEndUrl);
+        return Redirect($"{frontEndUrl}/account/login?failed=true");
+    }
+
+    [HttpGet("info")]
+    [Authorize]
+    public async Task<ActionResult<AppUser>> GetUserInfo()
+    {
+        var user = await userManager.GetUserAsync(HttpContext.User);
+        if (user == null)
+            return Unauthorized();
+        return user;
     }
 }

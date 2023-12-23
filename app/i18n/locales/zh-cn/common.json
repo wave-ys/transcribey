@@ -153,6 +153,7 @@
     "email": "电子邮件",
     "password": "密码",
     "rememberMe": "记住我",
+    "failed": "登录失败，请重试。",
     "supplementEmail": {
       "description": "请输入电子邮件地址，然后单击“提交”按钮完成登录。",
       "submit": "提交"

@@ -154,9 +154,13 @@
     "email": "Email",
     "password": "Password",
     "rememberMe": "Remember Me",
+    "failed": "Login failed, please try again.",
     "supplementEmail": {
       "description": "Please enter an email address and click the Submit button to finish logging in.",
       "submit": "Submit"
     }
+  },
+  "alertBanner": {
+    "error": "Error"
   }
 }

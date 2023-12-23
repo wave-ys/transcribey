@@ -30,6 +30,6 @@ export async function logOutApi() {
 export async function getUserInfoApi() {
   return await request<UserInfoDto>({
     method: 'get',
-    url: '/api/auth/manage/info'
+    url: '/api/auth/info'
   });
 }

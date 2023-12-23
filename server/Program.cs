@@ -103,7 +103,6 @@ app.UsePathBase("/api");
 app.MapControllers();
 app.UseAuthorization();
 app.UseWebSockets();
-app.MapGroup("/auth").MapIdentityApi<AppUser>();
 
 app.UseMessagePublisher();
 app.UseUnroutableMessageConsumer();
