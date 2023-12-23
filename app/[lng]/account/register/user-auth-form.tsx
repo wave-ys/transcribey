@@ -22,11 +22,11 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
     <div className={cn("grid gap-6", className)} {...props}>
       <form action={"/api/auth/sign-up"} method={"post"}>
         <div className="grid gap-2 mb-4">
-          {search.get("failed") === 'true' &&
+          {search.get("error") &&
               <Alert variant="destructive" className={"grid gap-1"}>
                   <ExclamationTriangleIcon className="h-4 w-4"/>
                   <AlertTitle>{t("alertBanner.error")}</AlertTitle>
-                  <AlertDescription>{t("login.failed")}</AlertDescription>
+                  <AlertDescription>{search.get("error")}</AlertDescription>
               </Alert>
           }
           <div className="grid gap-1">

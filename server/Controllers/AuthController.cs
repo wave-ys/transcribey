@@ -113,7 +113,7 @@ public class AuthController(
 
         var result = await userManager.CreateAsync(appUser, password);
         if (!result.Succeeded)
-            return Redirect($"{FrontEndUrl}/account/login?error=" +
+            return Redirect($"{FrontEndUrl}/account/register?error=" +
                             UrlEncoder.Default.Encode(result.Errors.First().Description));
 
         return Redirect($"{FrontEndUrl}/account/login");
