@@ -151,6 +151,10 @@
     "orContinueWith": "Or continue with",
     "autoRegisterDescription": "Unregistered account will be automatically registered.",
     "email": "Email",
-    "password": "Password"
+    "password": "Password",
+    "supplementEmail": {
+      "description": "Please enter an email address and click the Submit button to finish logging in.",
+      "submit": "Submit"
+    }
   }
 }

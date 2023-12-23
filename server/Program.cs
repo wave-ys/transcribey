@@ -60,8 +60,16 @@ builder.Services.Configure<FormOptions>(x =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthentication()
-    .AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
+    .AddGitHub("github", opt =>
+    {
+        opt.ClientId = builder.Configuration["OAuth:GitHub:ClientId"] ??
+                       throw new InvalidOperationException("GitHub OAuth Client Id not found");
+        opt.ClientSecret = builder.Configuration["OAuth:GitHub:ClientSecret"] ??
+                           throw new InvalidOperationException("GitHub OAuth Client Secret not found");
+        opt.SignInScheme = IdentityConstants.ExternalScheme;
+    })
+    .AddIdentityCookies();
 builder.Services.AddAuthorizationBuilder();
 builder.Services.AddIdentityCore<AppUser>().AddEntityFrameworkStores<DataContext>().AddApiEndpoints();
 

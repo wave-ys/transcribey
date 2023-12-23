@@ -73,10 +73,12 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        <ImGithub className="mr-2 h-4 w-4"/>
-        Github
-      </Button>
+      <a href={"/api/auth/external-login?provider=github"}>
+        <Button className={"w-full"} variant="outline" type="button" disabled={isLoading}>
+          <ImGithub className="mr-2 h-4 w-4"/>
+          Github
+        </Button>
+      </a>
     </div>
   )
 }
