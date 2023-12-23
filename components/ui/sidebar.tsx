@@ -45,6 +45,7 @@ export function SidebarItem({className, children, active, icon, enableSmall, onC
   )
 }
 
+
 export function Sidebar({className, children, header}: SidebarProps) {
   return (
     <div className={cn("pb-12 px-3", className)}>

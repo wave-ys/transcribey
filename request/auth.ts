@@ -20,6 +20,13 @@ export async function supplementEmailApi(email: string) {
   return true;
 }
 
+export async function logOutApi() {
+  await request({
+    method: 'post',
+    url: '/api/auth/log-out'
+  });
+}
+
 export async function getUserInfoApi() {
   return await request<UserInfoDto>({
     method: 'get',

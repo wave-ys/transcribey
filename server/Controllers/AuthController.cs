@@ -21,6 +21,13 @@ public class AuthController(
     private readonly string _frontEndScheme =
         configuration["FrontEnd:Scheme"] ?? throw new InvalidOperationException("Front End Scheme not found");
 
+    [HttpPost("log-out")]
+    public async Task<ActionResult> LogOut()
+    {
+        await signInManager.SignOutAsync();
+        return Ok();
+    }
+
     [HttpGet("external-login")]
     public ActionResult ExternalLogin(string provider)
     {

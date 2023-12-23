@@ -4,6 +4,7 @@
     "media": "Media",
     "trash": "Trash",
     "settings": "Settings",
+    "logOut": "Log Out",
     "workspaceSelect": {
       "placeholder": "Select workspaces...",
       "notFound": "No workspace found.",

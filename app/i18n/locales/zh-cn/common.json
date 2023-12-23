@@ -4,6 +4,7 @@
     "media": "媒体",
     "trash": "回收站",
     "settings": "设置",
+    "logOut": "退出",
     "workspaceSelect": {
       "placeholder": "选择工作空间...",
       "notFound": "无工作空间。",

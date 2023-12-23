@@ -1,7 +1,7 @@
 import React from "react";
 import {Sidebar, SidebarSection} from "@/components/ui/sidebar";
 import {BiHome, BiMoviePlay, BiTrash} from "react-icons/bi";
-import {SidebarLinkItem, SidebarSettingsItem} from "@/components/ui/sidebar-link-item";
+import {SidebarClientItem, SidebarLogOutItem, SidebarSettingsItem} from "@/components/ui/sidebar-client-item";
 import {cn} from "@/lib/utils";
 import ToggleSidebarButton, {isSidebarOpen} from "@/app/[lng]/dashboard/[workspace]/toggle-sidebar-button";
 import {Sheet, SheetContent, SheetTrigger} from "@/components/ui/sheet";
@@ -35,18 +35,20 @@ export default async function DashboardLayout(
         <WorkspaceSelect value={workspace} workspaces={workspaces}/>
       </SidebarSection>
       <SidebarSection>
-        <SidebarLinkItem href={`/${lng}/dashboard/${workspace}/home`} icon={<BiHome className={"w-4 h-4 mr-2"}/>}>
+        <SidebarClientItem href={`/${lng}/dashboard/${workspace}/home`} icon={<BiHome className={"w-4 h-4 mr-2"}/>}>
           {t("sidebar.home")}
-        </SidebarLinkItem>
-        <SidebarLinkItem href={`/${lng}/dashboard/${workspace}/media`} icon={<BiMoviePlay className={"w-4 h-4 mr-2"}/>}>
+        </SidebarClientItem>
+        <SidebarClientItem href={`/${lng}/dashboard/${workspace}/media`}
+                           icon={<BiMoviePlay className={"w-4 h-4 mr-2"}/>}>
           {t("sidebar.media")}
-        </SidebarLinkItem>
-        <SidebarLinkItem href={`/${lng}/dashboard/${workspace}/trash`} icon={<BiTrash className={"w-4 h-4 mr-2"}/>}>
+        </SidebarClientItem>
+        <SidebarClientItem href={`/${lng}/dashboard/${workspace}/trash`} icon={<BiTrash className={"w-4 h-4 mr-2"}/>}>
           {t("sidebar.trash")}
-        </SidebarLinkItem>
+        </SidebarClientItem>
         <SidebarSettingsItem>
           {t("sidebar.settings")}
         </SidebarSettingsItem>
+        <SidebarLogOutItem/>
       </SidebarSection>
     </>
   )
