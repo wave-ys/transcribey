@@ -153,6 +153,7 @@
     "autoRegisterDescription": "Unregistered account will be automatically registered.",
     "email": "Email",
     "password": "Password",
+    "rememberMe": "Remember Me",
     "supplementEmail": {
       "description": "Please enter an email address and click the Submit button to finish logging in.",
       "submit": "Submit"

@@ -9,6 +9,7 @@ import {Button} from "@/components/ui/button";
 import {useTranslation} from "@/app/i18n/client";
 import SpinnerIcon from "@/components/ui/spinner-icon";
 import {ImGithub} from "react-icons/im";
+import {Checkbox} from "@/components/ui/checkbox";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -18,12 +19,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
   const {t} = useTranslation()
 
   async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
     setIsLoading(true)
-
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
   }
 
   return (
@@ -36,6 +32,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
             </Label>
             <Input
               id="email"
+              name={"email"}
               placeholder="name@example.com"
               type="email"
               autoCapitalize="none"
@@ -50,10 +47,23 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
             </Label>
             <Input
               id="password"
+              name={"password"}
               placeholder={t("login.password")}
               type="password"
               disabled={isLoading}
             />
+          </div>
+          <div className="grid gap-1">
+            <div className={"flex items-center space-x-1"}>
+              <Checkbox
+                id="rememberMe"
+                name={"rememberMe"}
+                disabled={isLoading}
+              />
+              <Label htmlFor="rememberMe">
+                {t("login.rememberMe")}
+              </Label>
+            </div>
           </div>
           <Button disabled={isLoading}>
             {isLoading && (
