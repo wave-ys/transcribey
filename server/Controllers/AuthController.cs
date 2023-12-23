@@ -41,7 +41,7 @@ public class AuthController(
     }
 
     [HttpGet("external-login-callback")]
-    public async Task<ActionResult> ExternalLoginCallback(string provider)
+    public async Task<ActionResult> ExternalLoginCallback()
     {
         var info = await signInManager.GetExternalLoginInfoAsync();
         if (info == null)
@@ -53,6 +53,9 @@ public class AuthController(
             true);
         if (result.Succeeded)
             return Redirect($"{FrontEndUrl}");
+        if (result.IsNotAllowed)
+            return Redirect($"{FrontEndUrl}/account/login?failed=true&not_allowed=" +
+                            (result.IsNotAllowed ? "true" : "false"));
         if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
             return Redirect(
                 $"{FrontEndUrl}/account/supplement-email?default={UrlEncoder.Default.Encode(info.Principal.FindFirstValue(ClaimTypes.Email)!)}");
@@ -101,7 +104,8 @@ public class AuthController(
             await signInManager.PasswordSignInAsync(email, password, rememberMe == "on", false);
         if (result.Succeeded)
             return Redirect(FrontEndUrl);
-        return Redirect($"{FrontEndUrl}/account/login?failed=true");
+        return Redirect($"{FrontEndUrl}/account/login?failed=true&not_allowed=" +
+                        (result.IsNotAllowed ? "true" : "false"));
     }
 
     [HttpPost("sign-up")]
@@ -113,8 +117,21 @@ public class AuthController(
 
         var result = await userManager.CreateAsync(appUser, password);
         if (!result.Succeeded)
+        {
+            var error = result.Errors.First().Description;
+
+            // I wish Microsoft would enhance i18n support.
+            if (Request.Cookies["i18n"] == "zh-cn")
+            {
+                if (error.Contains("Passwords must be at least"))
+                    error = "密码必须大于等于 6 个字符";
+                if (error.Contains("is already taken"))
+                    error = "用户名 " + error.Split("\'")[1] + " 已被占用";
+            }
+
             return Redirect($"{FrontEndUrl}/account/register?error=" +
-                            UrlEncoder.Default.Encode(result.Errors.First().Description));
+                            UrlEncoder.Default.Encode(error));
+        }
 
         return Redirect($"{FrontEndUrl}/account/login");
     }

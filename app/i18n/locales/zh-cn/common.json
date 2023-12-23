@@ -157,6 +157,7 @@
     "rememberMe": "记住我",
     "forgetPassword": "忘记密码？",
     "failed": "登录失败，请重试。",
+    "notAllowed": "登录失败，请先验证电子邮件地址。",
     "supplementEmail": {
       "description": "请输入电子邮件地址，然后单击“提交”按钮完成登录。",
       "submit": "提交"

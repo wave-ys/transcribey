@@ -71,7 +71,14 @@ builder.Services.AddAuthentication(IdentityConstants.ApplicationScheme)
     })
     .AddIdentityCookies();
 builder.Services.AddAuthorizationBuilder();
-builder.Services.AddIdentityCore<AppUser>().AddEntityFrameworkStores<DataContext>().AddApiEndpoints();
+builder.Services.AddIdentityCore<AppUser>(options =>
+{
+    options.SignIn.RequireConfirmedAccount = true;
+    options.Password.RequireDigit = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireLowercase = false;
+}).AddEntityFrameworkStores<DataContext>().AddApiEndpoints();
 
 var app = builder.Build();
 

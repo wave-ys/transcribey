@@ -28,7 +28,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
               <Alert variant="destructive" className={"grid gap-1"}>
                   <ExclamationTriangleIcon className="h-4 w-4"/>
                   <AlertTitle>{t("alertBanner.error")}</AlertTitle>
-                  <AlertDescription>{t("login.failed")}</AlertDescription>
+                  <AlertDescription>{t(search.get("not_allowed") === 'true' ? "login.notAllowed" : "login.failed")}</AlertDescription>
               </Alert>
           }
           <div className="grid gap-1">
