@@ -148,12 +148,14 @@
   "login": {
     "title": "Sign in",
     "description": "Enter your email below to sign in your account",
-    "signInButton": "Sign In with Email",
+    "signInButton": "Sign In",
+    "signUpButton": "Sign Up with Email",
     "orContinueWith": "Or continue with",
     "autoRegisterDescription": "Unregistered account will be automatically registered.",
     "email": "Email",
     "password": "Password",
     "rememberMe": "Remember Me",
+    "forgetPassword": "Forget password?",
     "failed": "Login failed, please try again.",
     "supplementEmail": {
       "description": "Please enter an email address and click the Submit button to finish logging in.",

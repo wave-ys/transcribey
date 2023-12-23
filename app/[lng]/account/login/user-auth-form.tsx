@@ -57,18 +57,24 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
             />
           </div>
           <div className="grid gap-1">
-            <div className={"flex items-center space-x-1"}>
-              <Checkbox
-                id="rememberMe"
-                name={"rememberMe"}
-              />
-              <Label htmlFor="rememberMe">
-                {t("login.rememberMe")}
-              </Label>
+            <div className={"flex justify-between"}>
+              <div className={"flex items-center space-x-1"}>
+                <Checkbox
+                  id="rememberMe"
+                  name={"rememberMe"}
+                />
+                <Label htmlFor="rememberMe">
+                  {t("login.rememberMe")}
+                </Label>
+              </div>
+              <Button type={"button"} variant={"link"}>{t("login.forgetPassword")}</Button>
             </div>
           </div>
           <Button>
             {t("login.signInButton")}
+          </Button>
+          <Button variant={"outline"} type={"button"}>
+            {t("login.signUpButton")}
           </Button>
         </div>
       </form>
