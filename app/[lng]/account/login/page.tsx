@@ -42,16 +42,6 @@ export default async function LoginPage({params: {lng}}: LoginPageProps) {
             <Image className={"mr-2"} src={"/favicon.ico"} alt={"icon"} width={24} height={24}/>
             Transcribey
           </div>
-          <div className="relative z-20 mt-auto">
-            <blockquote className="space-y-2">
-              <p className="text-lg">
-                &ldquo;This library has saved me countless hours of work and
-                helped me deliver stunning designs to my clients faster than
-                ever before.&rdquo;
-              </p>
-              <footer className="text-sm">Sofia Davis</footer>
-            </blockquote>
-          </div>
         </div>
         <div className="lg:p-8">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
