@@ -162,6 +162,11 @@
       "submit": "Submit"
     }
   },
+  "signUp": {
+    "title": "Sign up",
+    "signUpButton": "Sign Up",
+    "haveAccount": "Already have an account? Log in now"
+  },
   "alertBanner": {
     "error": "Error"
   }

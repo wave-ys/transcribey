@@ -20,6 +20,7 @@
     "workspaceManagement": {
       "title": "工作空间管理",
       "description": "您可以更改工作空间名称或删除工作空间。",
+      "namePlaceholder": "输入工作空间名",
       "removeButton": "移除工作空间",
       "submitButton": "保存",
       "confirmSwitchTitle": "您想要继续吗？",
@@ -160,5 +161,13 @@
       "description": "请输入电子邮件地址，然后单击“提交”按钮完成登录。",
       "submit": "提交"
     }
+  },
+  "signUp": {
+    "title": "注册",
+    "signUpButton": "注册",
+    "haveAccount": "已有账号？立即登录"
+  },
+  "alertBanner": {
+    "error": "错误"
   }
 }
