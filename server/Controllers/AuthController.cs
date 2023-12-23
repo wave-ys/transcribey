@@ -22,6 +22,8 @@ public class AuthController(
     private readonly string _frontEndScheme =
         configuration["FrontEnd:Scheme"] ?? throw new InvalidOperationException("Front End Scheme not found");
 
+    public string FrontEndUrl => $"{_frontEndScheme}://{_frontEndHost}";
+
     [HttpPost("log-out")]
     public async Task<ActionResult> LogOut()
     {
@@ -32,9 +34,8 @@ public class AuthController(
     [HttpGet("external-login")]
     public ActionResult ExternalLogin(string provider)
     {
-        var frontEndUrl = $"{_frontEndScheme}://{_frontEndHost}";
         var properties = signInManager.ConfigureExternalAuthenticationProperties(provider,
-            $"{frontEndUrl}/api/auth/external-login-callback?provider=github");
+            $"{FrontEndUrl}/api/auth/external-login-callback?provider=github");
         properties.AllowRefresh = true;
         return Challenge(properties, provider);
     }
@@ -42,7 +43,6 @@ public class AuthController(
     [HttpGet("external-login-callback")]
     public async Task<ActionResult> ExternalLoginCallback(string provider)
     {
-        var frontEndUrl = $"{_frontEndScheme}://{_frontEndHost}";
         var info = await signInManager.GetExternalLoginInfoAsync();
         if (info == null)
             return BadRequest();
@@ -52,11 +52,11 @@ public class AuthController(
             false,
             true);
         if (result.Succeeded)
-            return Redirect($"{frontEndUrl}");
+            return Redirect($"{FrontEndUrl}");
         if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
             return Redirect(
-                $"{frontEndUrl}/account/supplement-email?default={UrlEncoder.Default.Encode(info.Principal.FindFirstValue(ClaimTypes.Email)!)}");
-        return Redirect($"{frontEndUrl}/account/supplement-email");
+                $"{FrontEndUrl}/account/supplement-email?default={UrlEncoder.Default.Encode(info.Principal.FindFirstValue(ClaimTypes.Email)!)}");
+        return Redirect($"{FrontEndUrl}/account/supplement-email");
     }
 
     [HttpPost("external-login-callback")]
@@ -82,7 +82,7 @@ public class AuthController(
         await userStore.SetUserNameAsync(appUser, email, CancellationToken.None);
         await ((IUserEmailStore<AppUser>)userStore).SetEmailAsync(appUser, email, CancellationToken.None);
 
-        if (!(await userStore.CreateAsync(appUser, CancellationToken.None)).Succeeded)
+        if (!(await userManager.CreateAsync(appUser)).Succeeded)
             return StatusCode(StatusCodes.Status500InternalServerError);
         if (!(await userManager.AddLoginAsync(appUser, info)).Succeeded)
             return StatusCode(StatusCodes.Status500InternalServerError);
@@ -97,12 +97,26 @@ public class AuthController(
         [FromForm] string password,
         [FromForm] string? rememberMe)
     {
-        var frontEndUrl = $"{_frontEndScheme}://{_frontEndHost}";
         var result =
-            await signInManager.PasswordSignInAsync(email, password, rememberMe == "on", lockoutOnFailure: false);
+            await signInManager.PasswordSignInAsync(email, password, rememberMe == "on", false);
         if (result.Succeeded)
-            return Redirect(frontEndUrl);
-        return Redirect($"{frontEndUrl}/account/login?failed=true");
+            return Redirect(FrontEndUrl);
+        return Redirect($"{FrontEndUrl}/account/login?failed=true");
+    }
+
+    [HttpPost("sign-up")]
+    public async Task<ActionResult> SignUp([FromForm] string email, [FromForm] string password)
+    {
+        var appUser = new AppUser();
+        await userStore.SetUserNameAsync(appUser, email, CancellationToken.None);
+        await ((IUserEmailStore<AppUser>)userStore).SetEmailAsync(appUser, email, CancellationToken.None);
+
+        var result = await userManager.CreateAsync(appUser, password);
+        if (!result.Succeeded)
+            return Redirect($"{FrontEndUrl}/account/login?error=" +
+                            UrlEncoder.Default.Encode(result.Errors.First().Description));
+
+        return Redirect($"{FrontEndUrl}/account/login");
     }
 
     [HttpGet("info")]

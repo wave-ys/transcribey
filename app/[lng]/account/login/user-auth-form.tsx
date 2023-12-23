@@ -22,7 +22,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form action={"/api/auth/log-in?useCookies=true"} method={"post"}>
+      <form action={"/api/auth/log-in"} method={"post"}>
         <div className="grid gap-2">
           {search.get("failed") === 'true' &&
               <Alert variant="destructive" className={"grid gap-1"}>
