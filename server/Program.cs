@@ -60,7 +60,8 @@ builder.Services.Configure<FormOptions>(x =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddAuthentication().AddBearerToken(IdentityConstants.BearerScheme);
+builder.Services.AddAuthentication()
+    .AddBearerToken(IdentityConstants.BearerScheme);
 builder.Services.AddAuthorizationBuilder();
 builder.Services.AddIdentityCore<AppUser>().AddEntityFrameworkStores<DataContext>().AddApiEndpoints();
 
