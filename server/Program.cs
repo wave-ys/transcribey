@@ -75,6 +75,15 @@ builder.Services.AddIdentityCore<AppUser>().AddEntityFrameworkStores<DataContext
 
 var app = builder.Build();
 
+// https://pellerex.com/blog/google-auth-for-react-with-aspnet-identity
+// Not sure if the following code should be uncommented
+// app.Use((ctx, next) =>
+// {
+//     ctx.Request.Scheme = app.Configuration["FrontEnd:Scheme"] ?? throw new InvalidOperationException("Front End Scheme not found");
+//     ctx.Request.Host = new HostString(app.Configuration["FrontEnd:Host"] ?? throw new InvalidOperationException("Front End Host not found"));
+//     return next();
+// });
+
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<DataContext>();

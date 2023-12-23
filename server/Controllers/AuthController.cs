@@ -15,14 +15,18 @@ public class AuthController(
     IUserStore<AppUser> userStore,
     UserManager<AppUser> userManager) : ControllerBase
 {
-    private readonly string _frontEndUrl =
-        configuration["FrontEnd"] ?? throw new InvalidOperationException("Front End Url not found");
+    private readonly string _frontEndHost =
+        configuration["FrontEnd:Host"] ?? throw new InvalidOperationException("Front End Host not found");
+
+    private readonly string _frontEndScheme =
+        configuration["FrontEnd:Scheme"] ?? throw new InvalidOperationException("Front End Scheme not found");
 
     [HttpGet("external-login")]
     public ActionResult ExternalLogin(string provider)
     {
+        var frontEndUrl = $"{_frontEndScheme}://{_frontEndHost}";
         var properties = signInManager.ConfigureExternalAuthenticationProperties(provider,
-            $"{_frontEndUrl}/api/auth/external-login-callback?provider=github");
+            $"{frontEndUrl}/api/auth/external-login-callback?provider=github");
         properties.AllowRefresh = true;
         return Challenge(properties, provider);
     }
@@ -30,6 +34,7 @@ public class AuthController(
     [HttpGet("external-login-callback")]
     public async Task<ActionResult> ExternalLoginCallback(string provider)
     {
+        var frontEndUrl = $"{_frontEndScheme}://{_frontEndHost}";
         var info = await signInManager.GetExternalLoginInfoAsync();
         if (info == null)
             return BadRequest();
@@ -39,11 +44,11 @@ public class AuthController(
             false,
             true);
         if (result.Succeeded)
-            return Redirect($"{_frontEndUrl}");
+            return Redirect($"{frontEndUrl}");
         if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Email))
             return Redirect(
-                $"{_frontEndUrl}/account/supplement-email?default={UrlEncoder.Default.Encode(info.Principal.FindFirstValue(ClaimTypes.Email)!)}");
-        return Redirect($"{_frontEndUrl}/account/supplement-email");
+                $"{frontEndUrl}/account/supplement-email?default={UrlEncoder.Default.Encode(info.Principal.FindFirstValue(ClaimTypes.Email)!)}");
+        return Redirect($"{frontEndUrl}/account/supplement-email");
     }
 
     [HttpPost("external-login-callback")]

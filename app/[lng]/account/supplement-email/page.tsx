@@ -8,7 +8,7 @@ import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, Form
 import {Input} from "@/components/ui/input"
 import {useTranslation} from "@/app/i18n/client";
 import {supplementEmailApi} from "@/request/auth";
-import {redirect, useRouter} from "next/navigation";
+import {useRouter} from "next/navigation";
 import {zodResolver} from "@hookform/resolvers/zod";
 
 const formSchema = z.object({

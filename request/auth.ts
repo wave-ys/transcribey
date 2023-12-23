@@ -1,5 +1,10 @@
 import {request} from "@/request/index";
 
+export interface UserInfoDto {
+  email: string;
+  isEmailConfirmed: string;
+}
+
 export async function supplementEmailApi(email: string) {
   try {
     await request({
@@ -13,4 +18,11 @@ export async function supplementEmailApi(email: string) {
     return false;
   }
   return true;
+}
+
+export async function getUserInfoApi() {
+  return await request<UserInfoDto>({
+    method: 'get',
+    url: '/api/auth/manage/info'
+  });
 }
