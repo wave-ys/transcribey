@@ -95,6 +95,10 @@ public class AuthController(
             return StatusCode(StatusCodes.Status500InternalServerError);
 
         await signInManager.SignInAsync(appUser, false, info.LoginProvider);
+
+        var userId = await userManager.GetUserIdAsync(appUser);
+        await SendEmailConfirm(userId, appUser);
+
         return Ok();
     }
 
