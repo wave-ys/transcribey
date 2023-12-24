@@ -159,6 +159,7 @@
     "failed": "登录失败，请重试。",
     "notAllowed": "登录失败，请先验证电子邮件地址。",
     "locked": "您的账号已暂时被锁定，请稍后再试。",
+    "registered": "注册成功，请验证电子邮件地址。",
     "supplementEmail": {
       "description": "请输入电子邮件地址，然后单击“提交”按钮完成登录。",
       "submit": "提交"
@@ -170,6 +171,7 @@
     "haveAccount": "已有账号？立即登录"
   },
   "alertBanner": {
-    "error": "错误"
+    "error": "错误",
+    "message": "消息"
   }
 }

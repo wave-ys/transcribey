@@ -13,6 +13,7 @@ import {Checkbox} from "@/components/ui/checkbox";
 import {useSearchParams} from "next/navigation";
 import {ExclamationTriangleIcon} from "@radix-ui/react-icons";
 import {Alert, AlertDescription, AlertTitle} from "@/components/ui/alert";
+import {FaCircleCheck} from "react-icons/fa6";
 
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {
 }
@@ -40,6 +41,13 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
                   <ExclamationTriangleIcon className="h-4 w-4"/>
                   <AlertTitle>{t("alertBanner.error")}</AlertTitle>
                   <AlertDescription>{error}</AlertDescription>
+              </Alert>
+          }
+          {search.get("registered") === 'true' &&
+              <Alert className={"grid gap-1"}>
+                  <FaCircleCheck className="h-4 w-4"/>
+                  <AlertTitle>{t("alertBanner.message")}</AlertTitle>
+                  <AlertDescription>{t("login.registered")}</AlertDescription>
               </Alert>
           }
           <div className="grid gap-1">

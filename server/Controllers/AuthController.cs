@@ -133,7 +133,7 @@ public class AuthController(
                             UrlEncoder.Default.Encode(error));
         }
 
-        return Redirect($"{FrontEndUrl}/account/login");
+        return Redirect($"{FrontEndUrl}/account/login?registered=true");
     }
 
     [HttpGet("info")]
