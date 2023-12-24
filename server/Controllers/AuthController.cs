@@ -1,9 +1,11 @@
 using System.Security.Claims;
+using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Json.Nodes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Transcribey.Models;
 
 namespace Transcribey.Controllers;
@@ -14,7 +16,9 @@ public class AuthController(
     IConfiguration configuration,
     SignInManager<AppUser> signInManager,
     IUserStore<AppUser> userStore,
-    UserManager<AppUser> userManager) : ControllerBase
+    UserManager<AppUser> userManager,
+    IEmailSender<AppUser> emailSender
+) : ControllerBase
 {
     private readonly string _frontEndHost =
         configuration["FrontEnd:Host"] ?? throw new InvalidOperationException("Front End Host not found");
@@ -22,7 +26,7 @@ public class AuthController(
     private readonly string _frontEndScheme =
         configuration["FrontEnd:Scheme"] ?? throw new InvalidOperationException("Front End Scheme not found");
 
-    public string FrontEndUrl => $"{_frontEndScheme}://{_frontEndHost}";
+    private string FrontEndUrl => $"{_frontEndScheme}://{_frontEndHost}";
 
     [HttpPost("log-out")]
     public async Task<ActionResult> LogOut()
@@ -132,6 +136,12 @@ public class AuthController(
             return Redirect($"{FrontEndUrl}/account/register?error=" +
                             UrlEncoder.Default.Encode(error));
         }
+
+        var userId = await userManager.GetUserIdAsync(appUser);
+        var code = await userManager.GenerateEmailConfirmationTokenAsync(appUser);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+        var callbackUrl = $"{FrontEndUrl}/api/auth/confirm-email?user_id={userId}&code={code}";
+        await emailSender.SendConfirmationLinkAsync(appUser, email, HtmlEncoder.Default.Encode(callbackUrl));
 
         return Redirect($"{FrontEndUrl}/account/login?registered=true");
     }

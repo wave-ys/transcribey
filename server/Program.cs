@@ -6,6 +6,7 @@ using Minio;
 using RabbitMQ.Client;
 using Transcribey.Data;
 using Transcribey.Models;
+using Transcribey.Utils;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -79,6 +80,8 @@ builder.Services.AddIdentityCore<AppUser>(options =>
     options.Password.RequireUppercase = false;
     options.Password.RequireLowercase = false;
 }).AddEntityFrameworkStores<DataContext>().AddApiEndpoints();
+
+builder.Services.AddSingleton<IEmailSender<AppUser>, EmailSender>();
 
 var app = builder.Build();
 
