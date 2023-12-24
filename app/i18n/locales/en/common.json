@@ -158,6 +158,7 @@
     "forgetPassword": "Forget password?",
     "failed": "Login failed, please try again.",
     "notAllowed": "Login failed, please verify your email address first.",
+    "locked": "Your account has been temporarily locked. Please try again later.",
     "supplementEmail": {
       "description": "Please enter an email address and click the Submit button to finish logging in.",
       "submit": "Submit"

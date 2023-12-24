@@ -101,11 +101,11 @@ public class AuthController(
         [FromForm] string? rememberMe)
     {
         var result =
-            await signInManager.PasswordSignInAsync(email, password, rememberMe == "on", false);
+            await signInManager.PasswordSignInAsync(email, password, rememberMe == "on", true);
         if (result.Succeeded)
             return Redirect(FrontEndUrl);
-        return Redirect($"{FrontEndUrl}/account/login?failed=true&not_allowed=" +
-                        (result.IsNotAllowed ? "true" : "false"));
+        return Redirect(
+            $"{FrontEndUrl}/account/login?failed=true&not_allowed={(result.IsNotAllowed ? "true" : "false")}&locked={(result.IsLockedOut ? "true" : "false")}");
     }
 
     [HttpPost("sign-up")]

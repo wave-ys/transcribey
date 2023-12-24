@@ -1,6 +1,7 @@
 "use client"
 
 import * as React from "react"
+import {useMemo} from "react"
 
 import {cn} from "@/lib/utils"
 import {Label} from "@/components/ui/label";
@@ -20,6 +21,16 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
   const {t} = useTranslation();
   const search = useSearchParams();
 
+  const error = useMemo(() => {
+    if (search.get("failed") !== 'true')
+      return '';
+    if (search.get("not_allowed") === 'true')
+      return t('login.notAllowed');
+    if (search.get("locked") === 'true')
+      return t('login.locked');
+    return t('login.failed');
+  }, [search, t])
+
   return (
     <div className={cn("grid gap-6", className)} {...props}>
       <form action={"/api/auth/log-in"} method={"post"}>
@@ -28,7 +39,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
               <Alert variant="destructive" className={"grid gap-1"}>
                   <ExclamationTriangleIcon className="h-4 w-4"/>
                   <AlertTitle>{t("alertBanner.error")}</AlertTitle>
-                  <AlertDescription>{t(search.get("not_allowed") === 'true' ? "login.notAllowed" : "login.failed")}</AlertDescription>
+                  <AlertDescription>{error}</AlertDescription>
               </Alert>
           }
           <div className="grid gap-1">
