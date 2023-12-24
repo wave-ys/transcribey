@@ -174,7 +174,8 @@ public class AuthController(
     {
         var code = await userManager.GenerateEmailConfirmationTokenAsync(appUser);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        var callbackUrl = $"{FrontEndUrl}/api/auth/confirm-email?user_id={userId}&code={code}";
-        await emailSender.SendConfirmationLinkAsync(appUser, appUser.Email!, HtmlEncoder.Default.Encode(callbackUrl));
+        var callbackUrl =
+            $"{FrontEndUrl}/api/auth/confirm-email?user_id={userId}&code={HtmlEncoder.Default.Encode(code)}";
+        await emailSender.SendConfirmationLinkAsync(appUser, appUser.Email!, callbackUrl);
     }
 }

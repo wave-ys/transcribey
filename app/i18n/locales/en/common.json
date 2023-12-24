@@ -170,6 +170,16 @@
       "title": "Sign up",
       "signUpButton": "Sign Up",
       "haveAccount": "Already have an account? Log in now"
+    },
+    "confirmEmail": {
+      "success": {
+        "title": "Thank You!",
+        "description": "Your email has been successfully confirmed."
+      },
+      "error": {
+        "title": "Error",
+        "description": "Failed to verify your email."
+      }
     }
   },
   "alertBanner": {

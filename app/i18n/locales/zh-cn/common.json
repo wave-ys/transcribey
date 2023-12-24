@@ -170,6 +170,16 @@
       "title": "注册",
       "signUpButton": "注册",
       "haveAccount": "已有账号？立即登录"
+    },
+    "confirmEmail": {
+      "success": {
+        "title": "感谢！",
+        "description": "您的邮箱已被成功验证。"
+      },
+      "error": {
+        "title": "错误",
+        "description": "未能成功验证您的邮箱。"
+      }
     }
   },
   "alertBanner": {
