@@ -31,7 +31,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
           }
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
-              {t("login.email")}
+              {t("account.login.email")}
             </Label>
             <Input
               id="email"
@@ -45,21 +45,21 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
           </div>
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="password">
-              {t("login.password")}
+              {t("account.login.password")}
             </Label>
             <Input
               id="password"
               name={"password"}
-              placeholder={t("login.password")}
+              placeholder={t("account.login.password")}
               type="password"
             />
           </div>
         </div>
         <Button className={"w-full"}>
-          {t("signUp.signUpButton")}
+          {t("account.signUp.signUpButton")}
         </Button>
         <a href={"/account/login"}>
-          <Button className={"w-full"} type={"button"} variant={"link"}>{t("signUp.haveAccount")}</Button>
+          <Button className={"w-full"} type={"button"} variant={"link"}>{t("account.signUp.haveAccount")}</Button>
         </a>
       </form>
     </div>

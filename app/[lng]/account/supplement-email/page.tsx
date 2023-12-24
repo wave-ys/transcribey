@@ -41,18 +41,18 @@ export default function SupplementEmailPage() {
             name="email"
             render={({field}) => (
               <FormItem>
-                <FormLabel>{t("login.email")}</FormLabel>
+                <FormLabel>{t("account.login.email")}</FormLabel>
                 <FormControl>
                   <Input placeholder="name@example.com" {...field} />
                 </FormControl>
                 <FormDescription>
-                  {t("login.supplementEmail.description")}
+                  {t("account.login.supplementEmail.description")}
                 </FormDescription>
                 <FormMessage/>
               </FormItem>
             )}
           />
-          <Button type="submit">{t("login.supplementEmail.submit")}</Button>
+          <Button type="submit">{t("account.login.supplementEmail.submit")}</Button>
         </form>
       </Form>
     </div>

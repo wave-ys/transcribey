@@ -26,10 +26,10 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
     if (search.get("failed") !== 'true')
       return '';
     if (search.get("not_allowed") === 'true')
-      return t('login.notAllowed');
+      return t('account.login.notAllowed');
     if (search.get("locked") === 'true')
-      return t('login.locked');
-    return t('login.failed');
+      return t('account.login.locked');
+    return t('account.login.failed');
   }, [search, t])
 
   return (
@@ -47,12 +47,12 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
               <Alert className={"grid gap-1"}>
                   <FaCircleCheck className="h-4 w-4"/>
                   <AlertTitle>{t("alertBanner.message")}</AlertTitle>
-                  <AlertDescription>{t("login.registered")}</AlertDescription>
+                  <AlertDescription>{t("account.login.registered")}</AlertDescription>
               </Alert>
           }
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
-              {t("login.email")}
+              {t("account.login.email")}
             </Label>
             <Input
               id="email"
@@ -66,12 +66,12 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
           </div>
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="password">
-              {t("login.password")}
+              {t("account.login.password")}
             </Label>
             <Input
               id="password"
               name={"password"}
-              placeholder={t("login.password")}
+              placeholder={t("account.login.password")}
               type="password"
             />
           </div>
@@ -83,18 +83,18 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
                   name={"rememberMe"}
                 />
                 <Label htmlFor="rememberMe">
-                  {t("login.rememberMe")}
+                  {t("account.login.rememberMe")}
                 </Label>
               </div>
-              <Button type={"button"} variant={"link"}>{t("login.forgetPassword")}</Button>
+              <Button type={"button"} variant={"link"}>{t("account.login.forgetPassword")}</Button>
             </div>
           </div>
           <Button>
-            {t("login.signInButton")}
+            {t("account.login.signInButton")}
           </Button>
           <a href={"/account/register"}>
             <Button className={"w-full"} variant={"outline"} type={"button"}>
-              {t("login.signUpButton")}
+              {t("account.login.signUpButton")}
             </Button>
           </a>
         </div>
@@ -105,7 +105,7 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
         </div>
         <div className="relative flex justify-center text-xs uppercase">
           <span className="bg-background px-2 text-muted-foreground">
-            {t("login.orContinueWith")}
+            {t("account.login.orContinueWith")}
           </span>
         </div>
       </div>

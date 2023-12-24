@@ -138,10 +138,7 @@ public class AuthController(
         }
 
         var userId = await userManager.GetUserIdAsync(appUser);
-        var code = await userManager.GenerateEmailConfirmationTokenAsync(appUser);
-        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-        var callbackUrl = $"{FrontEndUrl}/api/auth/confirm-email?user_id={userId}&code={code}";
-        await emailSender.SendConfirmationLinkAsync(appUser, email, HtmlEncoder.Default.Encode(callbackUrl));
+        await SendEmailConfirm(userId, appUser);
 
         return Redirect($"{FrontEndUrl}/account/login?registered=true");
     }
@@ -154,5 +151,30 @@ public class AuthController(
         if (user == null)
             return Unauthorized();
         return user;
+    }
+
+    [HttpGet("confirm-email")]
+    public async Task<ActionResult> ConfirmEmail([FromQuery(Name = "user_id")] string userId,
+        [FromQuery(Name = "code")] string code)
+    {
+        if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(code))
+            return NotFound();
+
+        var user = await userManager.FindByIdAsync(userId);
+        if (user is null)
+            return NotFound();
+
+        var decoded = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+        var result = await userManager.ConfirmEmailAsync(user, decoded);
+        return Redirect(
+            $"{FrontEndUrl}/account/confirm-email?user_id={userId}&success={(result.Succeeded ? "true" : "false")}");
+    }
+
+    private async Task SendEmailConfirm(string userId, AppUser appUser)
+    {
+        var code = await userManager.GenerateEmailConfirmationTokenAsync(appUser);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+        var callbackUrl = $"{FrontEndUrl}/api/auth/confirm-email?user_id={userId}&code={code}";
+        await emailSender.SendConfirmationLinkAsync(appUser, appUser.Email!, HtmlEncoder.Default.Encode(callbackUrl));
     }
 }

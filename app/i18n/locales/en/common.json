@@ -145,30 +145,32 @@
       "delete": "Delete"
     }
   },
-  "login": {
-    "title": "Sign in",
-    "description": "Enter your email below to sign in your account",
-    "signInButton": "Sign In",
-    "signUpButton": "Sign Up with Email",
-    "orContinueWith": "Or continue with",
-    "autoRegisterDescription": "Unregistered account will be automatically registered.",
-    "email": "Email",
-    "password": "Password",
-    "rememberMe": "Remember Me",
-    "forgetPassword": "Forget password?",
-    "failed": "Login failed, please try again.",
-    "notAllowed": "Login failed, please verify your email address first.",
-    "locked": "Your account has been temporarily locked. Please try again later.",
-    "registered": "You have successfully signed up. Please verify your email address before logging in.",
-    "supplementEmail": {
-      "description": "Please enter an email address and click the Submit button to finish logging in.",
-      "submit": "Submit"
+  "account": {
+    "login": {
+      "title": "Sign in",
+      "description": "Enter your email below to sign in your account",
+      "signInButton": "Sign In",
+      "signUpButton": "Sign Up with Email",
+      "orContinueWith": "Or continue with",
+      "autoRegisterDescription": "Unregistered account will be automatically registered.",
+      "email": "Email",
+      "password": "Password",
+      "rememberMe": "Remember Me",
+      "forgetPassword": "Forget password?",
+      "failed": "Login failed, please try again.",
+      "notAllowed": "Login failed, please verify your email address first.",
+      "locked": "Your account has been temporarily locked. Please try again later.",
+      "registered": "You have successfully signed up. Please verify your email address before logging in.",
+      "supplementEmail": {
+        "description": "Please enter an email address and click the Submit button to finish logging in.",
+        "submit": "Submit"
+      }
+    },
+    "signUp": {
+      "title": "Sign up",
+      "signUpButton": "Sign Up",
+      "haveAccount": "Already have an account? Log in now"
     }
-  },
-  "signUp": {
-    "title": "Sign up",
-    "signUpButton": "Sign Up",
-    "haveAccount": "Already have an account? Log in now"
   },
   "alertBanner": {
     "error": "Error",

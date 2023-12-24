@@ -30,10 +30,10 @@ export default async function LoginPage({params: {lng}}: LoginPageProps) {
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
-              {t("login.title")}
+              {t("account.login.title")}
             </h1>
             <p className="text-sm text-muted-foreground">
-              {t("login.description")}
+              {t("account.login.description")}
             </p>
           </div>
           <UserAuthForm/>

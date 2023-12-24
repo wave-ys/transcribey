@@ -145,30 +145,32 @@
       "delete": "删除"
     }
   },
-  "login": {
-    "title": "登录",
-    "description": "请输入您的电子邮件以登录您的帐户",
-    "signInButton": "登录",
-    "signUpButton": "使用电子邮件注册",
-    "orContinueWith": "或者使用",
-    "autoRegisterDescription": "未注册的帐户将自动注册。",
-    "email": "电子邮件",
-    "password": "密码",
-    "rememberMe": "记住我",
-    "forgetPassword": "忘记密码？",
-    "failed": "登录失败，请重试。",
-    "notAllowed": "登录失败，请先验证电子邮件地址。",
-    "locked": "您的账号已暂时被锁定，请稍后再试。",
-    "registered": "注册成功，请验证电子邮件地址。",
-    "supplementEmail": {
-      "description": "请输入电子邮件地址，然后单击“提交”按钮完成登录。",
-      "submit": "提交"
+  "account": {
+    "login": {
+      "title": "登录",
+      "description": "请输入您的电子邮件以登录您的帐户",
+      "signInButton": "登录",
+      "signUpButton": "使用电子邮件注册",
+      "orContinueWith": "或者使用",
+      "autoRegisterDescription": "未注册的帐户将自动注册。",
+      "email": "电子邮件",
+      "password": "密码",
+      "rememberMe": "记住我",
+      "forgetPassword": "忘记密码？",
+      "failed": "登录失败，请重试。",
+      "notAllowed": "登录失败，请先验证电子邮件地址。",
+      "locked": "您的账号已暂时被锁定，请稍后再试。",
+      "registered": "注册成功，请验证电子邮件地址。",
+      "supplementEmail": {
+        "description": "请输入电子邮件地址，然后单击“提交”按钮完成登录。",
+        "submit": "提交"
+      }
+    },
+    "signUp": {
+      "title": "注册",
+      "signUpButton": "注册",
+      "haveAccount": "已有账号？立即登录"
     }
-  },
-  "signUp": {
-    "title": "注册",
-    "signUpButton": "注册",
-    "haveAccount": "已有账号？立即登录"
   },
   "alertBanner": {
     "error": "错误",
