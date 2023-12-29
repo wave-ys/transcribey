@@ -3,12 +3,14 @@ using System.Net.Mime;
 using System.Net.WebSockets;
 using System.Text;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Transcribey.Data;
 using Transcribey.Models;
+using Transcribey.Utils;
 
 namespace Transcribey.Controllers;
 
@@ -20,9 +22,12 @@ public class TranscriptionController(IObjectStorage objectStorage, DataContext d
     public const string TranscribeProgressExchange = "transcribe-progresses";
 
     [HttpGet("{mediaId}")]
+    [Authorize]
     public async Task<ActionResult> GetTranscription(long mediaId)
     {
-        var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == mediaId);
+        var user = await HttpContext.GetUserAsync();
+        var media = await dataContext.Medias.SingleOrDefaultAsync(m =>
+            m.Id == mediaId && m.Workspace.AppUserId == user!.Id);
         if (media == null)
             return NotFound();
         if (string.IsNullOrEmpty(media.ResultPath))
@@ -36,11 +41,14 @@ public class TranscriptionController(IObjectStorage objectStorage, DataContext d
     }
 
     [HttpPut("{mediaId}")]
+    [Authorize]
     public async Task<ActionResult> SaveTranscription(long mediaId)
     {
         if (Request.ContentLength == null)
             return BadRequest();
-        var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == mediaId);
+        var user = await HttpContext.GetUserAsync();
+        var media = await dataContext.Medias.SingleOrDefaultAsync(m =>
+            m.Id == mediaId && m.Workspace.AppUserId == user!.Id);
         if (string.IsNullOrEmpty(media?.ResultPath))
             return NotFound();
 
@@ -68,6 +76,7 @@ public class TranscriptionController(IObjectStorage objectStorage, DataContext d
     }
 
     [HttpGet("{mediaId}/ws")]
+    [Authorize]
     public async Task SubscribeTranscribing(long mediaId)
     {
         if (!HttpContext.WebSockets.IsWebSocketRequest)
@@ -76,7 +85,9 @@ public class TranscriptionController(IObjectStorage objectStorage, DataContext d
             return;
         }
 
-        var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == mediaId);
+        var user = await HttpContext.GetUserAsync();
+        var media = await dataContext.Medias.SingleOrDefaultAsync(m =>
+            m.Id == mediaId && m.Workspace.AppUserId == user!.Id);
         if (media == null)
         {
             HttpContext.Response.StatusCode = (int)HttpStatusCode.NotFound;

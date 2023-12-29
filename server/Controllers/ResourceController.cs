@@ -1,6 +1,7 @@
 using System.Net;
 using System.Net.Mime;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Transcribey.Data;
@@ -13,9 +14,12 @@ namespace Transcribey.Controllers;
 public class ResourceController(IObjectStorage objectStorage, DataContext dataContext) : ControllerBase
 {
     [HttpGet("thumbnail/{mediaId}")]
+    [Authorize]
     public async Task<ActionResult> GetThumbnail(long mediaId)
     {
-        var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == mediaId);
+        var user = await HttpContext.GetUserAsync();
+        var media = await dataContext.Medias.SingleOrDefaultAsync(m =>
+            m.Id == mediaId && m.Workspace.AppUserId == user!.Id);
         if (media == null)
             return NotFound();
         if (string.IsNullOrEmpty(media.ThumbnailPath))
@@ -25,9 +29,12 @@ public class ResourceController(IObjectStorage objectStorage, DataContext dataCo
     }
 
     [HttpHead("media/{mediaId}")]
+    [Authorize]
     public async Task<ActionResult> GetMediaHead(long mediaId)
     {
-        var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == mediaId);
+        var user = await HttpContext.GetUserAsync();
+        var media = await dataContext.Medias.SingleOrDefaultAsync(m =>
+            m.Id == mediaId && m.Workspace.AppUserId == user!.Id);
         if (media == null || string.IsNullOrEmpty(media.StorePath))
             return NotFound();
 
@@ -40,9 +47,12 @@ public class ResourceController(IObjectStorage objectStorage, DataContext dataCo
     }
 
     [HttpGet("media/{mediaId}")]
+    [Authorize]
     public async Task GetMedia(long mediaId)
     {
-        var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == mediaId);
+        var user = await HttpContext.GetUserAsync();
+        var media = await dataContext.Medias.SingleOrDefaultAsync(m =>
+            m.Id == mediaId && m.Workspace.AppUserId == user!.Id);
         if (media == null)
         {
             Response.StatusCode = (int)HttpStatusCode.NotFound;

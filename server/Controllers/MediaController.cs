@@ -1,4 +1,5 @@
 using System.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.EntityFrameworkCore;
@@ -14,23 +15,28 @@ public class MediaController(IObjectStorage objectStorage, DataContext dataConte
     : ControllerBase
 {
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<ActionResult<MediaDto>> GetMedia(long id)
     {
-        var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == id && !m.Deleted);
+        var user = await HttpContext.GetUserAsync();
+        var media = await dataContext.Medias.SingleOrDefaultAsync(m =>
+            m.Id == id && !m.Deleted && m.Workspace.AppUserId == user!.Id);
         if (media == null)
             return NotFound();
         return new MediaDto(media);
     }
 
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<List<MediaDto>>> GetMediaList(
         [FromQuery] long workspace,
         [FromQuery] string category,
         [FromQuery] bool deleted
     )
     {
+        var user = await HttpContext.GetUserAsync();
         var queryable = dataContext.Medias
-            .Where(m => m.WorkspaceId == workspace && m.Deleted == deleted);
+            .Where(m => m.WorkspaceId == workspace && m.Deleted == deleted && m.Workspace.AppUserId == user!.Id);
         if (category != "all")
             queryable = queryable.Where(m => m.FileType == category);
         var medias = await queryable
@@ -39,11 +45,13 @@ public class MediaController(IObjectStorage objectStorage, DataContext dataConte
     }
 
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<ActionResult> DeleteMedia(long id, [FromQuery] bool permanent)
     {
+        var user = await HttpContext.GetUserAsync();
         if (!permanent)
         {
-            await dataContext.Medias.Where(m => m.Id == id)
+            await dataContext.Medias.Where(m => m.Id == id && m.Workspace.AppUserId == user!.Id)
                 .ExecuteUpdateAsync(setter => setter
                     .SetProperty(m => m.Deleted, true));
         }
@@ -54,10 +62,11 @@ public class MediaController(IObjectStorage objectStorage, DataContext dataConte
                 await dataContext.Database.BeginTransactionAsync(IsolationLevel.RepeatableRead);
             try
             {
-                var media = await dataContext.Medias.AsNoTracking().SingleOrDefaultAsync(m => m.Id == id);
+                var media = await dataContext.Medias.AsNoTracking()
+                    .SingleOrDefaultAsync(m => m.Id == id && m.Workspace.AppUserId == user!.Id);
                 if (media == null)
                     return NotFound();
-                await dataContext.Medias.Where(m => m.Id == id)
+                await dataContext.Medias.Where(m => m.Id == id && m.Workspace.AppUserId == user!.Id)
                     .ExecuteDeleteAsync();
                 await objectStorage.RemoveFiles(new List<string>
                         { media.ThumbnailPath, media.ResultPath, media.StorePath }
@@ -74,9 +83,11 @@ public class MediaController(IObjectStorage objectStorage, DataContext dataConte
     }
 
     [HttpPut("put_back/{id}")]
+    [Authorize]
     public async Task<ActionResult> PutBackMedia(long id)
     {
-        await dataContext.Medias.Where(m => m.Id == id)
+        var user = await HttpContext.GetUserAsync();
+        await dataContext.Medias.Where(m => m.Id == id && m.Workspace.AppUserId == user!.Id)
             .ExecuteUpdateAsync(setter => setter
                 .SetProperty(m => m.Deleted, false));
         return NoContent();
@@ -84,8 +95,11 @@ public class MediaController(IObjectStorage objectStorage, DataContext dataConte
 
 
     [HttpPost("upload")]
+    [Authorize]
     public async Task<ActionResult<MediaDto>> StartTranscribeUploadFile([FromForm] TranscribeOptionsDto options)
     {
+        var user = await HttpContext.GetUserAsync();
+
         var filePath = Path.GetTempFileName();
         var tempThumbnailFilePath = "";
 
@@ -97,7 +111,8 @@ public class MediaController(IObjectStorage objectStorage, DataContext dataConte
                 return BadRequest();
             if (!contentType.StartsWith("audio") && !contentType.StartsWith("video"))
                 return BadRequest();
-            if (await dataContext.Workspaces.SingleOrDefaultAsync(w => w.Id == options.WorkspaceId) == null)
+            if (!await dataContext.Workspaces.Where(w => w.Id == options.WorkspaceId && w.AppUserId == user!.Id)
+                    .AnyAsync())
                 return BadRequest();
 
             var fileStream = new FileStream(filePath, FileMode.Create);

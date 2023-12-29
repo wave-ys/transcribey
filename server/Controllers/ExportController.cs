@@ -1,4 +1,5 @@
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Transcribey.Data;
@@ -11,11 +12,13 @@ namespace Transcribey.Controllers;
 public class ExportController(DataContext dataContext, IObjectStorage objectStorage) : ControllerBase
 {
     [HttpPost("soft/{id}")]
+    [Authorize]
     public async Task<ActionResult> ExportWithSoftSubtitles(long id)
     {
         var subtitles = await Request.Body.ReadAsStringAsync();
 
-        var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == id);
+        var user = await HttpContext.GetUserAsync();
+        var media = await dataContext.Medias.SingleOrDefaultAsync(m => m.Id == id && m.Workspace.AppUserId == user!.Id);
         if (media == null || string.IsNullOrEmpty(media.StorePath))
             return NotFound();
 
