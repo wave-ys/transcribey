@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Transcribey.Models;
+using Transcribey.Utils;
 
 namespace Transcribey.Controllers;
 
@@ -151,7 +152,7 @@ public class AuthController(
     [Authorize]
     public async Task<ActionResult<AppUser>> GetUserInfo()
     {
-        var user = await userManager.GetUserAsync(HttpContext.User);
+        var user = await HttpContext.GetUserAsync();
         if (user == null)
             return Unauthorized();
         return user;

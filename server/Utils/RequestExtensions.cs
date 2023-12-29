@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Identity;
+using Transcribey.Models;
+
 namespace Transcribey.Utils;
 
 public static class RequestExtensions
@@ -7,5 +10,11 @@ public static class RequestExtensions
         using StreamReader reader = new(requestBody, leaveOpen: leaveOpen);
         var bodyAsString = await reader.ReadToEndAsync();
         return bodyAsString;
+    }
+
+    public static async Task<AppUser?> GetUserAsync(this HttpContext httpContext)
+    {
+        var userManager = httpContext.RequestServices.GetRequiredService<UserManager<AppUser>>();
+        return await userManager.GetUserAsync(httpContext.User);
     }
 }

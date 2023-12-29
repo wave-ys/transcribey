@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Transcribey.Data;
 
@@ -11,9 +12,11 @@ using Transcribey.Data;
 namespace Transcribey.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20231229115905_AddUserToWorkspace")]
+    partial class AddUserToWorkspace
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -291,7 +294,7 @@ namespace Transcribey.Migrations
 
                     b.HasIndex("WorkspaceId");
 
-                    b.ToTable("Medias", (string)null);
+                    b.ToTable("Medias");
                 });
 
             modelBuilder.Entity("Transcribey.Models.Workspace", b =>
@@ -318,7 +321,7 @@ namespace Transcribey.Migrations
 
                     b.HasIndex("AppUserId");
 
-                    b.ToTable("Workspaces", (string)null);
+                    b.ToTable("Workspaces");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

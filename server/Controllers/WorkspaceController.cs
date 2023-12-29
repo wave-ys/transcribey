@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Transcribey.Data;
 using Transcribey.Models;
+using Transcribey.Utils;
 
 namespace Transcribey.Controllers;
 
@@ -21,16 +23,21 @@ public class WorkspaceController : ControllerBase
 
     // GET: api/Workspace
     [HttpGet]
+    [Authorize]
     public async Task<ActionResult<IEnumerable<Workspace>>> GetWorkspaces()
     {
-        return await _context.Workspaces.ToListAsync();
+        var user = await HttpContext.GetUserAsync();
+        return await _context.Workspaces.Where(w => w.AppUserId == user!.Id).ToListAsync();
     }
 
     // GET: api/Workspace/5
     [HttpGet("{id}")]
+    [Authorize]
     public async Task<ActionResult<Workspace>> GetWorkspace(long id)
     {
-        var workspace = await _context.Workspaces.FindAsync(id);
+        var user = await HttpContext.GetUserAsync();
+        var workspace = await _context.Workspaces.Where(w => w.AppUserId == user!.Id)
+            .SingleOrDefaultAsync(w => w.Id == id);
 
         if (workspace == null) return NotFound();
 
@@ -40,9 +47,13 @@ public class WorkspaceController : ControllerBase
     // PUT: api/Workspace/5
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPut("{id}")]
+    [Authorize]
     public async Task<IActionResult> PutWorkspace(long id, Workspace workspace)
     {
         if (id != workspace.Id) return BadRequest();
+        var user = await HttpContext.GetUserAsync();
+        if (!await _context.Workspaces.Where(w => w.AppUserId == user!.Id && w.Id == id).AnyAsync())
+            return BadRequest();
 
         _context.Entry(workspace).State = EntityState.Modified;
 
@@ -63,8 +74,11 @@ public class WorkspaceController : ControllerBase
     // POST: api/Workspace
     // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
     [HttpPost]
+    [Authorize]
     public async Task<ActionResult<Workspace>> PostWorkspace(Workspace workspace)
     {
+        var user = await HttpContext.GetUserAsync();
+        workspace.AppUserId = user!.Id;
         _context.Workspaces.Add(workspace);
         await _context.SaveChangesAsync();
 
@@ -73,9 +87,12 @@ public class WorkspaceController : ControllerBase
 
     // DELETE: api/Workspace/5
     [HttpDelete("{id}")]
+    [Authorize]
     public async Task<IActionResult> DeleteWorkspace(long id)
     {
-        var workspace = await _context.Workspaces.FindAsync(id);
+        var user = await HttpContext.GetUserAsync();
+        var workspace = await _context.Workspaces.Where(w => w.AppUserId == user!.Id)
+            .SingleOrDefaultAsync(w => w.Id == id);
         if (workspace == null) return NotFound();
 
         var medias = await _context.Medias.Where(m => m.WorkspaceId == id).AsNoTracking().ToListAsync();
