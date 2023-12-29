@@ -86,7 +86,8 @@ export function UserAuthForm({className, ...props}: UserAuthFormProps) {
                   {t("account.login.rememberMe")}
                 </Label>
               </div>
-              <Button type={"button"} variant={"link"}>{t("account.login.forgetPassword")}</Button>
+              <a href={'/account/forget-password'}><Button type={"button"}
+                                                           variant={"link"}>{t("account.login.forgetPassword")}</Button></a>
             </div>
           </div>
           <Button>

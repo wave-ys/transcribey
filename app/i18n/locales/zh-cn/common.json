@@ -180,6 +180,13 @@
         "title": "错误",
         "description": "未能成功验证您的邮箱。"
       }
+    },
+    "forgetPassword": {
+      "title": "重置密码",
+      "emailLabel": "电子邮件地址",
+      "description": "输入您的电子邮件地址，我们将向您发送一个密码重置链接。",
+      "submitButton": "提交",
+      "toast": "电子邮件已发送！"
     }
   },
   "alertBanner": {

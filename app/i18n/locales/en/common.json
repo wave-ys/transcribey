@@ -180,6 +180,13 @@
         "title": "Error",
         "description": "Failed to verify your email."
       }
+    },
+    "forgetPassword": {
+      "title": "Reset Password",
+      "emailLabel": "Email",
+      "description": "Enter your email address and we will send you a password reset link.",
+      "submitButton": "Submit",
+      "toast": "Email sent!"
     }
   },
   "alertBanner": {

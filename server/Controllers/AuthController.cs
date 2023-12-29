@@ -174,12 +174,29 @@ public class AuthController(
             $"{FrontEndUrl}/account/confirm-email?user_id={userId}&success={(result.Succeeded ? "true" : "false")}");
     }
 
+    [HttpPost("send-password-reset-link")]
+    public async Task<ActionResult> SendResetPasswordLink([FromForm] string email)
+    {
+        var user = await userManager.FindByEmailAsync(email);
+        if (user is null || !await userManager.IsEmailConfirmedAsync(user))
+            return Ok();
+
+        var code = await userManager.GeneratePasswordResetTokenAsync(user);
+        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+        var callbackUrl =
+            $"{FrontEndUrl}/api/auth/reset-password?&code={HtmlEncoder.Default.Encode(code)}";
+
+        await emailSender.SendPasswordResetLinkAsync(user, email, callbackUrl);
+
+        return Ok();
+    }
+
     private async Task SendEmailConfirm(string userId, AppUser appUser)
     {
         var code = await userManager.GenerateEmailConfirmationTokenAsync(appUser);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
         var callbackUrl =
-            $"{FrontEndUrl}/api/auth/confirm-email?user_id={userId}&code={HtmlEncoder.Default.Encode(code)}";
+            $"{FrontEndUrl}/api/auth/confirm-email?user_id={userId}&code={code}";
         await emailSender.SendConfirmationLinkAsync(appUser, appUser.Email!, callbackUrl);
     }
 }
