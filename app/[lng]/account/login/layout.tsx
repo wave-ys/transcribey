@@ -10,7 +10,7 @@ export default async function LoginLayout({children}: { children: React.ReactNod
   } catch (e) {
     return <>{children}</>
   }
-  if (!userInfo)
-    redirect('/account');
+  if (userInfo)
+    redirect('/dashboard');
   return <>{children}</>
 }
