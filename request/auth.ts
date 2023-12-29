@@ -20,13 +20,25 @@ export async function supplementEmailApi(email: string) {
   return true;
 }
 
-export async function resetPasswordApi(email: string) {
+export async function sendPasswordResetLinkApi(email: string) {
   const form = new FormData();
   form.append("email", email);
 
   await request({
     method: 'post',
     url: '/api/auth/send-password-reset-link',
+    data: form
+  })
+}
+
+export async function resetPasswordApi(email: string, code: string, password: string) {
+  const form = new FormData();
+  form.append("email", email);
+  form.append("code", code);
+  form.append("password", password);
+  await request({
+    method: 'post',
+    url: '/api/auth/reset-password',
     data: form
   })
 }

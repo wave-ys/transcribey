@@ -7,7 +7,7 @@ import {Button} from "@/components/ui/button"
 import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form"
 import {Input} from "@/components/ui/input"
 import {useTranslation} from "@/app/i18n/client";
-import {resetPasswordApi} from "@/request/auth";
+import {sendPasswordResetLinkApi} from "@/request/auth";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {useToast} from "@/components/ui/use-toast";
 
@@ -26,7 +26,7 @@ export default function ForgetPasswordPage() {
   const {t} = useTranslation();
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    await resetPasswordApi(values.email);
+    await sendPasswordResetLinkApi(values.email);
     toast({
       title: t("account.forgetPassword.toast"),
       duration: 3000

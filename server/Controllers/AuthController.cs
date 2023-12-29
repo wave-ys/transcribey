@@ -184,10 +184,23 @@ public class AuthController(
         var code = await userManager.GeneratePasswordResetTokenAsync(user);
         code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
         var callbackUrl =
-            $"{FrontEndUrl}/api/auth/reset-password?&code={HtmlEncoder.Default.Encode(code)}";
+            $"{FrontEndUrl}/account/reset-password?email={HtmlEncoder.Default.Encode(email)}&code={code}";
 
         await emailSender.SendPasswordResetLinkAsync(user, email, callbackUrl);
 
+        return Ok();
+    }
+
+    [HttpPost("reset-password")]
+    public async Task<ActionResult> ResetPassword([FromForm] string code, [FromForm] string email,
+        [FromForm] string password)
+    {
+        var user = await userManager.FindByEmailAsync(email);
+        if (user == null)
+            return Ok();
+
+        code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
+        await userManager.ResetPasswordAsync(user, code, password);
         return Ok();
     }
 

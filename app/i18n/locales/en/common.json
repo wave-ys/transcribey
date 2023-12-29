@@ -187,6 +187,14 @@
       "description": "Enter your email address and we will send you a password reset link.",
       "submitButton": "Submit",
       "toast": "Email sent!"
+    },
+    "resetPassword": {
+      "title": "Reset Password",
+      "emailLabel": "Email",
+      "passwordLabel": "Password",
+      "confirmPasswordLabel": "Confirm Password",
+      "notMatchError": "Passwords don't match.",
+      "toast": "Successfully reset password!"
     }
   },
   "alertBanner": {
