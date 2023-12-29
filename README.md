@@ -8,6 +8,8 @@ Note: This project is motivated by [MemoAI](https://github.com/Makememo/MemoAI).
 
 ![Capture 2](./screenshots/Capture%202.jpeg)
 
+![Capture 3](./screenshots/Capture%203.png)
+
 ## License
 
 MIT
