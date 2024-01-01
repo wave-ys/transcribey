@@ -53,7 +53,7 @@ class DatabaseContext:
 
     def fetch_media(self, media_id: str):
         return self.db_connection.execute(
-            text("select Id from Medias with (rowlock, xlock, holdlock) where Id = :id"),
+            text("select Id from Medias with (rowlock, xlock) where Id = :id"),
             {
                 "id": media_id
             }
